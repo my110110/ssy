@@ -18,15 +18,7 @@ BackendAsset::register($this);
 
 $assets_url=$this->getAssetManager()->getBundle(BackendAsset::className())->baseUrl;
 $this->title = Yii::$app->name;
-$fieldOptions1 = [
-    'options' => ['class' => 'form-control'],
-    'inputTemplate' => "{input}"
-];
 
-$fieldOptions2 = [
-    'options' => ['class' => 'form-group has-feedback'],
-    'inputTemplate' => "{input}<span class='glyphicon glyphicon-lock form-control-feedback'></span>"
-];
 ?>
 <script src="<?=$assets_url?>/js/require.min.js" data-main="<?=$assets_url?>/js/require-backend.min.js"></script>
 <div class="container">
@@ -40,21 +32,16 @@ $fieldOptions2 = [
                     <?php $form = ActiveForm::begin([
                         'id' => 'login-form',
                         'enableClientValidation' => false,
-                    ]); ?>
-                        <div id="errtips" class="hide"></div>
-                        <input type="hidden" name="__token__" value="68041f02fc8315b7ccdfaeb0e189a743" />                                <div class="input-group">
+                        'fieldConfig' => [
+                                'template' => '  <div class="input-group">
                             <div class="input-group-addon"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></div>
 
-                        <?= $form->field($model, 'username',['options'=>['tag'=>false]])->textInput(['autofocus' => true,'class'=>'form-control','id'=>'pd-form-username','placeholder'=>'用户名'])->label(false) ?>
+                        {input}</div>{error}'
+                            ],  //设置模板的样式
+                    ]); ?>
 
-<!--                        <input type="text" class="form-control" id="pd-form-username" placeholder="用户名" name="username" autocomplete="off" value="" data-rule="用户名:required;username" />-->
-                        </div>
-
-                        <div class="input-group">
-                            <div class="input-group-addon"><span class="glyphicon glyphicon-lock" aria-hidden="true"></span></div>
-                            <?= $form->field($model, 'password',['options'=>['tag'=>false]])->passwordInput(['autofocus' => true,'class'=>'form-control','id'=>'pd-form-password','placeholder'=>'密码'])->label(false) ?>
-                        </div>
-
+                        <?= $form->field($model, 'username',['options'=>['tag'=>false]])->textInput(['autofocus' => true,'class'=>'form-control','id'=>'pd-form-username','placeholder'=>'用户名'])->error(['style'=>'color:red;text-align:center;']); ?>
+                        <?= $form->field($model, 'password',['options'=>['tag'=>false]])->passwordInput(['autofocus' => true,'class'=>'form-control','id'=>'pd-form-password','placeholder'=>'密码'])->error(['style'=>'color:red;text-align:center;']); ?>
                         <div class="form-group">
                             <label class="inline" for="keeplogin">
                                 <?= $form->field($model, 'rememberMe')->checkbox() ?>

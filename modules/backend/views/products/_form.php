@@ -9,6 +9,7 @@ use kartik\file\FileInput;
 /* @var $model app\models\News */
 /* @var $form yii\widgets\ActiveForm */
 ?>
+
 <div class="content-form">
 
     <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
