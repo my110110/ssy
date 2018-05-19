@@ -32,21 +32,58 @@ $this->title = Yii::$app->name;
                     <?php $form = ActiveForm::begin([
                         'id' => 'login-form',
                         'enableClientValidation' => false,
-                        'fieldConfig' => [
-                                'template' => '  <div class="input-group">
-                            <div class="input-group-addon"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></div>
-
-                        {input}</div>{error}'
-                            ],  //设置模板的样式
+//                        'fieldConfig' => [
+//                                'template' => '  <div class="input-group">
+//                            <div class="input-group-addon"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></div>
+//                        {input}</div>{error}'
+//                            ],  //设置模板的样式
                     ]); ?>
 
-                        <?= $form->field($model, 'username',['options'=>['tag'=>false]])->textInput(['autofocus' => true,'class'=>'form-control','id'=>'pd-form-username','placeholder'=>'用户名'])->error(['style'=>'color:red;text-align:center;']); ?>
-                        <?= $form->field($model, 'password',['options'=>['tag'=>false]])->passwordInput(['autofocus' => true,'class'=>'form-control','id'=>'pd-form-password','placeholder'=>'密码'])->error(['style'=>'color:red;text-align:center;']); ?>
+                        <?= $form->field(
+                                            $model, 'username',
+                                            ['options'=>
+                                                ['tag'=>false ],
+                                                'template' => '<div class="input-group">
+                                                                    <div class="input-group-addon">
+                                                                      <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                                                                    </div> {input}
+                                                                  </div>{error}'
+                                            ]
+                                        )->textInput
+                                       (
+                                                [
+                                                        'autofocus' => true,
+                                                        'class'=>'form-control',
+                                                        'id'=>'pd-form-username',
+                                                        'placeholder'=>'用户名'
+                                                ]
+                                        )->error(['style'=>'color:red;text-align:center;']);
+                        ?>
+                        <?= $form->field(
+                                            $model, 'password',
+                                            [
+                                                    'options'=>
+                                                        ['tag'=>false],
+                                                        'template' => '  <div class="input-group">
+                                                                               <div class="input-group-addon"><span class="glyphicon glyphicon-lock" aria-hidden="true"></span></div>
+                                                                           {input}</div>{error}'
+                                            ]
+                                         )->passwordInput
+                                         (
+                                                             [
+                                                                'autofocus' => true,'
+                                                                class'=>'form-control',
+                                                                 'id'=>'pd-form-password',
+                                                                 'placeholder'=>'密码'
+                                                             ]
+                                         )->error( ['style'=>'color:red;text-align:center;']);
+                        ?>
                         <div class="form-group">
                             <label class="inline" for="keeplogin">
                                 <?= $form->field($model, 'rememberMe')->checkbox() ?>
-                                保持会话                                    </label>
+                                                               </label>
                         </div>
+
                         <div class="form-group">
                             <button type="submit" class="btn btn-success btn-lg btn-block">登 录</button>
                         </div>

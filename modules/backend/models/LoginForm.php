@@ -18,7 +18,6 @@ class LoginForm extends Model
     public $rememberMe = true;
     /** @var bool AdminUserIdentity */
     private $_user = false;
-
     /**
      * @return array the validation rules.
      */

@@ -110,6 +110,7 @@ class DefaultController extends BackendController
                     'logout' => ['post'],
                 ],
             ],
+
         ];
     }
 }
