@@ -2,11 +2,11 @@
 use yii\helpers\Json;
 use mdm\admin\components\MenuHelper;
 use yii\web\UrlManager;
-
 /**
  * @var \yii\web\View $this
  */
-$menuItems = MenuHelper::getAssignedMenu(Yii::$app->user->id,null,function($menu){
+$menuItems = MenuHelper::getAssignedMenu(Yii::$app->user->id,null,function($menu)
+{
     $data = empty($menu['data'])?[]:json_decode($menu['data'], true);
     $icon ='fa fa-circle-o';
     if(isset($data['icon'])){

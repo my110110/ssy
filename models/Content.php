@@ -36,10 +36,13 @@ class Content extends AppActiveRecord
     const TYPE_DOWNLOADS =3;
     /** 照片相册 */
     const TYPE_PHOTOS =4;
+    const TYPE_PROJECT =5;
 
     /** @var array  */
     static public $types = [
         self::TYPE_NEWS=>'新闻',
+        self::TYPE_PRODUCTS=>'产品',
+        self::TYPE_PROJECT=>'实验项目',
 
     ];
 
