@@ -70,6 +70,7 @@ class ProjectController extends BackendController
     public function actionCreate()
     {
         $model = new Project();
+        $model->scenario='create';
         $post = Yii::$app->request->post();
         if ($post) {
             if ($model->load($post) && $model->save()) {

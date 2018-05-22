@@ -22,6 +22,8 @@ use Yii;
  */
 class Project extends \yii\db\ActiveRecord
 {
+
+
     /**
      * @inheritdoc
      */
@@ -29,7 +31,10 @@ class Project extends \yii\db\ActiveRecord
     {
         return '{{%project}}';
     }
-
+    static $kind_type=[
+      '1'=>'动物组织',
+      '2'=>'人体细胞',
+    ];
     /**
      * @inheritdoc
      */
@@ -64,16 +69,16 @@ class Project extends \yii\db\ActiveRecord
     {
         return [
             'pro_id' => 'Pro ID',
-            'pro_name' => 'Pro Name',
-            'pro_description' => 'Pro Description',
-            'pro_keywords' => 'Pro Keywords',
-            'pro_kind_id' => 'Pro Kind ID',
-            'pro_sample_count' => 'Pro Sample Count',
-            'pro_principal_info' => 'Pro Principal Info',
+            'pro_name' => '项目名称',
+            'pro_description' => '项目描述',
+            'pro_keywords' => '项目关键词',
+            'pro_kind_id' => '样品种属',
+            'pro_sample_count' => '项目样品总数',
+            'pro_principal_info' => '实验项目负责人信息',
             'pro_add_time' => 'Pro Add Time',
             'pro_update_time' => 'Pro Update Time',
             'pro_pid' => 'Pro Pid',
-            'pro_retrieve' => 'Pro Retrieve',
+            'pro_retrieve' => '项目检索号',
         ];
     }
 }
