@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\News */
 
-$this->title = '添加案例';
+$this->title = '添加项目';
 $this->params['breadcrumbs'][] = ['label' => '实验项目', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

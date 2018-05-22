@@ -7,11 +7,11 @@ use app\models\Principal;
 use yii\grid\CheckboxColumn;
 
 /* @var $this yii\web\View */
-/* @var $searchModel app\modules\backend\models\NewsSearch */
+/* @var $searchModel app\modules\backend\models\ProjectSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 /* @var $pagination yii\data\Pagination */
 
-$this->title = '成功案例';
+$this->title = '项目列表';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="content-index">
@@ -28,37 +28,27 @@ $this->params['breadcrumbs'][] = $this->title;
                 'columns' => [
                     ['class' => CheckboxColumn::className()],
                     [
-                        'attribute' => 'id',
-                        'options' => ['style' => 'width:50px']
+                        'attribute' => 'pro_id',
+                        'options' => ['style' => 'width:50px'],
+                        'format' => 'html',
                     ],
-                    'title',
-//            'image',
-                    'description',
+                    'pro_description',
                     [
-                        'attribute' => 'status',
+                        'attribute' => 'pro_description',
                         'options' => ['style' => 'width:60px'],
                         'format' => 'html',
 
-                        'value' => function ($item) {
-                            if($item['status']==Products::STATUS_ENABLE) {
-                                return '<span class="badge bg-green">' . $item['statusText'] . '</span>';
-                            }else{
-                                return '<span class="badge">' . $item['statusText'] . '</span>';
-                            }
-                        }
+
                     ],
-                    // 'admin_user_id',
+                    'pro_description',
                     [
-                        'attribute' =>'hits',
-                        'options' => ['style' => 'width:70px']
+                        'attribute' => 'pro_description',
+                        'options' => ['style' => 'width:60px'],
+                        'format' => 'html',
+
+
                     ],
-                    [
-                        'attribute' => 'created_at',
-                        'filterType'=>'date',
-                        'format' => 'datetime',
-                        'options' => ['style' => 'width:160px']
-                    ],
-//             'updated_at:datetime',
+
                     [
                         'class' => 'yii\grid\ActionColumn', 'template' => '{update} {delete}',
                         'options' => ['style' => 'width:60px']
