@@ -2,7 +2,8 @@
 
 use yii\helpers\Html;
 use app\modules\backend\widgets\GridView;
-use app\models\Products;
+use app\models\Project;
+use app\models\Principal;
 use yii\grid\CheckboxColumn;
 
 /* @var $this yii\web\View */

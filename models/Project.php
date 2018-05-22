@@ -14,11 +14,11 @@ use Yii;
  * @property string $pro_keywords
  * @property integer $pro_kind_id
  * @property integer $pro_sample_count
- * @property integer $pro_principal_info
  * @property string $pro_add_time
  * @property string $pro_update_time
  * @property integer $pro_pid
  * @property string $pro_retrieve
+ * @property integer $isdel
  */
 class Project extends \yii\db\ActiveRecord
 {
@@ -41,10 +41,10 @@ class Project extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['pro_name', 'pro_kind_id', 'pro_principal_info', 'pro_add_time', 'pro_retrieve'], 'required','on' => ['create'],'message'=>"{attribute}不能为空"],
-            [['pro_name', 'pro_kind_id', 'pro_principal_info', 'pro_retrieve'], 'required','on' => ['update']],
-            [['pro_kind_id', 'pro_sample_count', 'pro_principal_info', 'pro_pid'], 'integer','on' => ['create','update'],'message'=>"{attribute}不能为空"],
-            [['pro_add_time', 'pro_update_time'], 'safe','on' => ['create','update']],
+            [['pro_name', 'pro_kind_id',  'pro_add_time', 'pro_retrieve'], 'required','on' => ['create'],'message'=>"{attribute}不能为空"],
+            [['pro_name', 'pro_kind_id',  'pro_retrieve'], 'required','on' => ['update']],
+            [['pro_kind_id', 'pro_sample_count', 'pro_pid'], 'integer','on' => ['create','update'],'message'=>"{attribute}不能为空"],
+            [['pro_add_time', 'pro_update_time','isdel'], 'safe','on' => ['create','update']],
             [['pro_name', 'pro_keywords'], 'string', 'max' => 100,'on' => ['create','update'],'message'=>"{attribute}不能超过100位"],
             [['pro_description'], 'string', 'max' => 255,'on' => ['create','update'],'message'=>"{attribute}不能超过200位"],
             [['pro_retrieve'], 'string', 'max' => 40,'on' => ['create','update'],'message'=>"{attribute}不能超过40位"],
@@ -74,11 +74,11 @@ class Project extends \yii\db\ActiveRecord
             'pro_keywords' => '项目关键词',
             'pro_kind_id' => '样品种属',
             'pro_sample_count' => '项目样品总数',
-            'pro_principal_info' => '实验项目负责人信息',
             'pro_add_time' => 'Pro Add Time',
             'pro_update_time' => 'Pro Update Time',
             'pro_pid' => 'Pro Pid',
             'pro_retrieve' => '项目检索号',
+            'isdel'=>'是否被删除'
         ];
     }
 }

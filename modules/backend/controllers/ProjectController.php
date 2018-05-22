@@ -14,6 +14,7 @@ use app\modules\backend\models\ProjectSearch;
 use app\modules\backend\components\BackendController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use app\models\Principal;
 
 
 class ProjectController extends BackendController
@@ -43,10 +44,9 @@ class ProjectController extends BackendController
         $searchModel = new ProjectSearch();
 
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $this->module->params['pageSize']);
-
         return $this->render('index', [
             'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider
+            'dataProvider' => $dataProvider,
         ]);
     }
 
@@ -70,15 +70,44 @@ class ProjectController extends BackendController
     public function actionCreate()
     {
         $model = new Project();
+        $principal=new Principal();
+
         $model->scenario='create';
         $post = Yii::$app->request->post();
         if ($post) {
-            if ($model->load($post) && $model->save()) {
-                return $this->showFlash('添加成功','success');
+            $tr=Yii::$app->db->beginTransaction();
+            try{
+
+                $model->setAttributes($_POST['Project'],false);
+                $model->pro_add_time=date('Y-m-d H:i:s');
+                $model->pro_retrieve='PDS'.date('YmdHis');
+                $principal->attributes=$_POST['Principal'];
+                if ($model->load($post)&&$model->save() )
+                {
+
+
+                    $principal->pro_id= $model->attributes['pro_id'];
+
+                    if( $principal->save())
+                    {
+                        $tr->commit();
+                        return $this->showFlash('添加成功','success');
+                    }else{
+                        $tr->rollBack();
+                        return $this->showFlash('添加失败');
+                    }
+                }
+            }catch (excepetion $e)
+            {
+                $tr->rollBack();
+                return $this->showFlash('添加失败');
             }
+
+
         }
         return $this->render('create', [
             'model' => $model,
+            'principal'=>$principal
         ]);
     }
 

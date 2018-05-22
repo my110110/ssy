@@ -19,8 +19,8 @@ class ProjectSearch extends Project
     public function rules()
     {
         return [
-            [['pro_kind_id', 'pro_sample_count', 'pro_principal_info', 'pro_pid'], 'integer'],
-            [['pro_name', 'pro_kind_id', 'pro_principal_info', 'pro_add_time', 'pro_retrieve','pro_update_time'], 'safe'],
+            [['pro_kind_id', 'pro_sample_count', 'pro_pid'], 'integer'],
+            [['pro_name', 'pro_kind_id', 'pro_add_time', 'pro_retrieve','pro_update_time'], 'safe'],
         ];
     }
 
