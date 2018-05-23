@@ -11,7 +11,12 @@ use yii\helpers\ArrayHelper;
 
 <div class="content-form">
 
-    <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
+    <?php $form = ActiveForm::begin(
+            [
+                'id'=>'project',
+                'options' => ['enctype' => 'multipart/form-data']
+            ]);
+    ?>
     <?= $form->field($model, 'pro_name')->textInput(['maxlength' => true]) ?>
     <?= $form->field($model, 'pro_keywords')->textInput(['maxlength' => true]) ?>
     <?= $form->field($model, 'pro_kind_id')->dropDownList($model::$kind_type) ?>

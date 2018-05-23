@@ -15,7 +15,7 @@ use app\modules\backend\components\BackendController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\models\Principal;
-
+use yii\web\Response;
 
 class ProjectController extends BackendController
 {
@@ -33,6 +33,36 @@ class ProjectController extends BackendController
             ],
         ];
     }
+   public function actionDelete_all()
+   {
+           Yii::$app->response->format = Response::FORMAT_JSON;
+
+           $ids =  Yii::$app->request->post('ids');
+           if(empty($ids)){
+               return ['data'=>'至少选择一个','code'=>1];
+           }
+           $attr = ['isdel'=>1];
+           /** @var $query ContentQuery */
+           $query = Project::find();
+
+           $query->andFilterWhere([
+               'in', 'pro_id', $ids
+           ]);
+           try {
+               Project::updateAll($attr,$query->where);
+               return [
+                   'code'=>0,
+                   'data'=>'操作成功'
+               ];
+           }catch(Exception $e)
+           {
+               return [
+                   'code'=>1,
+                   'data'=>$e->getMessage()
+               ];
+           }
+   }
+
 
 
     /**
@@ -91,7 +121,9 @@ class ProjectController extends BackendController
                     if( $principal->save())
                     {
                         $tr->commit();
-                        return $this->showFlash('添加成功','success');
+                        Yii::$app->getSession()->setFlash('success', '保存成功');
+                        return  $this->redirect(['project/index']);
+                       // return $this->showFlash('添加成功','success',['project/index']);
                     }else{
                         $tr->rollBack();
                         return $this->showFlash('添加失败');

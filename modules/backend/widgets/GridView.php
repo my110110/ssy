@@ -49,18 +49,18 @@ class GridView extends YiiGridView
     {
         $id = $this->options['id'];
         $buttonList = [
-            Html::tag('button', '审核',[
-                'class'=>'content-operation btn btn-xs btn-success',
-                'data-action'=>Url::to(['check']),
-            ]),
-            Html::tag('button', '取消审核',[
-                'class'=>'content-operation btn btn-xs btn-warning',
-                'data-action'=>Url::to(['un-check']),
-            ]),
+//            Html::tag('button', '审核',[
+//                'class'=>'content-operation btn btn-xs btn-success',
+//                'data-action'=>Url::to(['check']),
+//            ]),
+//            Html::tag('button', '取消审核',[
+//                'class'=>'content-operation btn btn-xs btn-warning',
+//                'data-action'=>Url::to(['un-check']),
+//            ]),
             Html::tag('button', '删除',[
                 'class'=>'content-operation btn btn-xs btn-danger',
-                'data-confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
-                'data-action'=>Url::to(['delete-all'])
+                'data-confirm' => Yii::t('yii', '你确定要删除这些项目吗?'),
+                'data-action'=>Url::to(['delete_all'])
             ]),
         ];
         $view = $this->getView();

@@ -21,37 +21,49 @@ $this->params['breadcrumbs'][] = $this->title;
             <li role="presentation"><?= Html::a('添加项目', ['create']) ?></li>
         </ul>
         <div class="tab-content">
-            <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
             <?= GridView::widget([
                 'dataProvider' => $dataProvider,
                 'filterModel' => $searchModel,
                 'columns' => [
-                    ['class' => CheckboxColumn::className()],
                     [
-                        'attribute' => 'pro_id',
-                        'options' => ['style' => 'width:50px'],
-                        'format' => 'html',
+                        'class' => CheckboxColumn::className(),
+                        'options' => ['style' => 'width:5%;text-align:center']
+
                     ],
-                    'pro_description',
+
+                    [
+                        'attribute' => 'pro_name',
+                        'options' => ['style' => 'width:15%;;text-align:center']
+                    ],
+                    [
+                        'attribute' => 'pro_retrieve',
+                        'options' => ['style' => 'width:15%;;text-align:center']
+                    ],
+
+                    [
+                        'attribute' => 'pro_kind_id',
+                        'options' => ['style' => '10%;text-align:center'],
+                        'value'=>function($dataProvider){
+                               return Project::$kind_type[$dataProvider->pro_kind_id];
+                        }
+                    ],
+                    [
+                        'attribute' => 'pro_sample_count',
+                        'options' => ['style' => 'width:10%;text-align:center']
+                    ],
+
+                    [
+                        'attribute' => 'pro_add_time',
+                        'options' => ['style' => 'width:15%;text-align:center']
+                    ],
                     [
                         'attribute' => 'pro_description',
-                        'options' => ['style' => 'width:60px'],
-                        'format' => 'html',
-
-
+                        'options' => ['style' => 'width:15%;text-align:center']
                     ],
-                    'pro_description',
-                    [
-                        'attribute' => 'pro_description',
-                        'options' => ['style' => 'width:60px'],
-                        'format' => 'html',
-
-
-                    ],
-
                     [
                         'class' => 'yii\grid\ActionColumn', 'template' => '{update} {delete}',
-                        'options' => ['style' => 'width:60px']
+                        'header'=>'操作',
+                        'options' => ['style' => 'width:15%;text-align:center']
                     ],
                 ],
             ]); ?>

@@ -68,13 +68,13 @@ class Project extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'pro_id' => 'Pro ID',
+            'pro_id' => '序号',
             'pro_name' => '项目名称',
             'pro_description' => '项目描述',
             'pro_keywords' => '项目关键词',
             'pro_kind_id' => '样品种属',
             'pro_sample_count' => '项目样品总数',
-            'pro_add_time' => 'Pro Add Time',
+            'pro_add_time' => '添加时间',
             'pro_update_time' => 'Pro Update Time',
             'pro_pid' => 'Pro Pid',
             'pro_retrieve' => '项目检索号',
