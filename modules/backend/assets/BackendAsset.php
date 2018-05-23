@@ -18,12 +18,12 @@ class BackendAsset extends AssetBundle
     public $sourcePath ='@app/modules/backend/assets/';
     public $baseUrl = '@web';
     public $css = [
-        'css/backend.min.css',
-        'css/backend.css',
+
 
     ];
     public $js = [
-        'js/backend.js',
+        'backend.js',
+        'skin.js',
     ];
     public $img = [
 

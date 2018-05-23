@@ -20,7 +20,8 @@ $assets_url=$this->getAssetManager()->getBundle(BackendAsset::className())->base
 $this->title = Yii::$app->name;
 
 ?>
-<script src="<?=$assets_url?>/js/require.min.js" data-main="<?=$assets_url?>/js/require-backend.min.js"></script>
+
+
 <div class="container">
     <div class="login-wrapper">
         <div class="login-screen">
