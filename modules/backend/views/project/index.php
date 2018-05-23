@@ -5,6 +5,8 @@ use app\modules\backend\widgets\GridView;
 use app\models\Project;
 use app\models\Principal;
 use yii\grid\CheckboxColumn;
+use yii\widgets\ActiveForm;
+
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\modules\backend\models\ProjectSearch */
@@ -20,10 +22,36 @@ $this->params['breadcrumbs'][] = $this->title;
             <li role="presentation" class="active"><?= Html::a('实验项目', ['index']) ?></li>
             <li role="presentation"><?= Html::a('添加项目', ['create']) ?></li>
         </ul>
-        <div class="tab-content">
+
+        <div class="tab-content cos">
+            <div class="content-search">
+
+                <?php $form = ActiveForm::begin([
+                    'action' => ['index'],
+                    'method' => 'post',
+                ]); ?>
+
+                <?= $form->field($searchModel, 'pro_name',['options'=>
+                    ['tag'=>false ],
+                    'template' => '{input}'
+
+                ])->textInput
+                (
+                    [
+                        'autofocus' => true,
+                        'placeholder'=>'项目名称'
+                    ]
+                ) ?>
+
+
+
+                <?= $form->field($searchModel, 'pro_retrieve') ?>
+                <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
+                <?php ActiveForm::end(); ?>
+
+            </div>
             <?= GridView::widget([
                 'dataProvider' => $dataProvider,
-                'filterModel' => $searchModel,
                 'columns' => [
                     [
                         'class' => CheckboxColumn::className(),
