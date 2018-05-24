@@ -57,8 +57,9 @@ class Project extends \yii\db\ActiveRecord
   public function scenarios()
   {
       return [
-         'update'=>['pro_name', 'pro_kind_id', 'pro_principal_info', 'pro_add_time', 'pro_retrieve'],
-         'create'=>['pro_name', 'pro_kind_id', 'pro_principal_info', 'pro_add_time', 'pro_retrieve']
+          'update'=>['pro_name', 'pro_kind_id', 'pro_principal_info', 'pro_add_time', 'pro_retrieve'],
+          'create'=>['pro_name', 'pro_kind_id', 'pro_principal_info', 'pro_add_time', 'pro_retrieve'],
+          'search'=>['pro_name', 'pro_kind_id', 'pro_principal_info', 'pro_add_time', 'pro_retrieve']
       ];
   }
 
@@ -81,4 +82,5 @@ class Project extends \yii\db\ActiveRecord
             'isdel'=>'是否被删除'
         ];
     }
+
 }

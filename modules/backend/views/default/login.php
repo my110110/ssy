@@ -79,11 +79,7 @@ $this->title = Yii::$app->name;
                                                              ]
                                          )->error( ['style'=>'color:red;text-align:center;']);
                         ?>
-                        <div class="form-group">
-                            <label class="inline" for="keeplogin">
-                                <?= $form->field($model, 'rememberMe')->checkbox() ?>
-                                                               </label>
-                        </div>
+
 
                         <div class="form-group">
                             <button type="submit" class="btn btn-success btn-lg btn-block">登 录</button>

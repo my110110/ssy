@@ -28,12 +28,13 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 <?php $form = ActiveForm::begin([
                     'action' => ['index'],
-                    'method' => 'post',
+                    'method' => 'get',
                 ]); ?>
 
-                <?= $form->field($searchModel, 'pro_name',['options'=>
-                    ['tag'=>false ],
-                    'template' => '{input}'
+                <?= $form->field($searchModel, 'pro_name',
+                    ['options'=>
+                     ['tag'=>false ],
+                    'template' => '<div class=" col-md-2 column">  {input}</div>',
 
                 ])->textInput
                 (
@@ -42,16 +43,25 @@ $this->params['breadcrumbs'][] = $this->title;
                         'placeholder'=>'项目名称'
                     ]
                 ) ?>
+                <?= $form->field($searchModel, 'pro_retrieve',
+                    ['options'=>
+                        ['tag'=>false ],
+                        'template' => '<div class=" col-md-2 column">  {input}</div>',
 
-
-
-                <?= $form->field($searchModel, 'pro_retrieve') ?>
+                    ]) ->textInput
+                (
+                    [
+                        'autofocus' => true,
+                        'placeholder'=>'项目检索号'
+                    ]
+                )?>
                 <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
                 <?php ActiveForm::end(); ?>
-
             </div>
+            <div style="width: 100%;height: 10px;"></div>
             <?= GridView::widget([
                 'dataProvider' => $dataProvider,
+
                 'columns' => [
                     [
                         'class' => CheckboxColumn::className(),
@@ -82,16 +92,16 @@ $this->params['breadcrumbs'][] = $this->title;
 
                     [
                         'attribute' => 'pro_add_time',
-                        'options' => ['style' => 'width:15%;text-align:center']
+                        'options' => ['style' => 'width:20%;text-align:center']
                     ],
                     [
                         'attribute' => 'pro_description',
-                        'options' => ['style' => 'width:15%;text-align:center']
+                        'options' => ['style' => 'width:20%;text-align:center']
                     ],
                     [
                         'class' => 'yii\grid\ActionColumn', 'template' => '{update} {delete}',
                         'header'=>'操作',
-                        'options' => ['style' => 'width:15%;text-align:center']
+                        'options' => ['style' => 'width:5%;text-align:center']
                     ],
                 ],
             ]); ?>

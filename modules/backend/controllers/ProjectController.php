@@ -8,6 +8,7 @@
 
 namespace app\modules\backend\controllers;
 
+use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 use yii;
 use app\models\Project;
 use app\modules\backend\models\ProjectSearch;
@@ -72,7 +73,6 @@ class ProjectController extends BackendController
     public function actionIndex()
     {
         $searchModel = new ProjectSearch();
-
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $this->module->params['pageSize']);
         return $this->render('index', [
             'searchModel' => $searchModel,
