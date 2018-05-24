@@ -29,7 +29,7 @@ class GridView extends YiiGridView
      * - `{pager}`: the pager. See [[renderPager()]].
      */
    // public $layout = "<div style='height: 30px'><div class='pull-left'>{operation}</div><div class='pull-right'>{summary}</div></div>\n{items}\n<div style='height: 30px'><div class='pull-left'>{operation}</div><div class='pull-right'>{summary}</div></div>{pager}\n";
-    public $layout = "<div style='height: 30px'><div class='pull-left'>{operation}</div></div>\n{items}\n<div style='height: 30px'><div class='pull-left'>{operation}</div><div class='pull-right clear-both'>{pager}</div></div>\n";
+    public $layout = "<div style='height: 30px'><div class='pull-left'>{operation}</div></div>\n{items}\n<div style='height: 30px'><div class='pull-left'>{operation}</div></div>{pager}\n";
 
     /**
      * Renders a section of the specified name.
