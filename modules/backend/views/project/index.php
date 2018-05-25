@@ -92,19 +92,44 @@ $this->params['breadcrumbs'][] = $this->title;
 
                     [
                         'attribute' => 'pro_add_time',
-                        'options' => ['style' => 'width:20%;text-align:center']
+                        'options' => ['style' => 'width:15%;text-align:center']
                     ],
                     [
                         'attribute' => 'pro_description',
-                        'options' => ['style' => 'width:20%;text-align:center']
+                        'options' => ['style' => 'width:15%;text-align:center']
                     ],
                     [
-                        'class' => 'yii\grid\ActionColumn', 'template' => '{update} {delete}',
+                        'header' =>'更多操作',
+                        'format'=>'raw',
+                        'options' => ['style' => 'width:10%;text-align:center'],
+                        'value' => function($dataProvider){
+                            $button = '' ;
+                            $button .= Html::a('<span class="glyphicon glyphicon-plus  btn btn-success btn-sm"></span>',  ['principal/create','pro_id'=>$dataProvider->pro_id], ['title' => '添加负责人']) ;
+                            $button .=  Html::a('    <span class="glyphicon glyphicon-plus  btn btn-warning btn-sm"></span>', ['principal/create','pro_pid'=>$dataProvider->pro_id], ['title' => '添加子项目']) ;
+                            return $button;
+                        }
+                    ],
+                    [
+                        'class' => 'yii\grid\ActionColumn',
+                        'template' => '{view} {update} {delete}',
                         'header'=>'操作',
                         'options' => ['style' => 'width:5%;text-align:center']
                     ],
+
                 ],
             ]); ?>
         </div>
     </div>
+</div>
+
+<?= Html::a('添加请假单', ['principal/create'], ['class' => 'btn btn-success','data-toggle'=>'modal','data-target'=>'#ajax']) ?>
+
+<div class="modal bs-example-modal-lg" id="ajax">
+
+    <div class="modal-dialog">
+
+        <div class="modal-content width_reset" id="tmpl-modal-output-render"> </div>
+
+    </div>
+
 </div>
