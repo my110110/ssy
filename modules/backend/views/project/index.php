@@ -105,7 +105,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'value' => function($dataProvider){
                             $button = '' ;
                             $button .= Html::a('<span class="glyphicon glyphicon-plus  btn btn-success btn-sm"></span>',  ['principal/create','pro_id'=>$dataProvider->pro_id], ['title' => '添加负责人']) ;
-                            $button .=  Html::a('    <span class="glyphicon glyphicon-plus  btn btn-warning btn-sm"></span>', ['principal/create','pro_pid'=>$dataProvider->pro_id], ['title' => '添加子项目']) ;
+                            $button .=  Html::a('    <span class="glyphicon glyphicon-plus  btn btn-warning btn-sm"></span>', ['create','pro_pid'=>$dataProvider->pro_id], ['title' => '添加子项目']) ;
                             return $button;
                         }
                     ],
@@ -122,14 +122,4 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
 </div>
 
-<?= Html::a('添加请假单', ['principal/create'], ['class' => 'btn btn-success','data-toggle'=>'modal','data-target'=>'#ajax']) ?>
 
-<div class="modal bs-example-modal-lg" id="ajax">
-
-    <div class="modal-dialog">
-
-        <div class="modal-content width_reset" id="tmpl-modal-output-render"> </div>
-
-    </div>
-
-</div>

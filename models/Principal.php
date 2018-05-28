@@ -3,6 +3,9 @@
 namespace app\models;
 
 use Yii;
+use yii\base\Model;
+use yii\data\ActiveDataProvider;
+
 
 /**
  * This is the model class for table "principal".
@@ -50,5 +53,39 @@ class Principal extends \yii\db\ActiveRecord
             'telphone' => '联系电话',
             'status' => 'Status',
         ];
+    }
+
+    /**
+     * Creates data provider instance with search query applied
+     *
+     * @param array $params
+     * @param int $pageSize
+     * @return ActiveDataProvider
+     */
+    public function search($params, $pageSize=20)
+    {
+        $query = self::find();
+
+        // add conditions that should always apply here
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'sort'=>['defaultOrder'=>['pro_id'=>SORT_DESC]],
+            'pagination' => ['pageSize'=>$pageSize]
+        ]);
+        $query->andFilterWhere([
+            'pro_id' => $params['pro_id'],
+        ]);
+        $this->load($params);
+
+
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+
+
+
+        return $dataProvider;
     }
 }

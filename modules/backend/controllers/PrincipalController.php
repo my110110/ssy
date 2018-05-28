@@ -42,11 +42,16 @@ class PrincipalController extends BackendController
      */
     public function actionIndex()
     {
-        $searchModel = new ProjectSearch();
+
+        $pro_id=Yii::$app->request->queryParams;
+        $project=new Project();
+        $project=$project->findOne(['pro_id'=>$pro_id]);
+        $searchModel = new Principal();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $this->module->params['pageSize']);
         return $this->render('index', [
-            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'pro_id'=>$pro_id,
+            'project'=>$project
         ]);
     }
 
@@ -100,7 +105,7 @@ class PrincipalController extends BackendController
 
 
         }else{
-            return $this->renderAjax('create', [
+            return $this->render('create', [
                 'principal'=>$principal
             ]);
         }
