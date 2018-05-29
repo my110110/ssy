@@ -154,4 +154,12 @@ class AdminUser extends AppActiveRecord
             'updated_at' => '最后修改',
         ];
     }
+
+    /**
+     * 根据ID获取用户名
+     */
+    static function getUserName($id){
+       $user= self::findOne($id);
+       return $user->username;
+    }
 }

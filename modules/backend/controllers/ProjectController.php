@@ -73,6 +73,7 @@ class ProjectController extends BackendController
     public function actionIndex()
     {
         $searchModel = new ProjectSearch();
+
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $this->module->params['pageSize']);
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -111,6 +112,7 @@ class ProjectController extends BackendController
                 $model->setAttributes($_POST['Project'],false);
                 $model->pro_add_time=date('Y-m-d H:i:s');
                 $model->pro_retrieve='PDS'.date('YmdHis');
+                $model->pro_user=Yii::$app->user->id;
                 $principal->attributes=$_POST['Principal'];
                 if ($model->load($post)&&$model->save() )
                 {
@@ -161,6 +163,7 @@ class ProjectController extends BackendController
             $tr=Yii::$app->db->beginTransaction();
             try{
                 $model->setAttributes($_POST['Project'],false);
+                $model->pro_change_user=Yii::$app->user->id;
                 $principal->attributes=$_POST['Principal'];
                 if ($model->load($post)&&$model->save() )
                 {
@@ -217,6 +220,7 @@ class ProjectController extends BackendController
     {
         if (($model = Project::findOne($id)) !== null) {
             return $model;
+
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
