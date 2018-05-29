@@ -93,14 +93,14 @@ $this->params['breadcrumbs'][] = $this->title;
                     ],
                     [
                         'attribute' => 'pro_user',
-                        'options' => ['style' => '15%;text-align:center'],
+                        'options' => ['style' => '12%;text-align:center'],
                         'value'=>function($dataProvider){
                             return AdminUser::getUserName($dataProvider->pro_user);
                         }
                     ],
                     [
                         'attribute' => 'pro_add_time',
-                        'options' => ['style' => 'width:15%;text-align:center']
+                        'options' => ['style' => 'width:12%;text-align:center']
                     ],
                     [
                         'attribute' => 'pro_description',
@@ -111,7 +111,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'class' => 'yii\grid\ActionColumn',
                         'template' => '{view} {update} {delete}',
                         'header'=>'操作',
-                        'options' => ['style' => 'width:5%;text-align:center']
+                        'options' => ['style' => 'width:11%;text-align:center']
                     ],
 
                 ],

@@ -19,7 +19,7 @@ class ProjectSearch extends Project
     public function rules()
     {
         return [
-            [['pro_name', 'pro_retrieve'], 'safe'],
+            [['pro_name', 'pro_retrieve','pro_pid'], 'safe'],
         ];
     }
 
@@ -61,6 +61,7 @@ class ProjectSearch extends Project
         // grid filtering conditions
         $query->andFilterWhere([
             'pro_retrieve' => $this->pro_retrieve,
+            'pro_pid'=>$this->pro_pid,
 
         ]);
 

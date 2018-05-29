@@ -26,7 +26,7 @@ use yii\helpers\ArrayHelper;
     <?=$form->field($principal,'email')->textInput() ?>
     <?=$form->field($principal,'telphone')->textInput() ?>
     <?= $form->field($model, 'pro_description')->textarea() ?>
-
+    <?= $form->field($model, 'pro_pid',['options'=>['tag'=>false]])->hiddenInput()->label(false)?>
     <div class="form-group text-right">
         <?= Html::submitButton('提交', ['class' => $model->isNewRecord ? 'btn btn-success ' : 'btn btn-primary ']) ?>
     </div>

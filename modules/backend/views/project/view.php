@@ -6,8 +6,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model app\models\Project */
 $this->title = $model->pro_name;
-$this->params['breadcrumbs'][] = ['label' => '产品管理', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+$this->params['breadcrumbs'][] = ['label' => '项目管理', 'url' => ['index']];
 
 ?>
 <div class="content-view">
@@ -36,18 +35,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
     </p>
 
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'pro_id',
-            'pro_name',
-            'pro_description',
-            'pro_keywords',
-            'pro_add_time',
-            'pro_add_time',
 
-
-        ],
-    ]) ?>
 
 </div>

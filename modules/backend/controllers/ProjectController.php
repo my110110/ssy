@@ -102,7 +102,7 @@ class ProjectController extends BackendController
     {
         $model = new Project();
         $principal=new Principal();
-
+        $model->pro_pid=Yii::$app->request->get('pro_pid');
         $model->scenario='create';
         $post = Yii::$app->request->post();
         if ($post) {
@@ -123,9 +123,13 @@ class ProjectController extends BackendController
                     if( $principal->save())
                     {
                         $tr->commit();
-                        Yii::$app->getSession()->setFlash('success', '保存成功');
-                        return  $this->redirect(['project/index']);
-                       // return $this->showFlash('添加成功','success',['project/index']);
+                         if($model->pro_pid>0){
+                             return $this->showFlash('添加成功','success',['project/view','id'=>$model->pro_pid]);
+
+                         }else{
+                             return $this->showFlash('添加成功','success',['project/index']);
+
+                         }
                     }else{
                         $tr->rollBack();
                         return $this->showFlash('添加失败');
