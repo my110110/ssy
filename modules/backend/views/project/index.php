@@ -28,10 +28,10 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="nav-tabs-custom">
         <ul class="nav nav-tabs" role="tablist">
             <li role="presentation" class="active">
-                <?= Html::a('实验项目', ['index'],  ['class' => 'btn btn-primary']) ?>
+                <?= Html::a('实验项目', ['index'],  ['class' => 'btn btn-dafault ','role'=>'button']) ?>
             </li>
             <li role="presentation">
-                <?= Html::a('添加项目', ['create'],['class'=>'btn btn-primary']) ?>
+                <?= Html::a('添加项目', ['create'],['class' => 'btn btn-primary  ','role'=>'button']) ?>
             </li>
         </ul>
 
@@ -100,10 +100,50 @@ $this->params['breadcrumbs'][] = $this->title;
                         </tr>
                         </thead>
                         <tbody>
+<?php if(empty($model)):?>
+    <tr class="error">
+        <td colspan="7">没有数据</td>
+    </tr>
+    <?php elseif(isset($_GET['Project'])&&!empty(array_filter($_GET['Project']))):?>
+    <?php foreach($model as $sarch): ?>
+            <tr class="shows success" attr="<?=$sarch->pro_id?>">
 
+                <td>
+                    <span class="glyphicon glyphicon-folder-close" style="padding-right :5px"></span><?=$sarch->pro_name;?>
+                </td>
+                <td>
+                    <?=$sarch->pro_retrieve;?>
+                </td>
+                <td>
+                    <?=Project::$kind_type[$sarch->pro_kind_id];?>
+                </td>
+                <td>
+                    <?=AdminUser::getUserName($sarch->pro_user)?>
+                </td>
+                <td>
+                    <?=$sarch->pro_add_time?>
+                </td>
+                <td>
+                    <?=$sarch->pro_update_time?>
+                </td>
+                <td>
+                    <?= Html::a('<span class="glyphicon glyphicon-zoom-in"></span>', ['view', 'id' => $sarch->pro_id], ['title'=>'查看']) ?>
+                    <?= Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['update', 'id' => $sarch->pro_id], ['title'=>'修改']) ?>
+                    <?= Html::a('<span class="	glyphicon glyphicon-trash"></span>', ['delete', 'id' => $sarch->pro_id], [
+                        'title'=>'删除',
+                        'data' => [
+                            'confirm' => '确定要删除这个项目吗?',
+                            'method' => 'post',
+                        ],
+                    ]) ?>
+                </td>
+            </tr>
+
+    <?php endforeach; ?>
+<?php else:?>
                         <?php foreach($model as $pid): ?>
                             <?php if($pid->pro_pid==0):?>
-                        <tr class="shows" attr="<?=$pid->pro_id?>">
+                        <tr class="shows success" attr="<?=$pid->pro_id?>">
 
                             <td>
                                 <span class="glyphicon glyphicon-folder-open" style="padding-right :5px"></span><?=$pid->pro_name;?>
@@ -124,11 +164,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <?=$pid->pro_update_time?>
                             </td>
                             <td>
-                                <?= Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['view', 'id' => $pid->pro_id], ['title'=>'修改']) ?>
-
+                                <?= Html::a('<span class="glyphicon glyphicon-zoom-in"></span>', ['view', 'id' => $pid->pro_id], ['title'=>'查看']) ?>
                                 <?= Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['update', 'id' => $pid->pro_id], ['title'=>'修改']) ?>
-                                <?= Html::a('<span class="	glyphicon glyphicon-trash"></span>', ['delete', 'id' => $pid->pro_id], [
-
+                                 <?= Html::a('<span class="	glyphicon glyphicon-trash"></span>', ['delete', 'id' => $pid->pro_id], [
                                     'title'=>'删除',
                                     'data' => [
                                         'confirm' => '确定要删除这个项目吗?',
@@ -139,10 +177,10 @@ $this->params['breadcrumbs'][] = $this->title;
                         </tr>
                                 <?php foreach($model as $child): ?>
                                     <?php if($child->pro_pid==$pid->pro_id):?>
-                                        <tr class="hides" id="pid_<?=$child->pro_pid?>">
+                                        <tr class="hides warning" id="pid_<?=$child->pro_pid?>">
 
                                             <td>
-                                                <span class="glyphicon glyphicon-folder-open" style="padding-right: 10px;"></span> <?=$child->pro_name;?>
+                                                <span class="glyphicon glyphicon-folder-close" style="padding-right: 5px;"></span> <?=$child->pro_name;?>
                                             </td>
                                             <td>
                                                 <?=$child->pro_retrieve;?>
@@ -160,7 +198,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                 <?=$child->pro_update_time?>
                                             </td>
                                             <td>
-                                                <?= Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['view', 'id' => $child->pro_id], ['title'=>'修改']) ?>
+                                                <?= Html::a('<span class="glyphicon glyphicon-zoom-in"></span>', ['view', 'id' => $child->pro_id], ['title'=>'查看']) ?>
 
                                                 <?= Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['update', 'id' => $child->pro_id], ['title'=>'修改']) ?>
                                                 <?= Html::a('<span class="	glyphicon glyphicon-trash"></span>', ['delete', 'id' => $child->pro_id], [
@@ -177,6 +215,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <?php endforeach; ?>
                             <?php endif;?>
                         <?php endforeach; ?>
+                        <?php endif;?>
                         </tbody>
                     </table>
                 </div>
@@ -203,12 +242,8 @@ echo LinkPager::widget([
              var attr=$(this).attr('attr');
              var ids='pid_'+attr;
              var node=$('#'+ids);
-             if(node.is(':hidden'))
-             {
-                 node.show();
-             }else{
-                 node.hide();
-             }
+
+             node.slideToggle();
 
 
          })

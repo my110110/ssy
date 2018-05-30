@@ -118,8 +118,13 @@ class ProjectController extends BackendController
      */
     public function actionView($id)
     {
+
+        $Principal=Principal::find()->andFilterWhere(['pro_id'=>$id])->all();
+        $chid=Project::find()->andFilterWhere(['pro_pid'=>$id])->all();
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'child'=>$chid,
+            'Principal'=>$Principal
         ]);
     }
 
