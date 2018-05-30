@@ -20,6 +20,7 @@ use Yii;
  * @property string $pro_retrieve
  * @property integer $isdel
  * @property integer $pro_user
+ * @property integer $level
  */
 class Project extends \yii\db\ActiveRecord
 {
@@ -45,7 +46,7 @@ class Project extends \yii\db\ActiveRecord
             [['pro_name', 'pro_kind_id',  'pro_add_time', 'pro_retrieve'], 'required','on' => ['create'],'message'=>"{attribute}不能为空"],
             [['pro_name', 'pro_kind_id',  'pro_retrieve'], 'required','on' => ['update']],
             [['pro_kind_id', 'pro_sample_count', 'pro_pid'], 'integer','on' => ['create','update'],'message'=>"{attribute}不能为空"],
-            [['pro_add_time', 'pro_update_time','pro_user','isdel'], 'safe','on' => ['create','update']],
+            [['pro_add_time', 'pro_update_time','pro_user','isdel','level'], 'safe','on' => ['create','update']],
             [['pro_name', 'pro_keywords'], 'string', 'max' => 100,'on' => ['create','update'],'message'=>"{attribute}不能超过100位"],
             [['pro_description'], 'string', 'max' => 255,'on' => ['create','update'],'message'=>"{attribute}不能超过200位"],
             [['pro_retrieve'], 'string', 'max' => 40,'on' => ['create','update'],'message'=>"{attribute}不能超过40位"],
@@ -81,7 +82,8 @@ class Project extends \yii\db\ActiveRecord
             'pro_pid' => 'Pro Pid',
             'pro_retrieve' => '项目检索号',
             'isdel'=>'是否被删除',
-            'pro_user'=>'项目添加人'
+            'pro_user'=>'项目添加人',
+            'level'=>'等级'
         ];
     }
 

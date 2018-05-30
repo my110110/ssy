@@ -17,6 +17,8 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\models\Principal;
 use yii\web\Response;
+use app\helpers\CategoryHelper;
+use yii\data\Pagination;
 
 class ProjectController extends BackendController
 {
@@ -72,13 +74,41 @@ class ProjectController extends BackendController
      */
     public function actionIndex()
     {
-        $searchModel = new ProjectSearch();
 
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $this->module->params['pageSize']);
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
+        //分页读取类别数据
+        $search=New Project();
+        $model =  Project::find();
+
+        if(isset(Yii::$app->request->queryParams['Project']))
+        {
+            $parms=Yii::$app->request->queryParams['Project'];
+            if(isset($parms['pro_retrieve']))
+                $model->andFilterWhere(['pro_retrieve' => $parms['pro_retrieve'],]);
+            if(isset($parms['pro_name']))
+                $model->andFilterWhere(['like', 'pro_name', $parms['pro_name']]);
+        }
+        $pagination = new Pagination([
+            'defaultPageSize' => 20,
+            'totalCount' => $model->count(),
         ]);
+        $model = $model->orderBy('pro_id ASC')
+            ->offset($pagination->offset)
+            ->limit($pagination->limit)
+            ->all();
+
+        return $this->render('index', [
+            'model' => $model,
+            'pagination' => $pagination,
+            'search'=>$search
+        ]);
+
+//        $searchModel = new ProjectSearch();
+//
+//        $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $this->module->params['pageSize']);
+//        return $this->render('index', [
+//            'searchModel' => $searchModel,
+//            'dataProvider' => $dataProvider,
+//        ]);
     }
 
     /**

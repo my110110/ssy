@@ -53,20 +53,15 @@ class ProjectSearch extends Project
 
         $this->load($params);
         if (!$this->validate()) {
-            // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
             return $dataProvider;
         }
 
         // grid filtering conditions
-        $query->andFilterWhere([
-            'pro_retrieve' => $this->pro_retrieve,
-            'pro_pid'=>$this->pro_pid,
-
-        ]);
-
+        $query->andFilterWhere(['pro_retrieve' => $this->pro_retrieve,]);
         $query->andFilterWhere(['like', 'pro_name', $this->pro_name]);
-
         return $dataProvider;
     }
+
+
+
 }
