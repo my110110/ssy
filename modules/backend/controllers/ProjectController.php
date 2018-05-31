@@ -20,6 +20,8 @@ use yii\web\Response;
 use app\helpers\CategoryHelper;
 use yii\data\Pagination;
 use yii\helpers\ArrayHelper;
+use PHPExcel;
+use app\models\UploadFile;
 
 class ProjectController extends BackendController
 {
@@ -113,7 +115,8 @@ class ProjectController extends BackendController
             'model' => $model,
             'pagination' => $pagination,
             'search'=>$search,
-            'child'=>$child
+            'child'=>$child,
+            'file'=>new UploadFile()
         ]);
 
 //        $searchModel = new ProjectSearch();
@@ -125,6 +128,10 @@ class ProjectController extends BackendController
 //        ]);
     }
 
+    public function actionUploadFile()
+    {
+         var_dump($_POST);
+    }
     /**
      * Displays a single Content model.
      * @param integer $id
