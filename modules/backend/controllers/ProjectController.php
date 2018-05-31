@@ -19,6 +19,7 @@ use app\models\Principal;
 use yii\web\Response;
 use app\helpers\CategoryHelper;
 use yii\data\Pagination;
+use yii\helpers\ArrayHelper;
 
 class ProjectController extends BackendController
 {
@@ -88,18 +89,31 @@ class ProjectController extends BackendController
                 $model->andFilterWhere(['like', 'pro_name', $parms['pro_name']]);
         }
         $pagination = new Pagination([
-            'defaultPageSize' => 20,
+            'defaultPageSize' => 10,
             'totalCount' => $model->count(),
         ]);
+        $model->andFilterWhere(['isdel'=> 0,'pro_pid'=>0]);
         $model = $model->orderBy('pro_id ASC')
             ->offset($pagination->offset)
             ->limit($pagination->limit)
             ->all();
+        $child=Project::find()->andFilterWhere(['>', 'pro_pid', 0])->all();
+        $child = ArrayHelper::toArray($child);
+        $model = ArrayHelper::toArray($model);
+        foreach ($model as $k=>$md){
+            foreach ($child as $c){
+                if($c['pro_pid']==$md['pro_id']){
+                    $model[$k]['child'][]=$c;
+                }
+            }
 
+
+        }
         return $this->render('index', [
             'model' => $model,
             'pagination' => $pagination,
-            'search'=>$search
+            'search'=>$search,
+            'child'=>$child
         ]);
 
 //        $searchModel = new ProjectSearch();
@@ -119,8 +133,8 @@ class ProjectController extends BackendController
     public function actionView($id)
     {
 
-        $Principal=Principal::find()->andFilterWhere(['pro_id'=>$id])->all();
-        $chid=Project::find()->andFilterWhere(['pro_pid'=>$id])->all();
+        $Principal=Principal::find()->andFilterWhere(['pro_id'=>$id,'status'=>0])->all();
+        $chid=Project::find()->andFilterWhere(['pro_pid'=>$id,'isdel'=>0])->all();
         return $this->render('view', [
             'model' => $this->findModel($id),
             'child'=>$chid,
@@ -242,12 +256,26 @@ class ProjectController extends BackendController
      */
     public function actionDelete($id)
     {
-        if($this->findModel($id)->delete()){
+        $model=$this->findModel($id);
+        $model->scenario='update';
+        $model->isdel=1;
+        if($model->save())
+        {
             return $this->showFlash('删除成功','success',['index']);
         }
         return $this->showFlash('删除失败', 'danger',Yii::$app->getUser()->getReturnUrl());
     }
-
+    public function actionDel($id)
+    {
+        $model=$this->findModel($id);
+        $model->scenario='update';
+        $model->isdel=1;
+        if($model->save())
+        {
+            return $this->showFlash('删除成功','success',['project/view','id'=>$model->pro_pid]);
+        }
+        return $this->showFlash('删除失败', 'danger',Yii::$app->getUser()->getReturnUrl());
+    }
     /**
      * Finds the Content model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

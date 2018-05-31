@@ -72,8 +72,10 @@ class PrincipalController extends BackendController
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($id)
     {
+        $model=Project::findOne(['pro_id'=>$id]);
+
         $principal=new Principal();
 
         $post = Yii::$app->request->post();
@@ -84,13 +86,14 @@ class PrincipalController extends BackendController
 
 
                 $principal->attributes=$_POST['Principal'];
+                $principal->pro_id=$model->pro_id;
                 if ($principal->load($post)&&$principal->save() )
                 {
 
 
                         $tr->commit();
                         Yii::$app->getSession()->setFlash('success', '保存成功');
-                        return  $this->redirect(['project/index']);
+                        return  $this->redirect(['project/view','id'=>$model->pro_id]);
                        // return $this->showFlash('添加成功','success',['project/index']);
 
                 } else{
@@ -106,7 +109,8 @@ class PrincipalController extends BackendController
 
         }else{
             return $this->render('create', [
-                'principal'=>$principal
+                'principal'=>$principal,
+                'model'=>$model
             ]);
         }
 
@@ -120,28 +124,25 @@ class PrincipalController extends BackendController
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
-        $principal=Principal::findOne(['pro_id'=>$id]);
-        $model->scenario='create';
+        $principal = $this->findModel($id);
+        $model=Project::findOne(['pro_id'=>$principal->pro_id]);
         $post = Yii::$app->request->post();
         if ($post)
         {
 
             $tr=Yii::$app->db->beginTransaction();
             try{
-                $model->setAttributes($_POST['Project'],false);
                 $principal->attributes=$_POST['Principal'];
-                if ($model->load($post)&&$model->save() )
+                if ($principal->load($post) )
                 {
 
 
-                    $principal->pro_id= $model->attributes['pro_id'];
 
                     if( $principal->save())
                     {
                         $tr->commit();
                         Yii::$app->getSession()->setFlash('success', '修改成功');
-                        return  $this->redirect(['project/index']);
+                        return  $this->redirect(['project/view','id'=>$model->pro_id]);
                         // return $this->showFlash('添加成功','success',['project/index']);
                     }else{
                         $tr->rollBack();
@@ -169,8 +170,10 @@ class PrincipalController extends BackendController
      */
     public function actionDelete($id)
     {
-        if($this->findModel($id)->delete()){
-            return $this->showFlash('删除成功','success',['index']);
+         $model=Principal::findOne(['id'=>$id]);
+         $model->status=1;
+        if($model->save()){
+            return $this->showFlash('删除成功','success',['Project/view','id'=>$model->pro_id]);
         }
         return $this->showFlash('删除失败', 'danger',Yii::$app->getUser()->getReturnUrl());
     }
@@ -184,7 +187,7 @@ class PrincipalController extends BackendController
      */
     protected function findModel($id)
     {
-        if (($model = Project::findOne($id)) !== null) {
+        if (($model = Principal::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

@@ -19,7 +19,7 @@ $this->params['breadcrumbs'][] = ['label' => '项目管理', 'url' => ['index']]
             'class' => 'btn btn-primary',
 
         ]) ?>
-        <?= Html::a('添加负责人', ['principal/create', 'pro_id' => $model->pro_id], [
+        <?= Html::a('添加负责人', ['principal/create', 'id' => $model->pro_id], [
             'title'=>'添加负责人',
             'class' => 'btn btn-success',
 
@@ -80,7 +80,41 @@ $this->params['breadcrumbs'][] = ['label' => '项目管理', 'url' => ['index']]
                         <td class="col-md-10"><?=$model->pro_update_time?></td>
                     </tr>
                 <?php endif;?>
+                <?php foreach ($Principal as $Principal):?>
+                    <tr class="info">
+                        <td class="col-md-2">项目负责人</td>
+                        <td class="col-md-10">
+                                姓名：<?=$Principal->name?><span style="margin-left: 3px;">-</span><span style="margin-left: 5px;">
+                                科室</span>：<?=$Principal->department?><span style="margin-left: 3px;">-</span><span style="margin-left: 5px;">
+                                邮箱</span>：<?=$Principal->email?><span style="margin-left: 3px;">-</span><span style="margin-left: 5px;">
+                                电话</span>：<?=$Principal->telphone?>
+                            <?= Html::a('', ['principal/update', 'id' => $Principal->id], ['class' => 'glyphicon glyphicon-pencil','title'=>'修改']) ?>
+                            <?= Html::a('', ['principal/delete', 'id' => $Principal->id], ['class' => 'glyphicon glyphicon-trash','title'=>'删除', 'data' => [
+                                'confirm' => '确定要删除这个项目负责人吗?',
+                                'method' => 'post',
+                            ],]) ?>
+
+                        </td>
+                    </tr>
+                <?php endforeach;?>
+                <?php if(count($child)>0) :?>
+                <?php foreach ($child as $child):?>
+                    <tr class="info">
+                        <td class="col-md-2">子项目</td>
+                        <td class="col-md-10">
+                           <?= Html::a("$child->pro_name", ['view', 'id' => $child->pro_id]) ?>
+
+<?= Html::a('', ['principal/update', 'id' => $child->pro_id], ['class' => 'glyphicon glyphicon-pencil','title'=>'修改']) ?>
+                            <?= Html::a('', ['project/del', 'id' => $child->pro_id], ['class' => 'glyphicon glyphicon-trash','title'=>'删除']) ?>
+
+                        </td>
+                    </tr>
+                <?php endforeach;?>
+                <?php else:?>
+
+                <?php endif;?>
                 </tbody>
             </table>
+
 
 </div>
