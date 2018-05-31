@@ -128,10 +128,11 @@ class ProjectController extends BackendController
 //        ]);
     }
 
-    public function actionUploadFile()
+    public function actionUploadfile()
     {
-         var_dump($_POST);
+
     }
+
     /**
      * Displays a single Content model.
      * @param integer $id
