@@ -246,7 +246,7 @@ echo LinkPager::widget([
                          </i>&nbsp;  <span class="hidden-xs">选择 …</span>{input}</span> </div> </div>',
 
             ])->fileInput() ?>
-        <?= Html::submitButton('上传项目', ['class' => 'btn btn-primary']) ?>
+        <?= Html::submitButton('上传项目', ['class' => 'btn btn-primary uploadfile']) ?>
         <?php ActiveForm::end(); ?>
     </div>
 
@@ -264,7 +264,8 @@ echo LinkPager::widget([
              var node=$('.'+ids);
 
              node.slideToggle();
-         })
+         });
+
 
         })
 
