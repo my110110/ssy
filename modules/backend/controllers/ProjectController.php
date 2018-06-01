@@ -22,7 +22,7 @@ use yii\data\Pagination;
 use yii\helpers\ArrayHelper;
 use PHPExcel;
 use app\models\UploadFile;
-
+use app\modules\backend\models\operatelog;
 class ProjectController extends BackendController
 {
     /**
@@ -168,7 +168,7 @@ class ProjectController extends BackendController
 
                 $model->setAttributes($_POST['Project'],false);
                 $model->pro_add_time=date('Y-m-d H:i:s');
-                $model->pro_retrieve='PDS'.date('YmdHis');
+                $model->pro_retrieve='PDS'.time();
                 $model->pro_user=Yii::$app->user->id;
                 $principal->attributes=$_POST['Principal'];
                 if ($model->load($post)&&$model->save() )
@@ -179,8 +179,11 @@ class ProjectController extends BackendController
 
                     if( $principal->save())
                     {
-                        $tr->commit();
-                         if($model->pro_pid>0){
+                         operatelog::addlog(1,$model->pro_id,$model->pro_name,1);
+                         $tr->commit();
+                         if($model->pro_pid>0)
+                         {
+
                              return $this->showFlash('添加成功','success',['project/view','id'=>$model->pro_pid]);
 
                          }else{
@@ -234,6 +237,7 @@ class ProjectController extends BackendController
 
                     if( $principal->save())
                     {
+                        operatelog::addlog(3,$model->pro_id,$model->pro_name,1);
                         $tr->commit();
                         Yii::$app->getSession()->setFlash('success', '修改成功');
                         return  $this->redirect(['project/index']);
@@ -267,8 +271,12 @@ class ProjectController extends BackendController
         $model=$this->findModel($id);
         $model->scenario='update';
         $model->isdel=1;
+        $model->pro_del_time=date('Y-m-d H:i:s');
+        $model->pro_del_user=Yii::$app->user->id;
         if($model->save())
         {
+            operatelog::addlog(4,$model->pro_id,$model->pro_name,1);
+
             return $this->showFlash('删除成功','success',['index']);
         }
         return $this->showFlash('删除失败', 'danger',Yii::$app->getUser()->getReturnUrl());

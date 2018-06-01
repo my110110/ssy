@@ -34,8 +34,8 @@ class Project extends \yii\db\ActiveRecord
         return '{{%project}}';
     }
     static $kind_type=[
-      '1'=>'动物组织',
-      '2'=>'人体细胞',
+      '1'=>'组织',
+      '2'=>'细胞',
     ];
     /**
      * @inheritdoc

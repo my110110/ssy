@@ -24,13 +24,6 @@ $this->params['breadcrumbs'][] = ['label' => '项目管理', 'url' => ['index']]
             'class' => 'btn btn-success',
 
         ]) ?>
-        <?php if(!count($child)>0):?>
-        <?= Html::a('添加实验分组', ['group/create', 'id' => $model->pro_id], [
-            'title'=>'添加实验分组',
-            'class' => 'btn btn-info',
-
-        ]) ?>
-        <?php endif;?>
         <?= Html::a('修改', ['update', 'pro_id' => $model->pro_id], ['class' => 'btn btn-warning','title'=>'修改']) ?>
         <?= Html::a('删除', ['delete', 'pro_id' => $model->pro_id], [
             'class' => 'btn btn-danger',
