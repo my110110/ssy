@@ -39,7 +39,7 @@ class Group extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['pro_id'], 'required'],
+            [['pro_id','group_name'], 'required'],
             [['pro_id', 'group_sample_count', 'group_sample_handle_type', 'group_add_user', 'group_change_user', 'idel', 'group_del_user'], 'integer'],
             [['group_experiment_type'], 'string'],
             [['group_add_time', 'group_change_time', 'group_del_time'], 'safe'],
@@ -55,13 +55,13 @@ class Group extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'group_retrieve' => 'Group Retrieve',
+            'group_retrieve' => '项目分组检索号',
             'pro_id' => 'Pro ID',
-            'group_description' => 'Group Description',
-            'group_name' => 'Group Name',
-            'group_sample_count' => 'Group Sample Count',
+            'group_description' => '项目分组描述',
+            'group_name' => '项目分组名称',
+            'group_sample_count' => '样品数量',
             'group_sample_handle_type' => 'Group Sample Handle Type',
-            'group_experiment_type' => 'Group Experiment Type',
+            'group_experiment_type' => '样本处理方式',
             'group_add_time' => 'Group Add Time',
             'group_add_user' => 'Group Add User',
             'group_change_time' => 'Group Change Time',

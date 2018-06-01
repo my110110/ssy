@@ -70,13 +70,5 @@ class operatelog extends \yii\db\ActiveRecord
         ];
     }
 
-    static function addlog($operate,$object,$objectname,$operate_kind){
-        $model=new self();
-        $model->operate=$operate;
-        $model->object=$object;
-        $model->user=Yii::$app->user->id;
-        $model->objectname=$objectname;
-        $model->operate_kind=$operate_kind;
-        $model->save();
-    }
+
 }

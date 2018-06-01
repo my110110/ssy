@@ -17,7 +17,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\models\Group;
 use yii\web\Response;
-use app\modules\backend\models\operatelog;
+use app\helpers\CommonHelper;
 class GroupController extends BackendController
 {
     /**
@@ -87,12 +87,12 @@ class GroupController extends BackendController
 
                 $group->attributes=$_POST['Group'];
                 $group->pro_id=$model->pro_id;
-                $group->group_add_time=data('Y-m-d H:i:s');
+                $group->group_add_time=date('Y-m-d H:i:s');
                 $group->group_retrieve='PSEG'.time();
                 $group->group_add_user=Yii::$app->user->id;
                 if ($group->load($post)&&$group->save() )
                 {
-                        operatelog::addlog(1,$group->id,$group->group_name,2);
+                    CommonHelper::addlog(1,$group->id,$group->group_name,2);
                         $tr->commit();
                         Yii::$app->getSession()->setFlash('success', '保存成功');
                         return  $this->redirect(['project/view','id'=>$model->pro_id]);
@@ -139,7 +139,7 @@ class GroupController extends BackendController
                 $group->group_add_user=Yii::$app->user->id;
                 if ($group->load($post) )
                 {
-                    operatelog::addlog(3,$group->id,$group->group_name,2);
+                    CommonHelper::addlog(3,$group->id,$group->group_name,2);
                     if( $group->save())
                     {
                         $tr->commit();
@@ -177,7 +177,7 @@ class GroupController extends BackendController
          $model->group_del_user=Yii::$app->user->id;
          $model->group_del_time=date('Y-m-d H:i:s');
         if($model->save()){
-            operatelog::addlog(4,$model->id,$model->group_name,2);
+            CommonHelper::addlog(4,$model->id,$model->group_name,2);
             return $this->showFlash('删除成功','success',['Project/view','id'=>$model->pro_id]);
         }
         return $this->showFlash('删除失败', 'danger',Yii::$app->getUser()->getReturnUrl());
@@ -192,7 +192,7 @@ class GroupController extends BackendController
      */
     protected function findModel($id)
     {
-        if (($model = Principal::findOne($id)) !== null) {
+        if (($model = Group::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

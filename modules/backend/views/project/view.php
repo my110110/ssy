@@ -14,11 +14,13 @@ $this->params['breadcrumbs'][] = ['label' => '项目管理', 'url' => ['index']]
 
 
     <p>
+        <?php if(!$model->pro_pid>0):?>
         <?= Html::a('添加子项目', ['create', 'pro_pid' => $model->pro_id], [
             'title'=>'添加子项目',
             'class' => 'btn btn-primary',
 
         ]) ?>
+        <?php endif;?>
         <?= Html::a('添加负责人', ['principal/create', 'id' => $model->pro_id], [
             'title'=>'添加负责人',
             'class' => 'btn btn-success',
