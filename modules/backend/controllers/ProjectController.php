@@ -8,6 +8,7 @@
 
 namespace app\modules\backend\controllers;
 
+use app\models\Group;
 use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 use yii;
 use app\models\Project;
@@ -143,10 +144,12 @@ class ProjectController extends BackendController
 
         $Principal=Principal::find()->andFilterWhere(['pro_id'=>$id,'status'=>0])->all();
         $chid=Project::find()->andFilterWhere(['pro_pid'=>$id,'isdel'=>0])->all();
+        $group=Group::find()->andFilterWhere(['pro_id'=>$id,'isdel'=>0])->all();
         return $this->render('view', [
             'model' => $this->findModel($id),
             'child'=>$chid,
-            'Principal'=>$Principal
+            'Principal'=>$Principal,
+            'group'=>$group
         ]);
     }
 

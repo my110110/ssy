@@ -20,7 +20,7 @@ use Yii;
  * @property string $group_change_time
  * @property integer $group_change_user
  * @property string $group_del_time
- * @property integer $idel
+ * @property integer $isdel
  * @property integer $group_del_user
  */
 class Group extends \yii\db\ActiveRecord
@@ -40,7 +40,7 @@ class Group extends \yii\db\ActiveRecord
     {
         return [
             [['pro_id','group_name'], 'required'],
-            [['pro_id', 'group_sample_count', 'group_sample_handle_type', 'group_add_user', 'group_change_user', 'idel', 'group_del_user'], 'integer'],
+            [['pro_id', 'group_sample_count', 'group_sample_handle_type', 'group_add_user', 'group_change_user', 'isdel', 'group_del_user'], 'integer'],
             [['group_experiment_type'], 'string'],
             [['group_add_time', 'group_change_time', 'group_del_time'], 'safe'],
             [['group_retrieve', 'group_description'], 'string', 'max' => 255],
@@ -67,7 +67,7 @@ class Group extends \yii\db\ActiveRecord
             'group_change_time' => 'Group Change Time',
             'group_change_user' => 'Group Change User',
             'group_del_time' => 'Group Del Time',
-            'idel' => 'Idel',
+            'isdel' => 'Isdel',
             'group_del_user' => 'Group Del User',
         ];
     }

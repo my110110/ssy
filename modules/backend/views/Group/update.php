@@ -3,23 +3,23 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Project */
+/* @var $model app\models\Group */
 
-$this->title = '修改实验项目: ' . $model->pro_name;
+$this->title = '修改分组项目: ' . $group->group_name;
 $this->params['breadcrumbs'][] = ['label' => '项目列表', 'url' => ['index']];
 $this->params['breadcrumbs'][] = '修改';
 ?>
 <div class="content-update">
     <div class="nav-tabs-custom">
         <ul class="nav nav-tabs" role="tablist">
-            <li role="presentation"><?= Html::a('项目列表', ['index']) ?></li>
-            <li role="presentation"><?= Html::a('添加实验项目', ['create']) ?></li>
-            <li role="presentation" class="active"><?= Html::a('修改实验项目', '#') ?></li>
+            <li role="presentation"><?= Html::a('项目详情', ['project/view','id'=>$group->pro_id]) ?></li>
+            <li role="presentation"><?= Html::a('添加项目分组', ['create','id'=>$group->pro_id]) ?></li>
+            <li role="presentation" class="active"><?= Html::a('修改项目分组', '#') ?></li>
         </ul>
         <div class="tab-content">
             <?= $this->render('_form', [
                 'model' => $model,
-                'principal'=>$principal
+                'group'=>$group
             ]) ?>
         </div>
     </div>

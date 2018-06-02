@@ -119,8 +119,20 @@ $this->params['breadcrumbs'][] = ['label' => '项目管理', 'url' => ['index']]
                         </td>
                     </tr>
                 <?php endforeach;?>
-                <?php else:?>
+                <?php endif;?>
+                <?php if(count($group)>0) :?>
+                    <?php foreach ($group as $group):?>
+                        <tr class="warning">
+                            <td class="col-md-2">项目分组</td>
+                            <td class="col-md-10">
+                                <?= Html::a("$group->group_name", ['group/view', 'id' => $group->id]) ?>
 
+                                <?= Html::a('', ['group/update', 'id' => $group->id], ['class' => 'glyphicon glyphicon-pencil','title'=>'修改']) ?>
+                                <?= Html::a('', ['group/del', 'id' => $group->id], ['class' => 'glyphicon glyphicon-trash','title'=>'删除']) ?>
+
+                            </td>
+                        </tr>
+                    <?php endforeach;?>
                 <?php endif;?>
                 </tbody>
             </table>
