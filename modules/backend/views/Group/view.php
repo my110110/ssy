@@ -42,21 +42,29 @@ $this->params['breadcrumbs'][] = ['label' => '项目管理', 'url' => ['index']]
                 </tr>
                 <tr class="default">
 
-                    <td class="col-md-2">项目检索号</td>
+                    <td class="col-md-2">分组检索号</td>
                     <td class="col-md-10"><?=$model->group_retrieve?></td>
                 </tr>
 
 
                 <tr class="success">
-                    <td class="col-md-2">项目样品数</td>
+                    <td class="col-md-2">分组样品数</td>
                     <td class="col-md-10"><?=$model->group_sample_count?></td>
                 </tr>
+                <tr class="info">
+                    <td class="col-md-2">样品处理方式</td>
+                    <td class="col-md-10"><?=$model->group_experiment_type?></td>
+                </tr>
+                <tr class="info">
+                    <td class="col-md-2">分组描述</td>
+                    <td class="col-md-10"><?=$model->group_description?></td>
+                </tr>
                 <tr class="default">
-                    <td class="col-md-2">项目添加人</td>
+                    <td class="col-md-2">分组添加人</td>
                     <td class="col-md-10"><?=AdminUser::getUserName($model->group_add_user)?></td>
                 </tr>
                 <tr class="info">
-                    <td class="col-md-2">项目添加时间</td>
+                    <td class="col-md-2">分组添加时间</td>
                     <td class="col-md-10"><?=$model->group_add_time?></td>
                 </tr>
                 <?php if(!empty($model->group_change_user)):?>
