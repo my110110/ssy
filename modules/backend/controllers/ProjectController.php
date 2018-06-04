@@ -182,7 +182,7 @@ class ProjectController extends BackendController
 
                     if( $principal->save())
                     {
-                         operatelog::addlog(1,$model->pro_id,$model->pro_name,1);
+                         operatelog::addlog(1,$model->pro_id,$model->pro_name,'project');
                          $tr->commit();
                          if($model->pro_pid>0)
                          {
@@ -240,7 +240,7 @@ class ProjectController extends BackendController
 
                     if( $principal->save())
                     {
-                        operatelog::addlog(3,$model->pro_id,$model->pro_name,1);
+                        operatelog::addlog(3,$model->pro_id,$model->pro_name,'project');
                         $tr->commit();
                         Yii::$app->getSession()->setFlash('success', '修改成功');
                         return  $this->redirect(['project/index']);
@@ -278,7 +278,7 @@ class ProjectController extends BackendController
         $model->pro_del_user=Yii::$app->user->id;
         if($model->save())
         {
-            operatelog::addlog(4,$model->pro_id,$model->pro_name,1);
+            operatelog::addlog(4,$model->pro_id,$model->pro_name,'project');
 
             return $this->showFlash('删除成功','success',['index']);
         }
@@ -291,6 +291,7 @@ class ProjectController extends BackendController
         $model->isdel=1;
         if($model->save())
         {
+            operatelog::addlog(4,$model->pro_id,$model->pro_name,'project');
             return $this->showFlash('删除成功','success',['project/view','id'=>$model->pro_pid]);
         }
         return $this->showFlash('删除失败', 'danger',Yii::$app->getUser()->getReturnUrl());

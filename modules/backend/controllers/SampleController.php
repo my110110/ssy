@@ -10,14 +10,13 @@ namespace app\modules\backend\controllers;
 
 use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 use yii;
-use app\models\Project;
 use app\models\Sample;
 use app\modules\backend\components\BackendController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\models\Group;
 use app\helpers\CommonHelper;
-class GroupController extends BackendController
+class SampleController extends BackendController
 {
     /**
      * @inheritdoc
@@ -61,10 +60,10 @@ class GroupController extends BackendController
      */
     public function actionView($id)
     {
-        $sample=Sample::find()->andFilterWhere(['gid'=>$id,'isdel'=>0])->all();
+        $group=Group::findOne(['id'=>$id]);
         return $this->render('view', [
             'model' => $this->findModel($id),
-            'sample'=>$sample
+            'group'=>$group
         ]);
     }
 
@@ -75,10 +74,12 @@ class GroupController extends BackendController
      */
     public function actionCreate($id)
     {
-        $model=Project::findOne(['pro_id'=>$id]);
+        $model=Group::findOne(['id'=>$id]);
 
-        $group=new Group();
-        $group->pro_id=$id;
+        $sample=new Sample();
+        $sample->gid=$id;
+        $sample->pid=$model->pro_id;
+
         $post = Yii::$app->request->post();
         if ($post)
         {
@@ -86,17 +87,17 @@ class GroupController extends BackendController
             try{
 
 
-                $group->attributes=$_POST['Group'];
-                $group->pro_id=$model->pro_id;
-                $group->group_add_time=date('Y-m-d H:i:s');
-                $group->group_retrieve='PSEG'.time();
-                $group->group_add_user=Yii::$app->user->id;
-                if ($group->load($post)&&$group->save() )
+                $sample->attributes=$_POST['Sample'];
+
+                $sample->add_time=date('Y-m-d H:i:s');
+                $sample->retrieve='PSEG'.time();
+                $sample->add_user=Yii::$app->user->id;
+                if ($sample->load($post)&&$sample->save() )
                 {
-                        CommonHelper::addlog(1,$group->id,$group->group_name,'group');
+                        CommonHelper::addlog(1,$sample->id,$sample->name,'sample');
                         $tr->commit();
                         Yii::$app->getSession()->setFlash('success', '保存成功');
-                        return  $this->redirect(['project/view','id'=>$model->pro_id]);
+                        return  $this->redirect(['group/view','id'=>$model->id]);
                        // return $this->showFlash('添加成功','success',['project/index']);
 
                 } else{
@@ -112,7 +113,7 @@ class GroupController extends BackendController
 
         }else{
             return $this->render('create', [
-                'group'=>$group,
+                'sample'=>$sample,
                 'model'=>$model
             ]);
         }
@@ -127,21 +128,21 @@ class GroupController extends BackendController
      */
     public function actionUpdate($id)
     {
-        $group = $this->findModel($id);
-        $model=Group::findOne(['pro_id'=>$group->pro_id]);
+        $sample = $this->findModel($id);
+        $model=Group::findOne(['id'=>$sample->gid]);
         $post = Yii::$app->request->post();
         if ($post)
         {
 
             $tr=Yii::$app->db->beginTransaction();
             try{
-                $group->attributes=$_POST['Group'];
-                $group->group_change_time=date('Y-m-d H:i:s');
-                $group->group_change_user=Yii::$app->user->id;
-                if ($group->load($post) )
+                $sample->attributes=$_POST['Sample'];
+                $sample->change_time=date('Y-m-d H:i:s');
+                $sample->change_user=Yii::$app->user->id;
+                if ($sample->load($post) )
                 {
-                    CommonHelper::addlog(3,$group->id,$group->group_name,'group');
-                    if( $group->save())
+                    CommonHelper::addlog(3,$sample->id,$sample->name,'sample');
+                    if( $sample->save())
                     {
                         $tr->commit();
                         Yii::$app->getSession()->setFlash('success', '修改成功');
@@ -160,7 +161,7 @@ class GroupController extends BackendController
         } else {
             return $this->render('update', [
                 'model' => $model,
-                'group'=>$group
+                'sample'=>$sample
             ]);
         }
     }
@@ -178,7 +179,7 @@ class GroupController extends BackendController
          $model->group_del_user=Yii::$app->user->id;
          $model->group_del_time=date('Y-m-d H:i:s');
         if($model->save()){
-            CommonHelper::addlog(4,$model->id,$model->group_name,'group');
+            CommonHelper::addlog(4,$model->id,$model->name,'sample');
             return $this->showFlash('删除成功','success',['project/view','id'=>$model->pro_id]);
         }
         return $this->showFlash('删除失败', 'danger',Yii::$app->getUser()->getReturnUrl());
@@ -193,7 +194,7 @@ class GroupController extends BackendController
      */
     protected function findModel($id)
     {
-        if (($model = Group::findOne($id)) !== null) {
+        if (($model = Sample::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

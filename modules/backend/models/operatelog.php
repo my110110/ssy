@@ -11,7 +11,7 @@ use Yii;
  * @property integer $operate
  * @property integer $object
  * @property integer $user
- * @property integer $operate_kind
+ * @property string $operate_kind
  * @property string $objectname
  * @property string $operate_time
  */
@@ -29,11 +29,13 @@ class operatelog extends \yii\db\ActiveRecord
         '1'=>'实验项目',
         '2'=>'实验分组',
         '3'=>'实验负责人',
+        '4'=>'样品'
     ];
    static $view=[
        '1'=>'project/view',
        '2'=>'group/view',
        '3'=>'principal/view',
+       '4'=>'sample/view'
    ];
     static $operate=[
         '1'=>'添加',
@@ -47,8 +49,8 @@ class operatelog extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['operate', 'object', 'user', 'objectname'], 'required'],
-            [['operate', 'object', 'user','operate_kind'], 'integer'],
+            [['operate', 'object', 'user', 'objectname','operate_kind'], 'required'],
+            [['operate', 'object', 'user'], 'integer'],
             [['operate_time'], 'safe'],
             [['objectname'], 'string', 'max' => 255],
         ];

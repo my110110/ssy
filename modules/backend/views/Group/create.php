@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\News */
+/* @var $model app\models\Group */
 
 $this->title = '添加实验分组';
 $this->params['breadcrumbs'][] = ['label' => '实验项目', 'url' => ['project/view','id'=>$model->pro_id]];

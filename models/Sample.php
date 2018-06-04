@@ -12,6 +12,13 @@ use Yii;
  * @property string $img
  * @property string $retrieve
  * @property string $descript
+ * @property string $add_user
+ * @property string $add_time
+ * @property string $change_time
+ * @property integer $change_user
+ * @property integer $isdel
+ * @property integer $del_user
+ * @property string $del_time
  */
 class Sample extends \yii\db\ActiveRecord
 {
@@ -29,9 +36,10 @@ class Sample extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name'], 'required'],
+            [['name','add_user','add_time'], 'required'],
             [['descript'], 'string'],
             [['name', 'img', 'retrieve'], 'string', 'max' => 255],
+            [['isdel'], 'safe'],
         ];
     }
 
@@ -42,10 +50,10 @@ class Sample extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
+            'name' => '样本名称',
             'img' => 'Img',
             'retrieve' => 'Retrieve',
-            'descript' => 'Descript',
+            'descript' => '样本描述',
         ];
     }
 }

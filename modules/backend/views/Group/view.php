@@ -19,6 +19,7 @@ $this->params['breadcrumbs'][] = ['label' => '项目管理', 'url' => ['index']]
             'class' => 'btn btn-primary',
 
         ]) ?>
+        <?= Html::a('添加样品', ['sample/create', 'id' => $model->id], ['class' => 'btn btn-info','title'=>'新增样品']) ?>
 
         <?= Html::a('修改', ['update', 'id' => $model->id], ['class' => 'btn btn-warning','title'=>'修改']) ?>
         <?= Html::a('删除', ['delete', 'id' => $model->id], [
@@ -77,7 +78,20 @@ $this->params['breadcrumbs'][] = ['label' => '项目管理', 'url' => ['index']]
                         <td class="col-md-10"><?=$model->group_update_time?></td>
                     </tr>
                 <?php endif;?>
+                <?php if(count($sample)>0) :?>
+                    <?php foreach ($sample as $sample):?>
+                        <tr class="warning">
+                            <td class="col-md-2">样本</td>
+                            <td class="col-md-10">
+                                <?= Html::a("$sample->name", ['sample/view', 'id' => $sample->id]) ?>
 
+                                <?= Html::a('', ['sample/update', 'id' => $sample->id], ['class' => 'glyphicon glyphicon-pencil','title'=>'修改']) ?>
+                                <?= Html::a('', ['sample/del', 'id' => $sample->id], ['class' => 'glyphicon glyphicon-trash','title'=>'删除']) ?>
+
+                            </td>
+                        </tr>
+                    <?php endforeach;?>
+                <?php endif;?>
                 </tbody>
             </table>
 
