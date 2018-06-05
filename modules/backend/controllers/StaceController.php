@@ -8,16 +8,15 @@
 
 namespace app\modules\backend\controllers;
 
-use app\models\Stace;
 use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 use yii;
 use app\models\Sample;
 use app\modules\backend\components\BackendController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use app\models\Group;
+use app\models\Stace;
 use app\helpers\CommonHelper;
-class SampleController extends BackendController
+class StaceController extends BackendController
 {
     /**
      * @inheritdoc
@@ -61,14 +60,12 @@ class SampleController extends BackendController
      */
     public function actionView($id)
     {
-        $model=$this->findModel($id);
-        $stace=Stace::findAll(['sid'=>$id,'isdel'=>'0']);
-        $group=Group::findOne(['id'=>$model->gid]);
 
+        $model=$this->findModel($id);
+        $parent=Sample::findOne(['id'=>$model->sid]);
         return $this->render('view', [
             'model' => $model,
-            'group'=>$group,
-            'stace'=>$stace
+            'parent'=>$parent
         ]);
     }
 
@@ -79,11 +76,10 @@ class SampleController extends BackendController
      */
     public function actionCreate($id)
     {
-        $model=Group::findOne(['id'=>$id]);
+        $parent=Sample::findOne(['id'=>$id]);
 
-        $sample=new Sample();
-        $sample->gid=$id;
-        $sample->pid=$model->pro_id;
+        $model=new Stace();
+        $model->sid=$id;
 
         $post = Yii::$app->request->post();
         if ($post)
@@ -92,17 +88,17 @@ class SampleController extends BackendController
             try{
 
 
-                $sample->attributes=$_POST['Sample'];
+                $model->attributes=$_POST['Stace'];
 
-                $sample->add_time=date('Y-m-d H:i:s');
-                $sample->retrieve='PSEG'.time();
-                $sample->add_user=Yii::$app->user->id;
-                if ($sample->load($post)&&$sample->save() )
+                $model->add_time=date('Y-m-d H:i:s');
+                $model->retrieve='PSEG'.time();
+                $model->add_user=Yii::$app->user->id;
+                if ($model->load($post)&&$model->save() )
                 {
-                        CommonHelper::addlog(1,$sample->id,$sample->name,'sample');
+                        CommonHelper::addlog(1,$model->id,$model->name,'stace');
                         $tr->commit();
                         Yii::$app->getSession()->setFlash('success', '保存成功');
-                        return  $this->redirect(['group/view','id'=>$model->id]);
+                        return  $this->redirect(['sample/view','id'=>$model->sid]);
                        // return $this->showFlash('添加成功','success',['project/index']);
 
                 } else{
@@ -118,7 +114,7 @@ class SampleController extends BackendController
 
         }else{
             return $this->render('create', [
-                'sample'=>$sample,
+                'parent'=>$parent,
                 'model'=>$model
             ]);
         }
@@ -133,25 +129,25 @@ class SampleController extends BackendController
      */
     public function actionUpdate($id)
     {
-        $sample = $this->findModel($id);
-        $model=Group::findOne(['id'=>$sample->gid]);
+        $model = $this->findModel($id);
+        $parent=Sample::findOne(['id'=>$model->sid]);
         $post = Yii::$app->request->post();
         if ($post)
         {
 
             $tr=Yii::$app->db->beginTransaction();
             try{
-                $sample->attributes=$_POST['Sample'];
-                $sample->change_time=date('Y-m-d H:i:s');
-                $sample->change_user=Yii::$app->user->id;
-                if ($sample->load($post) )
+                $model->attributes=$_POST['Stace'];
+                $model->change_time=date('Y-m-d H:i:s');
+                $model->change_user=Yii::$app->user->id;
+                if ($model->load($post) )
                 {
-                    CommonHelper::addlog(3,$sample->id,$sample->name,'sample');
-                    if( $sample->save())
+                    CommonHelper::addlog(3,$model->id,$model->name,'stace');
+                    if( $model->save())
                     {
                         $tr->commit();
                         Yii::$app->getSession()->setFlash('success', '修改成功');
-                        return  $this->redirect(['project/view','id'=>$model->pro_id]);
+                        return  $this->redirect(['sample/view','id'=>$model->sid]);
                         // return $this->showFlash('添加成功','success',['project/index']);
                     }else{
                         $tr->rollBack();
@@ -166,7 +162,7 @@ class SampleController extends BackendController
         } else {
             return $this->render('update', [
                 'model' => $model,
-                'sample'=>$sample
+                'parent'=>$parent
             ]);
         }
     }
@@ -179,13 +175,13 @@ class SampleController extends BackendController
      */
     public function actionDel($id)
     {
-         $model=Sample::findOne(['id'=>$id]);
+         $model=$this->findModel($id);
          $model->isdel=1;
          $model->del_user=Yii::$app->user->id;
          $model->del_time=date('Y-m-d H:i:s');
         if($model->save()){
-            CommonHelper::addlog(4,$model->id,$model->name,'sample');
-            return $this->showFlash('删除成功','success',['group/view','id'=>$model->gid]);
+            CommonHelper::addlog(4,$model->id,$model->name,'stace');
+            return $this->showFlash('删除成功','success',['sample/view','id'=>$model->sid]);
         }
         return $this->showFlash('删除失败', 'danger',Yii::$app->getUser()->getReturnUrl());
     }
@@ -199,7 +195,7 @@ class SampleController extends BackendController
      */
     protected function findModel($id)
     {
-        if (($model = Sample::findOne($id)) !== null) {
+        if (($model = Stace::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
