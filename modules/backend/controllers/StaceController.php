@@ -92,6 +92,7 @@ class StaceController extends BackendController
 
                 $model->add_time=date('Y-m-d H:i:s');
                 $model->retrieve='PSEG'.time();
+                $model->result_retrieve='ERHE'.time();
                 $model->add_user=Yii::$app->user->id;
                 if ($model->load($post)&&$model->save() )
                 {
@@ -99,7 +100,6 @@ class StaceController extends BackendController
                         $tr->commit();
                         Yii::$app->getSession()->setFlash('success', '保存成功');
                         return  $this->redirect(['sample/view','id'=>$model->sid]);
-                       // return $this->showFlash('添加成功','success',['project/index']);
 
                 } else{
                     $tr->rollBack();
