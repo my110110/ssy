@@ -17,16 +17,9 @@ use yii\helpers\ArrayHelper;
                 'options' => ['enctype' => 'multipart/form-data']
             ]);
     ?>
-    <?= $form->field($model, 'pro_name')->textInput(['maxlength' => true]) ?>
-    <?= $form->field($model, 'pro_keywords')->textInput(['maxlength' => true]) ?>
-    <?= $form->field($model, 'pro_kind_id')->dropDownList($model::$kind_type) ?>
-    <?=$form->field($model,'pro_sample_count')->textInput() ?>
-    <?=$form->field($principal,'name')->textInput() ?>
-    <?=$form->field($principal,'department')->textInput() ?>
-    <?=$form->field($principal,'email')->textInput() ?>
-    <?=$form->field($principal,'telphone')->textInput() ?>
-    <?= $form->field($model, 'pro_description')->textarea() ?>
-    <?= $form->field($model, 'pro_pid',['options'=>['tag'=>false]])->hiddenInput()->label(false)?>
+    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'process')->textInput(['maxlength' => true]) ?>
+    <?=$form->field($model,'axiom')->textInput() ?>
     <div class="form-group text-right">
         <?= Html::submitButton('提交', ['class' => $model->isNewRecord ? 'btn btn-success ' : 'btn btn-primary ']) ?>
     </div>

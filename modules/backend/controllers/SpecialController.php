@@ -22,7 +22,7 @@ use yii\helpers\ArrayHelper;
 use PHPExcel;
 use app\models\UploadFile;
 use app\modules\backend\models\operatelog;
-class SpecalController extends BackendController
+class SpecialController extends BackendController
 {
     /**
      * @inheritdoc
@@ -76,46 +76,25 @@ class SpecalController extends BackendController
      */
     public function actionIndex()
     {
- var_dump(123);die;
         //分页读取类别数据
-        $search=New Project();
-        $model =  Project::find();
+        $search=New Specal();
+        $model =  Specal::find();
 
-        if(isset(Yii::$app->request->queryParams['Project']))
-        {
-            $parms=Yii::$app->request->queryParams['Project'];
-            if(isset($parms['pro_retrieve']))
-                $model->andFilterWhere(['pro_retrieve' => $parms['pro_retrieve'],]);
-            if(isset($parms['pro_name']))
-                $model->andFilterWhere(['like', 'pro_name', $parms['pro_name']]);
-        }
+
         $pagination = new Pagination([
             'defaultPageSize' => 10,
             'totalCount' => $model->count(),
         ]);
-        $model->andFilterWhere(['isdel'=> 0,'pro_pid'=>0]);
-        $model = $model->orderBy('pro_id ASC')
+        $model->andFilterWhere(['isdel'=> 0]);
+        $model = $model->orderBy('id ASC')
             ->offset($pagination->offset)
             ->limit($pagination->limit)
             ->all();
-        $child=Project::find()->andFilterWhere(['>', 'pro_pid', 0])->all();
-        $child = ArrayHelper::toArray($child);
-        $model = ArrayHelper::toArray($model);
-        foreach ($model as $k=>$md){
-            foreach ($child as $c){
-                if($c['pro_pid']==$md['pro_id']){
-                    $model[$k]['child'][]=$c;
-                }
-            }
 
-
-        }
         return $this->render('index', [
             'model' => $model,
-            'pagination' => $pagination,
             'search'=>$search,
-            'child'=>$child,
-            'file'=>new UploadFile()
+            'pagination'=>$pagination
         ]);
 
 //        $searchModel = new ProjectSearch();
@@ -158,43 +137,26 @@ class SpecalController extends BackendController
      */
     public function actionCreate()
     {
-        $model = new Project();
-        $principal=new Principal();
-        $model->pro_pid=Yii::$app->request->get('pro_pid');
-        $model->scenario='create';
+        $model = new Specal();
         $post = Yii::$app->request->post();
         if ($post) {
             $tr=Yii::$app->db->beginTransaction();
             try{
 
-                $model->setAttributes($_POST['Project'],false);
-                $model->pro_add_time=date('Y-m-d H:i:s');
-                $model->pro_retrieve='PDS'.time();
-                $model->pro_user=Yii::$app->user->id;
-                $principal->attributes=$_POST['Principal'];
+                $model->setAttributes($_POST['Specal'],false);
+                $model->add_time=date('Y-m-d H:i:s');
+                $model->retrieve='PDS'.time();
                 if ($model->load($post)&&$model->save() )
                 {
 
+                    $tr->commit();
+                    return $this->showFlash('添加成功','success',['project/view','id'=>$model->pro_pid]);
 
-                    $principal->pro_id= $model->attributes['pro_id'];
 
-                    if( $principal->save())
-                    {
-                         operatelog::addlog(1,$model->pro_id,$model->pro_name,'project');
-                         $tr->commit();
-                         if($model->pro_pid>0)
-                         {
-
-                             return $this->showFlash('添加成功','success',['project/view','id'=>$model->pro_pid]);
-
-                         }else{
-                             return $this->showFlash('添加成功','success',['project/index']);
-
-                         }
-                    }else{
+                }else{
                         $tr->rollBack();
                         return $this->showFlash('添加失败');
-                    }
+
                 }
             }catch (excepetion $e)
             {
@@ -206,7 +168,6 @@ class SpecalController extends BackendController
         }
         return $this->render('create', [
             'model' => $model,
-            'principal'=>$principal
         ]);
     }
 

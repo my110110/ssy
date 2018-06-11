@@ -48,8 +48,9 @@ class Specal extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'retrieve' => 'Retrieve',
-            'axiom' => 'Axiom',
-            'process' => 'Process',
+            'axiom' => '检测原理',
+            'process' => '检测流程',
+            'name'=>'名称',
             'add_time' => 'Add Time',
             'change_time' => 'Change Time',
             'del_time' => 'Del Time',
