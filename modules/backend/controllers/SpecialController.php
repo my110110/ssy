@@ -15,13 +15,14 @@ use app\modules\backend\components\BackendController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\models\Specal;
+use app\models\Reagent;
 use yii\web\Response;
 use app\helpers\CategoryHelper;
 use yii\data\Pagination;
 use yii\helpers\ArrayHelper;
 use PHPExcel;
 use app\models\UploadFile;
-use app\modules\backend\models\operatelog;
+use app\helpers\CommonHelper;
 class SpecialController extends BackendController
 {
     /**
@@ -77,7 +78,7 @@ class SpecialController extends BackendController
     public function actionIndex()
     {
         //分页读取类别数据
-        $search=New Specal();
+
         $model =  Specal::find();
 
 
@@ -93,7 +94,6 @@ class SpecialController extends BackendController
 
         return $this->render('index', [
             'model' => $model,
-            'search'=>$search,
             'pagination'=>$pagination
         ]);
 
@@ -119,14 +119,11 @@ class SpecialController extends BackendController
     public function actionView($id)
     {
 
-        $Principal=Principal::find()->andFilterWhere(['pro_id'=>$id,'status'=>0])->all();
-        $chid=Project::find()->andFilterWhere(['pro_pid'=>$id,'isdel'=>0])->all();
-        $group=Group::find()->andFilterWhere(['pro_id'=>$id,'isdel'=>0])->all();
+        $child=Reagent::find()->andFilterWhere(['sid'=>$id,'isdel'=>0])->all();
         return $this->render('view', [
             'model' => $this->findModel($id),
-            'child'=>$chid,
-            'Principal'=>$Principal,
-            'group'=>$group
+            'child'=>$child
+
         ]);
     }
 
@@ -145,12 +142,13 @@ class SpecialController extends BackendController
 
                 $model->setAttributes($_POST['Specal'],false);
                 $model->add_time=date('Y-m-d H:i:s');
-                $model->retrieve='PDS'.time();
+                $model->retrieve='ETS'.time();
                 if ($model->load($post)&&$model->save() )
                 {
+                    CommonHelper::addlog(1,$model->id,$model->name,'special');
 
                     $tr->commit();
-                    return $this->showFlash('添加成功','success',['project/view','id'=>$model->pro_pid]);
+                    return $this->showFlash('添加成功','success',['special/index']);
 
 
                 }else{
@@ -180,44 +178,32 @@ class SpecialController extends BackendController
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $principal=Principal::findOne(['pro_id'=>$id]);
-        $model->scenario='create';
         $post = Yii::$app->request->post();
         if ($post)
         {
 
             $tr=Yii::$app->db->beginTransaction();
-            try{
-                $model->setAttributes($_POST['Project'],false);
-                $model->pro_change_user=Yii::$app->user->id;
-                $principal->attributes=$_POST['Principal'];
-                if ($model->load($post)&&$model->save() )
+            try {
+                $model->setAttributes($_POST['Specal'], false);
+                if ($model->load($post) && $model->save())
                 {
 
-
-                    $principal->pro_id= $model->attributes['pro_id'];
-
-                    if( $principal->save())
-                    {
-                        operatelog::addlog(3,$model->pro_id,$model->pro_name,'project');
-                        $tr->commit();
-                        Yii::$app->getSession()->setFlash('success', '修改成功');
-                        return  $this->redirect(['project/index']);
-                        // return $this->showFlash('添加成功','success',['project/index']);
-                    }else{
-                        $tr->rollBack();
-                        return $this->showFlash('修改失败');
-                    }
+                    CommonHelper::addlog(3, $model->id, $model->name, 'special');
+                    $tr->commit();
+                    return $this->showFlash('修改成功','success',['special/index']);
+                } else {
+                    $tr->rollBack();
+                    return $this->showFlash('修改失败');
                 }
+
             }catch (excepetion $e)
             {
                 $tr->rollBack();
-                return $this->showFlash('添加失败');
+                return $this->showFlash('修改失败');
             }
         } else {
             return $this->render('update', [
                 'model' => $model,
-                'principal'=>$principal
             ]);
         }
     }
@@ -231,13 +217,12 @@ class SpecialController extends BackendController
     public function actionDelete($id)
     {
         $model=$this->findModel($id);
-        $model->scenario='update';
         $model->isdel=1;
         $model->pro_del_time=date('Y-m-d H:i:s');
         $model->pro_del_user=Yii::$app->user->id;
         if($model->save())
         {
-            operatelog::addlog(4,$model->pro_id,$model->pro_name,'project');
+            CommonHelper::addlog(4,$model->id,$model->name,'special');
 
             return $this->showFlash('删除成功','success',['index']);
         }
@@ -246,12 +231,11 @@ class SpecialController extends BackendController
     public function actionDel($id)
     {
         $model=$this->findModel($id);
-        $model->scenario='update';
         $model->isdel=1;
         if($model->save())
         {
-            operatelog::addlog(4,$model->pro_id,$model->pro_name,'project');
-            return $this->showFlash('删除成功','success',['project/view','id'=>$model->pro_pid]);
+            CommonHelper::addlog(4,$model->id,$model->name,'special');
+            return $this->showFlash('删除成功','success',['special/index','id'=>$model->id]);
         }
         return $this->showFlash('删除失败', 'danger',Yii::$app->getUser()->getReturnUrl());
     }
@@ -264,7 +248,7 @@ class SpecialController extends BackendController
      */
     protected function findModel($id)
     {
-        if (($model = Project::findOne($id)) !== null) {
+        if (($model = Specal::findOne($id)) !== null) {
             return $model;
 
         } else {

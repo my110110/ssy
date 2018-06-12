@@ -4,22 +4,23 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 use app\modules\backend\models\AdminUser;
 use app\models\Project;
+use app\models\Stace;
 /* @var $this yii\web\View */
 /* @var $model app\models\Project */
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => '项目管理', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => '样品管理', ['sample/view', 'id' => $model->sid]];
 
 ?>
 <div class="content-view">
 
 
     <p>
-
-        <?= Html::a('添加检测试剂', ['reagent/create', 'id' => $model->id], [
-            'title'=>'添加负责人',
-            'class' => 'btn btn-success',
+        <?= Html::a('返回样本', ['sample/view', 'id' => $model->sid], [
+            'title'=>'返回项目',
+            'class' => 'btn btn-primary',
 
         ]) ?>
+        <?= Html::a('新增实验样本的特定组织与细胞标本', ['stace/create', 'id' => $model->sid], ['class' => 'btn btn-info ','title'=>'修改']) ?>
 
         <?= Html::a('修改', ['update', 'id' => $model->id], ['class' => 'btn btn-warning','title'=>'修改']) ?>
         <?= Html::a('删除', ['delete', 'id' => $model->id], [
@@ -38,7 +39,7 @@ $this->params['breadcrumbs'][] = ['label' => '项目管理', 'url' => ['index']]
                 <tbody>
                 <tr class="info">
 
-                  <td class="col-md-2">检测指标名称</td>
+                  <td class="col-md-2">名称</td>
                     <td class="col-md-10"><?=$model->name?></td>
                 </tr>
                 <tr class="default">
@@ -47,17 +48,27 @@ $this->params['breadcrumbs'][] = ['label' => '项目管理', 'url' => ['index']]
                     <td class="col-md-10"><?=$model->retrieve?></td>
                 </tr>
 
+
+
                 <tr class="info">
-                    <td class="col-md-2">检测流程</td>
-                    <td class="col-md-10"><?=$model->process?></td>
+                    <td class="col-md-2">样品描述</td>
+                    <td class="col-md-10"><?=$model->description?></td>
                 </tr>
-                <tr class="success">
-                    <td class="col-md-2">检测原理</td>
-                    <td class="col-md-10"><?=$model->axiom?></td>
+                <tr class="info">
+                    <td class="col-md-2">组织/细胞位置</td>
+                    <td class="col-md-10"><?=$model->postion?></td>
+                </tr>
+                <tr class="info">
+                    <td class="col-md-2">处理方式</td>
+                    <td class="col-md-10"><?=Stace::$handle[$model->handle]?></td>
+                </tr>
+                <tr class="info">
+                    <td class="col-md-2">存放位置</td>
+                    <td class="col-md-10"><?=$model->place?></td>
                 </tr>
                 <tr class="default">
                     <td class="col-md-2">添加人</td>
-                    <td class="col-md-10"><?=AdminUser::getDoName($model->id,1,'special')?></td>
+                    <td class="col-md-10"><?=AdminUser::getUserName($model->add_user)?></td>
                 </tr>
                 <tr class="info">
                     <td class="col-md-2">添加时间</td>
@@ -66,27 +77,12 @@ $this->params['breadcrumbs'][] = ['label' => '项目管理', 'url' => ['index']]
                 <?php if(!empty($model->change_user)):?>
                 <tr class="warning">
                     <td class="col-md-2">修改人</td>
-                    <td class="col-md-10"><?=AdminUser::getDoName($model->id,3,'special')?></td>
+                    <td class="col-md-10"><?=AdminUser::getUserName($model->change_user)?></td>
                 </tr>
                     <tr class="default">
                         <td class="col-md-2">修改时间</td>
                         <td class="col-md-10"><?=$model->change_time?></td>
                     </tr>
-                <?php endif;?>
-
-                <?php if(count($child)>0) :?>
-                    <?php foreach ($child as $child):?>
-                        <tr class="info">
-                            <td class="col-md-2">检测试剂</td>
-                            <td class="col-md-10">
-                                <?= Html::a("$child->name", ['reagent/view', 'id' => $child->id]) ?>
-
-                                <?= Html::a('', ['reagent/update', 'id' => $child->id], ['class' => 'glyphicon glyphicon-pencil','title'=>'修改']) ?>
-                                <?= Html::a('', ['reagent/del', 'id' => $child->id], ['class' => 'glyphicon glyphicon-trash','title'=>'删除']) ?>
-
-                            </td>
-                        </tr>
-                    <?php endforeach;?>
                 <?php endif;?>
 
                 </tbody>

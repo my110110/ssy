@@ -2,7 +2,7 @@
 
 namespace app\modules\backend\models;
 use app\components\AppActiveRecord;
-
+use app\modules\backend\models\operatelog;
 use Yii;
 
 /**
@@ -161,5 +161,12 @@ class AdminUser extends AppActiveRecord
     static function getUserName($id){
        $user= self::findOne($id);
        return $user->username;
+    }
+    /**
+     * 根据ID获取用户名
+     */
+    static function getDoName($object,$operate,$operate_kind){
+        $user= operatelog::findOne(['object'=>$object,'operate'=>$operate,'operate_kind'=>$operate_kind]);
+        return self::getUserName($user->user);
     }
 }

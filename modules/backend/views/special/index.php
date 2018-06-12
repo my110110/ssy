@@ -15,7 +15,7 @@ use yii\helpers\Url;
 /* @var $searchModel app\modules\backend\models\ProjectSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 /* @var $pagination yii\data\Pagination */
-$this->title = '项目列表';
+$this->title = '常规染色';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <style type="text/css">
@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="nav-tabs-custom">
         <ul class="nav nav-tabs" role="tablist">
             <li role="presentation" class="active">
-                <?= Html::a('检测指标', ['index'],  ['class' => 'btn btn-dafault ','role'=>'button']) ?>
+                <?= Html::a('检测指标列表', ['index'],  ['class' => 'btn btn-dafault ','role'=>'button']) ?>
             </li>
             <li role="presentation">
                 <?= Html::a('添加检测指标', ['create'],['class' => 'btn btn-primary  ','role'=>'button']) ?>
@@ -77,27 +77,25 @@ $this->params['breadcrumbs'][] = $this->title;
                         <tr class="shows success">
 
                             <td>
-                               <?=$pid['name'];?>
+                               <?=$model['add_time'];?>
                             </td>
                             <td>
-                                <?=$pid['retrieve'];?>
+                                <?=$model['retrieve'];?>
                             </td>
                             <td>
-                                <?=Project::$kind_type[$pid['pro_kind_id']];?>
+                                <?=$model['name'];?>
                             </td>
                             <td>
-                                <?=AdminUser::getUserName($pid['pro_user'])?>
+                                <?=AdminUser::getDoName($model['id'],1,'special')?>
+                            </td>
+
+                            <td>
+                                <?=$model['change_time']?>
                             </td>
                             <td>
-                                <?=$pid['pro_add_time']?>
-                            </td>
-                            <td>
-                                <?=$pid['pro_update_time']?>
-                            </td>
-                            <td>
-                                <?= Html::a('<span class="glyphicon glyphicon-zoom-in"></span>', ['view', 'id' => $pid['pro_id']], ['title'=>'查看']) ?>
-                                <?= Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['update', 'id' => $pid['pro_id']], ['title'=>'修改']) ?>
-                                 <?= Html::a('<span class="	glyphicon glyphicon-trash"></span>', ['delete', 'id' => $pid['pro_id']], [
+                                <?= Html::a('<span class="glyphicon glyphicon-zoom-in"></span>', ['view', 'id' => $model['id']], ['title'=>'查看']) ?>
+                                <?= Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['update', 'id' => $model['id']], ['title'=>'修改']) ?>
+                                 <?= Html::a('<span class="glyphicon glyphicon-trash"></span>', ['delete', 'id' => $model['id']], [
                                     'title'=>'删除',
                                     'data' => [
                                         'confirm' => '确定要删除这个项目吗?',
