@@ -24,6 +24,11 @@ $this->params['breadcrumbs'][] = ['label' => '特殊染色', 'url' => ['particu 
             'class' => 'btn btn-success',
 
         ]) ?>
+        <?= Html::a('新增商品化试剂盒', ['kit/create', 'id' => $model->id,'type'=>'testmethod'], [
+            'title'=>'添加负责人',
+            'class' => 'btn btn-success',
+
+        ]) ?>
 
         <?= Html::a('修改', ['update', 'id' => $model->id], ['class' => 'btn btn-warning','title'=>'修改']) ?>
         <?= Html::a('删除', ['delete', 'id' => $model->id], [
@@ -42,7 +47,7 @@ $this->params['breadcrumbs'][] = ['label' => '特殊染色', 'url' => ['particu 
                 <tbody>
                 <tr class="info">
 
-                  <td class="col-md-2">检测指标名称</td>
+                  <td class="col-md-2">检测方法名称</td>
                     <td class="col-md-10"><?=$model->name?></td>
                 </tr>
                 <tr class="default">
@@ -78,7 +83,7 @@ $this->params['breadcrumbs'][] = ['label' => '特殊染色', 'url' => ['particu 
                 <?php if(!empty($model->change_user)):?>
                 <tr class="warning">
                     <td class="col-md-2">修改人</td>
-                    <td class="col-md-10"><?=AdminUser::getDoName($model->id,3,'particular')?></td>
+                    <td class="col-md-10"><?=AdminUser::getDoName($model->id,3,'testmethod')?></td>
                 </tr>
                     <tr class="default">
                         <td class="col-md-2">修改时间</td>
@@ -89,7 +94,7 @@ $this->params['breadcrumbs'][] = ['label' => '特殊染色', 'url' => ['particu 
                 <?php if(count($child)>0) :?>
                     <?php foreach ($child as $child):?>
                         <tr class="info">
-                            <td class="col-md-2">检测试剂</td>
+                            <td class="col-md-2">自配试剂</td>
                             <td class="col-md-10">
                                 <?= Html::a("$child->name", ['reagent/view', 'id' => $child->id]) ?>
 
