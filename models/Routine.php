@@ -16,14 +16,14 @@ use Yii;
  * @property string $del_time
  * @property integer $isdel
  */
-class Specal extends \yii\db\ActiveRecord
+class Routine extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'specal';
+        return 'routine';
     }
 
     /**

@@ -14,7 +14,7 @@ use yii;
 use app\modules\backend\components\BackendController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use app\models\Specal;
+use app\models\Routine;
 use app\models\Reagent;
 use yii\web\Response;
 use app\helpers\CategoryHelper;
@@ -23,7 +23,7 @@ use yii\helpers\ArrayHelper;
 use PHPExcel;
 use app\models\UploadFile;
 use app\helpers\CommonHelper;
-class SpecialController extends BackendController
+class RoutineController extends BackendController
 {
     /**
      * @inheritdoc
@@ -79,7 +79,7 @@ class SpecialController extends BackendController
     {
         //分页读取类别数据
 
-        $model =  Specal::find();
+        $model =  Routine::find();
 
 
         $pagination = new Pagination([
@@ -134,21 +134,21 @@ class SpecialController extends BackendController
      */
     public function actionCreate()
     {
-        $model = new Specal();
+        $model = new Routine();
         $post = Yii::$app->request->post();
         if ($post) {
             $tr=Yii::$app->db->beginTransaction();
             try{
 
-                $model->setAttributes($_POST['Specal'],false);
+                $model->setAttributes($_POST['Routine'],false);
                 $model->add_time=date('Y-m-d H:i:s');
                 $model->retrieve='ETS'.time();
                 if ($model->load($post)&&$model->save() )
                 {
-                    CommonHelper::addlog(1,$model->id,$model->name,'special');
+                    CommonHelper::addlog(1,$model->id,$model->name,'routine');
 
                     $tr->commit();
-                    return $this->showFlash('添加成功','success',['special/index']);
+                    return $this->showFlash('添加成功','success',['routine/index']);
 
 
                 }else{
@@ -184,13 +184,13 @@ class SpecialController extends BackendController
 
             $tr=Yii::$app->db->beginTransaction();
             try {
-                $model->setAttributes($_POST['Specal'], false);
+                $model->setAttributes($_POST['Routine'], false);
                 if ($model->load($post) && $model->save())
                 {
 
-                    CommonHelper::addlog(3, $model->id, $model->name, 'special');
+                    CommonHelper::addlog(3, $model->id, $model->name, 'routine');
                     $tr->commit();
-                    return $this->showFlash('修改成功','success',['special/index']);
+                    return $this->showFlash('修改成功','success',['routine/index']);
                 } else {
                     $tr->rollBack();
                     return $this->showFlash('修改失败');
@@ -222,7 +222,7 @@ class SpecialController extends BackendController
         $model->pro_del_user=Yii::$app->user->id;
         if($model->save())
         {
-            CommonHelper::addlog(4,$model->id,$model->name,'special');
+            CommonHelper::addlog(4,$model->id,$model->name,'routine');
 
             return $this->showFlash('删除成功','success',['index']);
         }
@@ -248,7 +248,7 @@ class SpecialController extends BackendController
      */
     protected function findModel($id)
     {
-        if (($model = Specal::findOne($id)) !== null) {
+        if (($model = Routine::findOne($id)) !== null) {
             return $model;
 
         } else {

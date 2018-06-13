@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = ['label' => '样品管理', ['sample/view', 'id
 
 
     <p>
-        <?= Html::a('试剂详情', ['special/view', 'id' => $model->sid], [
+        <?= Html::a('试剂详情', ['routine/view', 'id' => $model->sid], [
             'title'=>'试剂详情',
             'class' => 'btn btn-primary',
 

@@ -57,7 +57,7 @@ $this->params['breadcrumbs'][] = ['label' => '项目管理', 'url' => ['index']]
                 </tr>
                 <tr class="default">
                     <td class="col-md-2">添加人</td>
-                    <td class="col-md-10"><?=AdminUser::getDoName($model->id,1,'special')?></td>
+                    <td class="col-md-10"><?=AdminUser::getDoName($model->id,1,'routine')?></td>
                 </tr>
                 <tr class="info">
                     <td class="col-md-2">添加时间</td>

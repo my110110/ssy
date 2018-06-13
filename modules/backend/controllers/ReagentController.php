@@ -10,7 +10,7 @@ namespace app\modules\backend\controllers;
 
 use app\models\Company;
 use app\models\Reagent;
-use app\models\Specal;
+use app\models\Routine;
 use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 use yii;
 use app\models\Sample;
@@ -66,7 +66,7 @@ class ReagentController extends BackendController
 
         $model=$this->findModel($id);
         $parent=Sample::findOne(['id'=>$model->sid]);
-        $child=Company::find()->andFilterWhere(['rid'=>$id])->all();
+        $child=Company::find()->andFilterWhere(['rid'=>$id,'isdel'=>'0'])->all();
         return $this->render('view', [
             'model' => $model,
             'parent'=>$parent,
@@ -81,7 +81,7 @@ class ReagentController extends BackendController
      */
     public function actionCreate($id)
     {
-        $parent=Specal::findOne(['id'=>$id]);
+        $parent=Routine::findOne(['id'=>$id]);
 
         $model=new Reagent();
         $model->retrieve='ETR'.time();
@@ -102,7 +102,7 @@ class ReagentController extends BackendController
                         CommonHelper::addlog(1,$model->id,$model->name,'reagent');
                         $tr->commit();
                         Yii::$app->getSession()->setFlash('success', '保存成功');
-                        return  $this->redirect(['special/view','id'=>$model->sid]);
+                        return  $this->redirect(['routine/view','id'=>$model->sid]);
 
                 } else{
                     $tr->rollBack();
@@ -133,7 +133,7 @@ class ReagentController extends BackendController
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $parent=Specal::findOne(['id'=>$model->sid]);
+        $parent=Routine::findOne(['id'=>$model->sid]);
         $post = Yii::$app->request->post();
         if ($post)
         {
@@ -150,7 +150,7 @@ class ReagentController extends BackendController
                     {
                         $tr->commit();
                         Yii::$app->getSession()->setFlash('success', '修改成功');
-                        return  $this->redirect(['special/view','id'=>$model->sid]);
+                        return  $this->redirect(['routine/view','id'=>$model->sid]);
                         // return $this->showFlash('添加成功','success',['project/index']);
                     }else{
                         $tr->rollBack();
@@ -183,7 +183,7 @@ class ReagentController extends BackendController
          $model->del_time=date('Y-m-d H:i:s');
         if($model->save()){
             CommonHelper::addlog(4,$model->id,$model->name,'reagent');
-            return $this->showFlash('删除成功','success',['special/view','id'=>$model->sid]);
+            return $this->showFlash('删除成功','success',['routine/view','id'=>$model->sid]);
         }
         return $this->showFlash('删除失败', 'danger',Yii::$app->getUser()->getReturnUrl());
     }

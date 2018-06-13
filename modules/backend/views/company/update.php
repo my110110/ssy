@@ -5,16 +5,15 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Group */
 
-$this->title = '修改样品: ' . $model->name;
-$this->params['breadcrumbs'][] = ['label' => '返回样品详情', 'url' => ['sample/view','id'=>$model->sid]];
+$this->title = '修改公司信息: ' . $model->company;
+$this->params['breadcrumbs'][] = ['label' => '试剂详情', 'url' => ['reagent/view','id'=>$model->rid]];
 $this->params['breadcrumbs'][] = '修改';
 ?>
 <div class="content-update">
     <div class="nav-tabs-custom">
         <ul class="nav nav-tabs" role="tablist">
-            <li role="presentation"><?= Html::a('返回样品详情', ['sample/view','id'=>$model->sid]) ?></li>
-            <li role="presentation"><?= Html::a('新增实验样本的特定组织与细胞标本', ['create','id'=>$model->sid]) ?></li>
-            <li role="presentation" class="active"><?= Html::a('修改项目分组', '#') ?></li>
+            <li role="presentation"><?= Html::a('试剂详情', ['reagent/view','id'=>$model->rid]) ?></li>
+            <li role="presentation" class="active"><?= Html::a('修改公司信息', '#') ?></li>
         </ul>
         <div class="tab-content">
             <?= $this->render('_form', [

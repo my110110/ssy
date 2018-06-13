@@ -86,7 +86,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <?=$model['name'];?>
                             </td>
                             <td>
-                                <?=AdminUser::getDoName($model['id'],1,'special')?>
+                                <?=AdminUser::getDoName($model['id'],1,'routine')?>
                             </td>
 
                             <td>

@@ -93,7 +93,7 @@ class CompanyController extends BackendController
 
                 if ($model->load($post)&&$model->save() )
                 {
-                    CommonHelper::addlog(1,$model->id,$model->name,'company');
+                    CommonHelper::addlog(1,$model->id,$model->company,'company');
                     $tr->commit();
                     Yii::$app->getSession()->setFlash('success', '保存成功');
                     return  $this->redirect(['reagent/view','id'=>$model->rid]);
@@ -127,24 +127,22 @@ class CompanyController extends BackendController
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $parent=Sample::findOne(['id'=>$model->sid]);
+        $parent=Reagent::findOne(['id'=>$model->rid]);
         $post = Yii::$app->request->post();
         if ($post)
         {
 
             $tr=Yii::$app->db->beginTransaction();
             try{
-                $model->attributes=$_POST['Stace'];
-                $model->change_time=date('Y-m-d H:i:s');
-                $model->change_user=Yii::$app->user->id;
+                $model->attributes=$_POST['Company'];
                 if ($model->load($post) )
                 {
-                    CommonHelper::addlog(3,$model->id,$model->name,'stace');
+                    CommonHelper::addlog(3,$model->id,$model->company,'company');
                     if( $model->save())
                     {
                         $tr->commit();
                         Yii::$app->getSession()->setFlash('success', '修改成功');
-                        return  $this->redirect(['sample/view','id'=>$model->sid]);
+                        return  $this->redirect(['reagent/view','id'=>$model->rid]);
                         // return $this->showFlash('添加成功','success',['project/index']);
                     }else{
                         $tr->rollBack();
@@ -174,11 +172,9 @@ class CompanyController extends BackendController
     {
         $model=$this->findModel($id);
         $model->isdel=1;
-        $model->del_user=Yii::$app->user->id;
-        $model->del_time=date('Y-m-d H:i:s');
         if($model->save()){
-            CommonHelper::addlog(4,$model->id,$model->name,'stace');
-            return $this->showFlash('删除成功','success',['sample/view','id'=>$model->sid]);
+            CommonHelper::addlog(4,$model->id,$model->company,'company');
+            return $this->showFlash('删除成功','success',['reagent/view','id'=>$model->rid]);
         }
         return $this->showFlash('删除失败', 'danger',Yii::$app->getUser()->getReturnUrl());
     }
@@ -192,7 +188,7 @@ class CompanyController extends BackendController
      */
     protected function findModel($id)
     {
-        if (($model = Stace::findOne($id)) !== null) {
+        if (($model = Company::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

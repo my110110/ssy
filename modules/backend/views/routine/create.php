@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Specal */
+/* @var $model app\models\Routine */
 
 $this->title = '添加检测指标';
 $this->params['breadcrumbs'][] = ['label' => '检测指标列表', 'url' => ['index']];
