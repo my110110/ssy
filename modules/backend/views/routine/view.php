@@ -7,22 +7,26 @@ use app\models\Project;
 /* @var $this yii\web\View */
 /* @var $model app\models\Project */
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => '项目管理', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => '常规染色', 'url' => ['index']];
 
 ?>
 <div class="content-view">
 
 
     <p>
+        <?= Html::a('返回列表', ['index'], [
+            'title'=>'返回列表',
+            'class' => 'btn btn-primary',
 
-        <?= Html::a('添加检测试剂', ['reagent/create', 'id' => $model->id], [
+        ]) ?>
+        <?= Html::a('添加检测试剂', ['reagent/create', 'id' => $model->id,'type'=>'routine'], [
             'title'=>'添加负责人',
             'class' => 'btn btn-success',
 
         ]) ?>
 
         <?= Html::a('修改', ['update', 'id' => $model->id], ['class' => 'btn btn-warning','title'=>'修改']) ?>
-        <?= Html::a('删除', ['delete', 'id' => $model->id], [
+        <?= Html::a('删除', ['del', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'title'=>'删除',
             'data' => [
@@ -66,7 +70,7 @@ $this->params['breadcrumbs'][] = ['label' => '项目管理', 'url' => ['index']]
                 <?php if(!empty($model->change_user)):?>
                 <tr class="warning">
                     <td class="col-md-2">修改人</td>
-                    <td class="col-md-10"><?=AdminUser::getDoName($model->id,3,'special')?></td>
+                    <td class="col-md-10"><?=AdminUser::getDoName($model->id,3,'routine')?></td>
                 </tr>
                     <tr class="default">
                         <td class="col-md-2">修改时间</td>
@@ -81,7 +85,7 @@ $this->params['breadcrumbs'][] = ['label' => '项目管理', 'url' => ['index']]
                             <td class="col-md-10">
                                 <?= Html::a("$child->name", ['reagent/view', 'id' => $child->id]) ?>
 
-                                <?= Html::a('', ['reagent/update', 'id' => $child->id], ['class' => 'glyphicon glyphicon-pencil','title'=>'修改']) ?>
+                                <?= Html::a('', ['reagent/update', 'id' => $child->id,'type'=>$child->type], ['class' => 'glyphicon glyphicon-pencil','title'=>'修改']) ?>
                                 <?= Html::a('', ['reagent/del', 'id' => $child->id], ['class' => 'glyphicon glyphicon-trash','title'=>'删除']) ?>
 
                             </td>

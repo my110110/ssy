@@ -6,7 +6,7 @@ use yii\helpers\Html;
 /* @var $model app\models\News */
 
 $this->title = '添加项目负责人';
-$this->params['breadcrumbs'][] = ['label' => '实验项目', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => '实验项目', 'url' => ['project/index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="content-create">

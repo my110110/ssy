@@ -6,7 +6,7 @@ use yii\helpers\Html;
 /* @var $model app\models\Project */
 
 $this->title = '修改实验项目负责人: ' . $principal->name;
-$this->params['breadcrumbs'][] = ['label' => '项目列表', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => '项目列表', 'url' => ['project/index']];
 $this->params['breadcrumbs'][] = '修改';
 ?>
 <div class="content-update">

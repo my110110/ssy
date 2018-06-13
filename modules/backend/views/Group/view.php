@@ -7,7 +7,7 @@ use app\models\Project;
 /* @var $this yii\web\View */
 /* @var $model app\models\Project */
 $this->title = $model->group_name;
-$this->params['breadcrumbs'][] = ['label' => '项目管理', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => '项目管理', 'url' => ['project/index']];
 
 ?>
 <div class="content-view">

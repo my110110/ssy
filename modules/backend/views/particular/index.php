@@ -15,7 +15,7 @@ use yii\helpers\Url;
 /* @var $searchModel app\modules\backend\models\ProjectSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 /* @var $pagination yii\data\Pagination */
-$this->title = '常规染色';
+$this->title = '特殊染色';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <style type="text/css">
@@ -86,7 +86,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <?=$model['name'];?>
                             </td>
                             <td>
-                                <?=AdminUser::getDoName($model['id'],1,'routine')?>
+                                <?=AdminUser::getDoName($model['id'],1,'particular')?>
                             </td>
 
                             <td>

@@ -17,7 +17,7 @@ use app\models\Sample;
 use app\modules\backend\components\BackendController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use app\models\Stace;
+use app\models\Testmethod;
 use app\helpers\CommonHelper;
 class ReagentController extends BackendController
 {
@@ -79,13 +79,14 @@ class ReagentController extends BackendController
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate($id)
+    public function actionCreate($id,$type)
     {
-        $parent=Routine::findOne(['id'=>$id]);
+
 
         $model=new Reagent();
         $model->retrieve='ETR'.time();
         $model->sid=$id;
+        $model->type=$type;
 
         $post = Yii::$app->request->post();
         if ($post)
@@ -102,7 +103,7 @@ class ReagentController extends BackendController
                         CommonHelper::addlog(1,$model->id,$model->name,'reagent');
                         $tr->commit();
                         Yii::$app->getSession()->setFlash('success', '保存成功');
-                        return  $this->redirect(['routine/view','id'=>$model->sid]);
+                        return  $this->redirect(["$model->type/view",'id'=>$model->sid]);
 
                 } else{
                     $tr->rollBack();
@@ -117,7 +118,6 @@ class ReagentController extends BackendController
 
         }else{
             return $this->render('create', [
-                'parent'=>$parent,
                 'model'=>$model
             ]);
         }
@@ -130,10 +130,10 @@ class ReagentController extends BackendController
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id,$type)
     {
         $model = $this->findModel($id);
-        $parent=Routine::findOne(['id'=>$model->sid]);
+
         $post = Yii::$app->request->post();
         if ($post)
         {
@@ -150,7 +150,7 @@ class ReagentController extends BackendController
                     {
                         $tr->commit();
                         Yii::$app->getSession()->setFlash('success', '修改成功');
-                        return  $this->redirect(['routine/view','id'=>$model->sid]);
+                        return  $this->redirect(["$model->type/view",'id'=>$model->sid]);
                         // return $this->showFlash('添加成功','success',['project/index']);
                     }else{
                         $tr->rollBack();
@@ -165,7 +165,6 @@ class ReagentController extends BackendController
         } else {
             return $this->render('update', [
                 'model' => $model,
-                'parent'=>$parent
             ]);
         }
     }
@@ -183,7 +182,7 @@ class ReagentController extends BackendController
          $model->del_time=date('Y-m-d H:i:s');
         if($model->save()){
             CommonHelper::addlog(4,$model->id,$model->name,'reagent');
-            return $this->showFlash('删除成功','success',['routine/view','id'=>$model->sid]);
+            return $this->showFlash('删除成功','success',['special/view','id'=>$model->sid]);
         }
         return $this->showFlash('删除失败', 'danger',Yii::$app->getUser()->getReturnUrl());
     }

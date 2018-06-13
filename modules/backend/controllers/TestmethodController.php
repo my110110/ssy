@@ -8,22 +8,16 @@
 
 namespace app\modules\backend\controllers;
 
-use app\models\Group;
-use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 use yii;
 use app\modules\backend\components\BackendController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use app\models\Routine;
+use app\models\Testmethod;
 use app\models\Reagent;
 use yii\web\Response;
-use app\helpers\CategoryHelper;
 use yii\data\Pagination;
-use yii\helpers\ArrayHelper;
-use PHPExcel;
-use app\models\UploadFile;
 use app\helpers\CommonHelper;
-class RoutineController extends BackendController
+class TestmethodController extends BackendController
 {
     /**
      * @inheritdoc
@@ -39,35 +33,6 @@ class RoutineController extends BackendController
             ],
         ];
     }
-   public function actionDelete_all()
-   {
-           Yii::$app->response->format = Response::FORMAT_JSON;
-
-           $ids =  Yii::$app->request->post('ids');
-           if(empty($ids)){
-               return ['data'=>'至少选择一个','code'=>1];
-           }
-           $attr = ['isdel'=>1];
-           /** @var $query ContentQuery */
-           $query = Project::find();
-
-           $query->andFilterWhere([
-               'in', 'pro_id', $ids
-           ]);
-           try {
-               Project::updateAll($attr,$query->where);
-               return [
-                   'code'=>0,
-                   'data'=>'操作成功'
-               ];
-           }catch(Exception $e)
-           {
-               return [
-                   'code'=>1,
-                   'data'=>$e->getMessage()
-               ];
-           }
-   }
 
 
 
@@ -79,7 +44,7 @@ class RoutineController extends BackendController
     {
         //分页读取类别数据
 
-        $model =  Routine::find();
+        $model =  Particular::find();
 
 
         $pagination = new Pagination([
@@ -119,7 +84,8 @@ class RoutineController extends BackendController
     public function actionView($id)
     {
 
-        $child=Reagent::find()->andFilterWhere(['sid'=>$id,'isdel'=>0,'type'=>'routine'])->all();
+       // $child=Testmethod::find()->andFilterWhere(['sid'=>$id,'isdel'=>0])->all();
+        $child=array();
         return $this->render('view', [
             'model' => $this->findModel($id),
             'child'=>$child
@@ -132,23 +98,24 @@ class RoutineController extends BackendController
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($id)
     {
-        $model = new Routine();
+        $model = new Testmethod();
+        $model->pid=$id;
         $post = Yii::$app->request->post();
         if ($post) {
             $tr=Yii::$app->db->beginTransaction();
             try{
-
-                $model->setAttributes($_POST['Routine'],false);
+                $model->setAttributes($_POST['Testmethod'],false);
                 $model->add_time=date('Y-m-d H:i:s');
-                $model->retrieve='ETS'.time();
-                if ($model->load($post)&&$model->save() )
+                $model->retrieve='ETM'.time();
+
+                if ($model->load($post)&&$model->save())
                 {
-                    CommonHelper::addlog(1,$model->id,$model->name,'routine');
+                    CommonHelper::addlog(1,$model->id,$model->name,'testmethod');
 
                     $tr->commit();
-                    return $this->showFlash('添加成功','success',['routine/index']);
+                    return $this->showFlash('添加成功','success',['particular/view','id'=>$id]);
 
 
                 }else{
@@ -184,13 +151,13 @@ class RoutineController extends BackendController
 
             $tr=Yii::$app->db->beginTransaction();
             try {
-                $model->setAttributes($_POST['Routine'], false);
+                $model->setAttributes($_POST['Testmethod'], false);
                 if ($model->load($post) && $model->save())
                 {
 
-                    CommonHelper::addlog(3, $model->id, $model->name, 'routine');
+                    CommonHelper::addlog(3, $model->id, $model->name, 'testmethod');
                     $tr->commit();
-                    return $this->showFlash('修改成功','success',['routine/index']);
+                    return $this->showFlash('修改成功','success',['particular/view','id'=>$model->pid]);
                 } else {
                     $tr->rollBack();
                     return $this->showFlash('修改失败');
@@ -208,12 +175,6 @@ class RoutineController extends BackendController
         }
     }
 
-    /**
-     * Deletes an existing Content model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     */
 
     public function actionDel($id)
     {
@@ -221,8 +182,8 @@ class RoutineController extends BackendController
         $model->isdel=1;
         if($model->save())
         {
-            CommonHelper::addlog(4,$model->id,$model->name,'routine');
-            return $this->showFlash('删除成功','success',['routine/index','id'=>$model->id]);
+            CommonHelper::addlog(4,$model->id,$model->name,'testmethod');
+            return $this->showFlash('删除成功','success',['particular/view','id'=>$model->pid]);
         }
         return $this->showFlash('删除失败', 'danger',Yii::$app->getUser()->getReturnUrl());
     }
@@ -235,7 +196,8 @@ class RoutineController extends BackendController
      */
     protected function findModel($id)
     {
-        if (($model = Routine::findOne($id)) !== null) {
+        if (($model = Testmethod::findOne($id)) !== null)
+        {
             return $model;
 
         } else {

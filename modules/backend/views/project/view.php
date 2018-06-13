@@ -14,6 +14,13 @@ $this->params['breadcrumbs'][] = ['label' => '项目管理', 'url' => ['index']]
 
 
     <p>
+        <?php if($model->pro_pid>0):?>
+            <?= Html::a('返回主项目', ['view', 'id' => $model->pro_pid], [
+                'title'=>'返回主项目',
+                'class' => 'btn btn-primary',
+
+            ]) ?>
+        <?php endif;?>
         <?php if(!$model->pro_pid>0):?>
         <?= Html::a('添加子项目', ['create', 'pro_pid' => $model->pro_id], [
             'title'=>'添加子项目',

@@ -7,19 +7,19 @@ use app\models\Project;
 /* @var $this yii\web\View */
 /* @var $model app\models\Project */
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => '项目管理', 'url' => ['project/index']];
+$this->params['breadcrumbs'][] = ['label' => '检测指标列表', 'url' => ['index']];
 
 ?>
 <div class="content-view">
 
 
     <p>
-        <?= Html::a('返回分组', ['group/view', 'id' => $model->gid], [
-            'title'=>'返回项目',
-            'class' => 'btn btn-primary',
+
+        <?= Html::a('添加检测方法', ['testmethod/create', 'id' => $model->id], [
+            'title'=>'添加负责人',
+            'class' => 'btn btn-success',
 
         ]) ?>
-        <?= Html::a('新增实验样本的特定组织与细胞标本', ['stace/create', 'id' => $model->id], ['class' => 'btn btn-info ','title'=>'修改']) ?>
 
         <?= Html::a('修改', ['update', 'id' => $model->id], ['class' => 'btn btn-warning','title'=>'修改']) ?>
         <?= Html::a('删除', ['delete', 'id' => $model->id], [
@@ -38,7 +38,7 @@ $this->params['breadcrumbs'][] = ['label' => '项目管理', 'url' => ['project/
                 <tbody>
                 <tr class="info">
 
-                  <td class="col-md-2">名称</td>
+                  <td class="col-md-2">检测指标名称</td>
                     <td class="col-md-10"><?=$model->name?></td>
                 </tr>
                 <tr class="default">
@@ -48,14 +48,9 @@ $this->params['breadcrumbs'][] = ['label' => '项目管理', 'url' => ['project/
                 </tr>
 
 
-
-                <tr class="info">
-                    <td class="col-md-2">样品描述</td>
-                    <td class="col-md-10"><?=$model->descript?></td>
-                </tr>
                 <tr class="default">
                     <td class="col-md-2">添加人</td>
-                    <td class="col-md-10"><?=AdminUser::getUserName($model->add_user)?></td>
+                    <td class="col-md-10"><?=AdminUser::getDoName($model->id,1,'particular')?></td>
                 </tr>
                 <tr class="info">
                     <td class="col-md-2">添加时间</td>
@@ -64,28 +59,29 @@ $this->params['breadcrumbs'][] = ['label' => '项目管理', 'url' => ['project/
                 <?php if(!empty($model->change_user)):?>
                 <tr class="warning">
                     <td class="col-md-2">修改人</td>
-                    <td class="col-md-10"><?=AdminUser::getUserName($model->change_user)?></td>
+                    <td class="col-md-10"><?=AdminUser::getDoName($model->id,3,'particular')?></td>
                 </tr>
                     <tr class="default">
                         <td class="col-md-2">修改时间</td>
-                        <td class="col-md-10"><?=$model->change_time;?></td>
+                        <td class="col-md-10"><?=$model->change_time?></td>
                     </tr>
                 <?php endif;?>
-                <?php if(count($stace)>0) :?>
-                    <?php foreach ($stace as $stace):?>
 
-                        <tr class="warning">
-                            <td class="col-md-2">样本的特定组织与细胞标本</td>
+                <?php if(count($child)>0) :?>
+                    <?php foreach ($child as $child):?>
+                        <tr class="info">
+                            <td class="col-md-2">检测方法</td>
                             <td class="col-md-10">
-                                <?= Html::a($stace->name, ['stace/view', 'id' => $stace->id]) ?>
+                                <?= Html::a("$child->name", ['testmethod/view', 'id' => $child->id]) ?>
 
-                                <?= Html::a('', ['stace/update', 'id' => $stace->id], ['class' => 'glyphicon glyphicon-pencil','title'=>'修改']) ?>
-                                <?= Html::a('', ['stace/del', 'id' => $stace->id], ['class' => 'glyphicon glyphicon-trash','title'=>'删除']) ?>
+                                <?= Html::a('', ['testmethod/update', 'id' => $child->id], ['class' => 'glyphicon glyphicon-pencil','title'=>'修改']) ?>
+                                <?= Html::a('', ['testmethod/del', 'id' => $child->id], ['class' => 'glyphicon glyphicon-trash','title'=>'删除']) ?>
 
                             </td>
                         </tr>
                     <?php endforeach;?>
                 <?php endif;?>
+
                 </tbody>
             </table>
 

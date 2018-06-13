@@ -1,4 +1,4 @@
-<?php
+    <?php
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
@@ -20,7 +20,6 @@ $this->params['breadcrumbs'][] = ['label' => '样品管理', ['sample/view', 'id
             'class' => 'btn btn-primary',
 
         ]) ?>
-        <?= Html::a('新增实验样本的特定组织与细胞标本', ['stace/create', 'id' => $model->sid], ['class' => 'btn btn-info ','title'=>'修改']) ?>
 
         <?= Html::a('修改', ['update', 'id' => $model->id], ['class' => 'btn btn-warning','title'=>'修改']) ?>
         <?= Html::a('删除', ['delete', 'id' => $model->id], [

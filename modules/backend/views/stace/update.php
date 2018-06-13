@@ -13,8 +13,7 @@ $this->params['breadcrumbs'][] = '修改';
     <div class="nav-tabs-custom">
         <ul class="nav nav-tabs" role="tablist">
             <li role="presentation"><?= Html::a('返回样品详情', ['sample/view','id'=>$model->sid]) ?></li>
-            <li role="presentation"><?= Html::a('新增实验样本的特定组织与细胞标本', ['create','id'=>$model->sid]) ?></li>
-            <li role="presentation" class="active"><?= Html::a('修改项目分组', '#') ?></li>
+            <li role="presentation" class="active"><?= Html::a('修改样品组织', '#') ?></li>
         </ul>
         <div class="tab-content">
             <?= $this->render('_form', [
