@@ -8,15 +8,15 @@ use app\models\Stace;
 /* @var $this yii\web\View */
 /* @var $model app\models\Project */
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => '样品管理', ['sample/view', 'id' => $model->sid]];
+$this->params['breadcrumbs'][] = ['label' => '返回上级', ["$model->type/view", 'id' => $model->sid]];
 
 ?>
 <div class="content-view">
 
 
     <p>
-        <?= Html::a('试剂详情', ['routine/view', 'id' => $model->sid], [
-            'title'=>'试剂详情',
+        <?= Html::a('返回上级', ["$model->type/view", 'id' => $model->sid], [
+            'title'=>'返回上级',
             'class' => 'btn btn-primary',
 
         ]) ?>
