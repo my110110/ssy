@@ -83,7 +83,9 @@ class AdController extends BackendController
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
+        if(Yii::$app->request->post()){
+            var_dump(Yii::$app->request->post());die;
+        }
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->showFlash('添加成功','success');
         } else {

@@ -6,19 +6,35 @@ use yii\helpers\Html;
 /* @var $model app\models\Group */
 
 $this->title = '修改公司信息: ' . $model->company;
-$this->params['breadcrumbs'][] = ['label' => '试剂详情', 'url' => ['reagent/view','id'=>$model->rid]];
+$this->params['breadcrumbs'][] = ['label' => '返回上级', 'url' => ["$model->type/view",'id'=>$model->rid]];
 $this->params['breadcrumbs'][] = '修改';
 ?>
+
 <div class="content-update">
+
     <div class="nav-tabs-custom">
-        <ul class="nav nav-tabs" role="tablist">
-            <li role="presentation"><?= Html::a('试剂详情', ['reagent/view','id'=>$model->rid]) ?></li>
-            <li role="presentation" class="active"><?= Html::a('修改公司信息', '#') ?></li>
-        </ul>
+        <p>
+            <?= Html::a('返回上级', ["$model->type/view",'id'=>$model->rid], [
+                'title'=>'返回',
+                'class' => 'btn btn-primary',
+
+            ]) ?>
+            <?= Html::a('返回详情', ["view",'id'=>$model->id], [
+                'title'=>'返回',
+                'class' => 'btn btn-warning',
+
+            ]) ?>
+            <?= Html::a('修改数据', ['#'], [
+                'title'=>'修改数据',
+                'class' => 'btn btn-success',
+
+            ]) ?>
+
+
+        </p>
         <div class="tab-content">
             <?= $this->render('_form', [
                 'model' => $model,
-                'parent'=>$parent
             ]) ?>
         </div>
     </div>

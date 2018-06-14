@@ -96,16 +96,29 @@ $this->params['breadcrumbs'][] = ['label' => '特殊染色', 'url' => ['particu 
                         <tr class="info">
                             <td class="col-md-2">自配试剂</td>
                             <td class="col-md-10">
-                                <?= Html::a("$child->name", ['reagent/view', 'id' => $child->id]) ?>
+                                <?= Html::a("$child->name", ['reagent/view', 'id' => $child->id,'type'=>$child->type]) ?>
 
-                                <?= Html::a('', ['reagent/update', 'id' => $child->id], ['class' => 'glyphicon glyphicon-pencil','title'=>'修改']) ?>
-                                <?= Html::a('', ['reagent/del', 'id' => $child->id], ['class' => 'glyphicon glyphicon-trash','title'=>'删除']) ?>
+                                <?= Html::a('', ['reagent/update', 'id' => $child->id,'type'=>$child->type], ['class' => 'glyphicon glyphicon-pencil','title'=>'修改']) ?>
+                                <?= Html::a('', ['reagent/del', 'id' => $child->id,'type'=>$child->type], ['class' => 'glyphicon glyphicon-trash','title'=>'删除']) ?>
 
                             </td>
                         </tr>
                     <?php endforeach;?>
                 <?php endif;?>
+                <?php if(count($kit)>0) :?>
+                    <?php foreach ($kit as $kit):?>
+                        <tr class="info">
+                            <td class="col-md-2">商品试剂</td>
+                            <td class="col-md-10">
+                                <?= Html::a("$kit->name", ['kit/view', 'id' => $kit->id]) ?>
 
+                                <?= Html::a('', ['kit/update', 'id' => $kit->id], ['class' => 'glyphicon glyphicon-pencil','title'=>'修改']) ?>
+                                <?= Html::a('', ['kit/del', 'id' => $kit->id], ['class' => 'glyphicon glyphicon-trash','title'=>'删除']) ?>
+
+                            </td>
+                        </tr>
+                    <?php endforeach;?>
+                <?php endif;?>
                 </tbody>
             </table>
 

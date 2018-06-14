@@ -180,10 +180,10 @@ class ReagentController extends BackendController
          $model=$this->findModel($id);
          $model->isdel=1;
          $model->del_time=date('Y-m-d H:i:s');
-        if($model->save()){
-            CommonHelper::addlog(4,$model->id,$model->name,'reagent');
-            return $this->showFlash('删除成功','success',['special/view','id'=>$model->sid]);
-        }
+            if($model->save()){
+                CommonHelper::addlog(4,$model->id,$model->name,'reagent');
+                return $this->showFlash('删除成功','success',["$model->type/view",'id'=>$model->sid]);
+            }
         return $this->showFlash('删除失败', 'danger',Yii::$app->getUser()->getReturnUrl());
     }
 

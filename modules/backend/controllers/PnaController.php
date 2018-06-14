@@ -8,17 +8,16 @@
 
 namespace app\modules\backend\controllers;
 
-use app\models\Kit;
 use yii;
 use app\modules\backend\components\BackendController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use app\models\Pna;
 use app\models\Testmethod;
-use app\models\Reagent;
 use yii\web\Response;
 use yii\data\Pagination;
 use app\helpers\CommonHelper;
-class TestmethodController extends BackendController
+class PnaController extends BackendController
 {
     /**
      * @inheritdoc
@@ -37,22 +36,23 @@ class TestmethodController extends BackendController
 
 
 
+
     /**
      * Lists all Content models.
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex($type)
     {
         //分页读取类别数据
 
-        $model =  Particular::find();
+        $model =  Pna::find();
 
 
         $pagination = new Pagination([
             'defaultPageSize' => 10,
             'totalCount' => $model->count(),
         ]);
-        $model->andFilterWhere(['isdel'=> 0]);
+        $model->andFilterWhere(['isdel'=> 0,'type'=>$type]);
         $model = $model->orderBy('id ASC')
             ->offset($pagination->offset)
             ->limit($pagination->limit)
@@ -85,12 +85,11 @@ class TestmethodController extends BackendController
     public function actionView($id)
     {
 
-        $child=Reagent::find()->andFilterWhere(['sid'=>$id,'isdel'=>0,'type'=>'testmethod'])->all();
-        $kit=Kit::find()->andFilterWhere(['rid'=>$id,'isdel'=>0,'type'=>'testmethod'])->all();
+        $child=Testmethod::find()->andFilterWhere(['pid'=>$id,'isdel'=>0])->all();
         return $this->render('view', [
             'model' => $this->findModel($id),
-            'child'=>$child,
-            'kit'=>$kit
+            'child'=>$child
+
         ]);
     }
 
@@ -99,24 +98,24 @@ class TestmethodController extends BackendController
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate($id)
+    public function actionCreate()
     {
-        $model = new Testmethod();
-        $model->pid=$id;
+        $model = new Particular();
+        $model->retrieve='ETS'.time();
         $post = Yii::$app->request->post();
         if ($post) {
             $tr=Yii::$app->db->beginTransaction();
             try{
-                $model->setAttributes($_POST['Testmethod'],false);
+
+                $model->setAttributes($_POST['Particular'],false);
                 $model->add_time=date('Y-m-d H:i:s');
-                $model->retrieve='ETM'.time();
 
                 if ($model->load($post)&&$model->save())
                 {
-                    CommonHelper::addlog(1,$model->id,$model->name,'testmethod');
+                    CommonHelper::addlog(1,$model->id,$model->name,'particular');
 
                     $tr->commit();
-                    return $this->showFlash('添加成功','success',['particular/view','id'=>$id]);
+                    return $this->showFlash('添加成功','success',['particular/index']);
 
 
                 }else{
@@ -152,13 +151,13 @@ class TestmethodController extends BackendController
 
             $tr=Yii::$app->db->beginTransaction();
             try {
-                $model->setAttributes($_POST['Testmethod'], false);
+                $model->setAttributes($_POST['Particular'], false);
                 if ($model->load($post) && $model->save())
                 {
 
-                    CommonHelper::addlog(3, $model->id, $model->name, 'testmethod');
+                    CommonHelper::addlog(3, $model->id, $model->name, 'particular');
                     $tr->commit();
-                    return $this->showFlash('修改成功','success',['particular/view','id'=>$model->pid]);
+                    return $this->showFlash('修改成功','success',['particular/index']);
                 } else {
                     $tr->rollBack();
                     return $this->showFlash('修改失败');
@@ -183,8 +182,8 @@ class TestmethodController extends BackendController
         $model->isdel=1;
         if($model->save())
         {
-            CommonHelper::addlog(4,$model->id,$model->name,'testmethod');
-            return $this->showFlash('删除成功','success',['particular/view','id'=>$model->pid]);
+            CommonHelper::addlog(4,$model->id,$model->name,'particular');
+            return $this->showFlash('删除成功','success',['particular/index','id'=>$model->id]);
         }
         return $this->showFlash('删除失败', 'danger',Yii::$app->getUser()->getReturnUrl());
     }
@@ -197,7 +196,7 @@ class TestmethodController extends BackendController
      */
     protected function findModel($id)
     {
-        if (($model = Testmethod::findOne($id)) !== null)
+        if (($model = Particular::findOne($id)) !== null)
         {
             return $model;
 

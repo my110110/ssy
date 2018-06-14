@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\web\UploadedFile;
 
 /**
  * This is the model class for table "kit".
@@ -17,7 +18,8 @@ use Yii;
  * @property integer $rid
  * @property integer $isdel
  * @property string $retrieve
- * @property string $pdf
+ * @property string $file
+
  */
 class Kit extends \yii\db\ActiveRecord
 {
@@ -28,7 +30,6 @@ class Kit extends \yii\db\ActiveRecord
     {
         return 'kit';
     }
-
     /**
      * @inheritdoc
      */
@@ -37,7 +38,7 @@ class Kit extends \yii\db\ActiveRecord
         return [
             [['rid', 'isdel'], 'integer'],
             [['name', 'number'], 'string', 'max' => 100],
-            [['company', 'http', 'method', 'savetion', 'retrieve', 'pdf'], 'string', 'max' => 255],
+            [['company', 'http', 'type', 'savetion', 'retrieve', 'file'], 'string', 'max' => 255],
         ];
     }
 
@@ -48,16 +49,20 @@ class Kit extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
-            'number' => 'Number',
-            'company' => 'Company',
-            'http' => 'Http',
-            'method' => 'Method',
+            'name' => '试剂名称',
+            'number' => '货号',
+            'company' => '公司名称',
+            'http' => '官方网址',
+            'type' => 'type',
             'savetion' => 'Savetion',
             'rid' => 'Rid',
             'isdel' => 'Isdel',
             'retrieve' => 'Retrieve',
-            'pdf' => 'Pdf',
+            'file' => '试剂盒说明书',
+            'retrieve'=>'编号'
         ];
     }
+
+
+
 }

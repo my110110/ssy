@@ -1,26 +1,23 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\DetailView;
 use app\modules\backend\models\AdminUser;
-use app\models\Project;
-use app\models\Stace;
+
+
 /* @var $this yii\web\View */
 /* @var $model app\models\Project */
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => '样品管理', ['sample/view', 'id' => $model->sid]];
 
 ?>
 <div class="content-view">
 
 
     <p>
-        <?= Html::a('返回样本', ['sample/view', 'id' => $model->sid], [
-            'title'=>'返回项目',
+        <?= Html::a('返回上级',["$model->type/view",'id'=>$model->rid], [
+            'title'=>'返回上级',
             'class' => 'btn btn-primary',
 
         ]) ?>
-        <?= Html::a('新增实验样本的特定组织与细胞标本', ['stace/create', 'id' => $model->sid], ['class' => 'btn btn-info ','title'=>'修改']) ?>
 
         <?= Html::a('修改', ['update', 'id' => $model->id], ['class' => 'btn btn-warning','title'=>'修改']) ?>
         <?= Html::a('删除', ['delete', 'id' => $model->id], [
@@ -52,23 +49,26 @@ $this->params['breadcrumbs'][] = ['label' => '样品管理', ['sample/view', 'id
 
                 <tr class="info">
                     <td class="col-md-2">样品描述</td>
-                    <td class="col-md-10"><?=$model->description?></td>
+                    <td class="col-md-10"><?=$model->company?></td>
                 </tr>
                 <tr class="info">
-                    <td class="col-md-2">组织/细胞位置</td>
-                    <td class="col-md-10"><?=$model->postion?></td>
+                    <td class="col-md-2">官网地址</td>
+                    <td class="col-md-10"><?=$model->http?></td>
                 </tr>
                 <tr class="info">
-                    <td class="col-md-2">处理方式</td>
-                    <td class="col-md-10"><?=Stace::$handle[$model->handle]?></td>
+                    <td class="col-md-2">查看说明</td>
+                    <td class="col-md-10">
+
+                        <?= Html::a($model->pdf, '/'.$model->pdf, [
+                            'title'=>'试剂盒说明书',
+                            'target'=>'_black'
+                        ]) ?>
+                    </td>
                 </tr>
-                <tr class="info">
-                    <td class="col-md-2">存放位置</td>
-                    <td class="col-md-10"><?=$model->place?></td>
-                </tr>
+
                 <tr class="default">
                     <td class="col-md-2">添加人</td>
-                    <td class="col-md-10"><?=AdminUser::getUserName($model->add_user)?></td>
+                    <td class="col-md-10"><?=AdminUser::getDoName($model->id,1,'kit')?></td>
                 </tr>
                 <tr class="info">
                     <td class="col-md-2">添加时间</td>

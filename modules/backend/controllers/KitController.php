@@ -10,6 +10,7 @@ namespace app\modules\backend\controllers;
 
 use app\models\Company;
 use app\models\Reagent;
+use app\models\Testmethod;
 use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 use yii;
 use app\models\Sample;
@@ -17,6 +18,7 @@ use app\modules\backend\components\BackendController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\models\Kit;
+use yii\web\UploadedFile;
 use app\helpers\CommonHelper;
 class KitController extends BackendController
 {
@@ -64,7 +66,7 @@ class KitController extends BackendController
     {
 
         $model=$this->findModel($id);
-        $parent=Sample::findOne(['id'=>$model->sid]);
+        $parent=Testmethod::findOne(['id'=>$model->rid]);
         return $this->render('view', [
             'model' => $model,
             'parent'=>$parent
@@ -76,28 +78,32 @@ class KitController extends BackendController
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate($id)
+    public function actionCreate($id,$type)
     {
-        $parent=Reagent::findOne(['id'=>$id]);
         $model=new Kit();
         $model->rid=$id;
-
+        $model->type=$type;
         $post = Yii::$app->request->post();
         if ($post)
         {
-            var_dump($_POST);die;
+
             $tr=Yii::$app->db->beginTransaction();
             try{
 
 
                 $model->attributes=$_POST['Kit'];
-
+                $model->retrieve='TER'.time();
+                $model->file = UploadedFile::getInstance($model, 'file');
+                if ($model->file) {
+                    $model->file->saveAs('uploads/pdf/' .  $model->retrieve . '.' . $model->file->extension);
+                }
+                $model->pdf='uploads/pdf/' .  $model->retrieve . '.' . $model->file->extension;
                 if ($model->load($post)&&$model->save() )
                 {
-                    CommonHelper::addlog(1,$model->id,$model->company,'company');
+                    CommonHelper::addlog(1,$model->id,$model->name,'kit');
                     $tr->commit();
                     Yii::$app->getSession()->setFlash('success', '保存成功');
-                    return  $this->redirect(['reagent/view','id'=>$model->rid]);
+                    return  $this->redirect(["$model->type/view",'id'=>$model->rid]);
 
                 } else{
                     $tr->rollBack();
@@ -112,7 +118,6 @@ class KitController extends BackendController
 
         }else{
             return $this->render('create', [
-                'parent'=>$parent,
                 'model'=>$model
             ]);
         }
@@ -128,22 +133,29 @@ class KitController extends BackendController
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $parent=Reagent::findOne(['id'=>$model->rid]);
         $post = Yii::$app->request->post();
         if ($post)
         {
 
             $tr=Yii::$app->db->beginTransaction();
             try{
-                $model->attributes=$_POST['Company'];
+                $model->attributes=$_POST['Kit'];
+                $model->file = UploadedFile::getInstance($model, 'file');
+                if ($model->file) {
+                    @unlink($model->pdf);
+                    $model->file->saveAs('uploads/pdf/' .  $model->retrieve . '.' . $model->file->extension);
+                    $model->pdf='uploads/pdf/' .  $model->retrieve . '.' . $model->file->extension;
+
+                }
+
                 if ($model->load($post) )
                 {
-                    CommonHelper::addlog(3,$model->id,$model->company,'company');
+                    CommonHelper::addlog(3,$model->id,$model->company,'kit');
                     if( $model->save())
                     {
                         $tr->commit();
                         Yii::$app->getSession()->setFlash('success', '修改成功');
-                        return  $this->redirect(['reagent/view','id'=>$model->rid]);
+                        return  $this->redirect(["$model->type/view",'id'=>$model->rid]);
                         // return $this->showFlash('添加成功','success',['project/index']);
                     }else{
                         $tr->rollBack();
@@ -158,7 +170,6 @@ class KitController extends BackendController
         } else {
             return $this->render('update', [
                 'model' => $model,
-                'parent'=>$parent
             ]);
         }
     }
@@ -174,8 +185,8 @@ class KitController extends BackendController
         $model=$this->findModel($id);
         $model->isdel=1;
         if($model->save()){
-            CommonHelper::addlog(4,$model->id,$model->company,'company');
-            return $this->showFlash('删除成功','success',['reagent/view','id'=>$model->rid]);
+            CommonHelper::addlog(4,$model->id,$model->company,'kit');
+            return $this->showFlash('删除成功','success',["$model->type/view",'id'=>$model->rid]);
         }
         return $this->showFlash('删除失败', 'danger',Yii::$app->getUser()->getReturnUrl());
     }
@@ -189,7 +200,7 @@ class KitController extends BackendController
      */
     protected function findModel($id)
     {
-        if (($model = Company::findOne($id)) !== null) {
+        if (($model = Kit::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

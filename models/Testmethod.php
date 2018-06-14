@@ -19,6 +19,7 @@ use Yii;
  * @property integer $chang_user
  * @property integer $isdel
  * @property string $del_time
+ * @property integer $pid
  */
 class Testmethod extends \yii\db\ActiveRecord
 {
@@ -36,9 +37,9 @@ class Testmethod extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [[ 'name'], 'required'],
-            [[ 'chang_user', 'isdel'], 'integer'],
+            [['name'], 'required'],
             [['add_time', 'change_time', 'del_time'], 'safe'],
+            [['chang_user', 'isdel', 'pid'], 'integer'],
             [['name', 'retrieve'], 'string', 'max' => 100],
             [['positive', 'negative', 'judge', 'matters'], 'string', 'max' => 255],
         ];
@@ -50,18 +51,19 @@ class Testmethod extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'pid' => 'ID',
-            'name' => '检测名称方法',
-            'retrieve' => '检索号',
-            'positive' => '阳性对照',
-            'negative' => '阴性对照',
-            'judge' => '结果判断',
-            'matters' => '注意事项',
+            'id' => 'ID',
+            'name' => 'Name',
+            'retrieve' => 'Retrieve',
+            'positive' => 'Positive',
+            'negative' => 'Negative',
+            'judge' => 'Judge',
+            'matters' => 'Matters',
             'add_time' => 'Add Time',
             'change_time' => 'Change Time',
             'chang_user' => 'Chang User',
             'isdel' => 'Isdel',
             'del_time' => 'Del Time',
+            'pid' => 'Pid',
         ];
     }
 }
