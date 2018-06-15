@@ -16,7 +16,14 @@ use yii\helpers\ArrayHelper;
             ]);
     ?>
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
-    <?=$form->field($model,'retrieve')->textInput(['readonly'=>true]) ?>
+    <?=$form->field($model,'OfficialSymbol')->textInput() ?>
+    <?=$form->field($model,'OfficialFullName')->textInput() ?>
+    <?=$form->field($model,'GeneID')->textInput() ?>
+    <?=$form->field($model,'function')->textInput() ?>
+    <?=$form->field($model,'NCBIgd')->textInput() ?>
+    <?=$form->field($model,'GeneGards')->textInput() ?>
+    <?=$form->field($model,'standard')->textInput() ?>
+    <?=$form->field($model,'cells')->textInput() ?>
     <div class="form-group text-right">
         <?= Html::submitButton('提交', ['class' => $model->isNewRecord ? 'btn btn-success ' : 'btn btn-primary ']) ?>
     </div>

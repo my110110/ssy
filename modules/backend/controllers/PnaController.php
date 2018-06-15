@@ -60,7 +60,8 @@ class PnaController extends BackendController
 
         return $this->render('index', [
             'model' => $model,
-            'pagination'=>$pagination
+            'pagination'=>$pagination,
+            'type'=>$type
         ]);
 
 //        $searchModel = new ProjectSearch();
@@ -98,24 +99,30 @@ class PnaController extends BackendController
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($type)
     {
-        $model = new Particular();
-        $model->retrieve='ETS'.time();
+        $model = new Pna();
+        $model->type=$type;
+        if($type==1){
+            $model->retrieve='ETP'.time();
+        }elseif ($type==2){
+            $model->retrieve='ETN'.time();
+        }
+
         $post = Yii::$app->request->post();
         if ($post) {
             $tr=Yii::$app->db->beginTransaction();
             try{
 
-                $model->setAttributes($_POST['Particular'],false);
+                $model->setAttributes($_POST['Pna'],false);
                 $model->add_time=date('Y-m-d H:i:s');
 
                 if ($model->load($post)&&$model->save())
                 {
-                    CommonHelper::addlog(1,$model->id,$model->name,'particular');
+                    CommonHelper::addlog(1,$model->id,$model->name,'pna');
 
                     $tr->commit();
-                    return $this->showFlash('添加成功','success',['particular/index']);
+                    return $this->showFlash('添加成功','success',['pna/index','type'=>$model->type]);
 
 
                 }else{
@@ -151,13 +158,13 @@ class PnaController extends BackendController
 
             $tr=Yii::$app->db->beginTransaction();
             try {
-                $model->setAttributes($_POST['Particular'], false);
+                $model->setAttributes($_POST['Pna'], false);
                 if ($model->load($post) && $model->save())
                 {
 
-                    CommonHelper::addlog(3, $model->id, $model->name, 'particular');
+                    CommonHelper::addlog(3, $model->id, $model->name, 'pna');
                     $tr->commit();
-                    return $this->showFlash('修改成功','success',['particular/index']);
+                    return $this->showFlash('修改成功','success',['pna/index','type'=>$model->type]);
                 } else {
                     $tr->rollBack();
                     return $this->showFlash('修改失败');
@@ -196,7 +203,7 @@ class PnaController extends BackendController
      */
     protected function findModel($id)
     {
-        if (($model = Particular::findOne($id)) !== null)
+        if (($model = Pna::findOne($id)) !== null)
         {
             return $model;
 

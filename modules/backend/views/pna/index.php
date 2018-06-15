@@ -15,7 +15,7 @@ use yii\helpers\Url;
 /* @var $searchModel app\modules\backend\models\ProjectSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 /* @var $pagination yii\data\Pagination */
-$this->title = '特殊染色';
+$this->title = '蛋白核酸指标';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <style type="text/css">
@@ -28,16 +28,14 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="nav-tabs-custom">
         <ul class="nav nav-tabs" role="tablist">
             <li role="presentation" class="active">
-                <?= Html::a('检测指标列表', ['index'],  ['class' => 'btn btn-dafault ','role'=>'button']) ?>
+                <?= Html::a('检测指标列表', ['index','type'=>$type],  ['class' => 'btn btn-dafault ','role'=>'button']) ?>
             </li>
             <li role="presentation">
-                <?= Html::a('添加检测指标', ['create'],['class' => 'btn btn-primary  ','role'=>'button']) ?>
+                <?= Html::a('添加检测指标', ['create','type'=>$type],['class' => 'btn btn-primary  ','role'=>'button']) ?>
             </li>
         </ul>
 
         <div class="tab-content cos">
-
-
             <div class="row clearfix" style="margin-top: 10px;">
                 <div class="col-md-12 column">
                     <table class="table table-hover table-bordered">
