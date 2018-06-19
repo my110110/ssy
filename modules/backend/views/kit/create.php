@@ -18,11 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
         ]) ?>
 
-        <?= Html::a('新增数据', ['#'], [
-            'title'=>'添加负责人',
-            'class' => 'btn btn-success',
 
-        ]) ?>
 
 
     </p>

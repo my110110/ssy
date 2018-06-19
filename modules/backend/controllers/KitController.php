@@ -93,6 +93,7 @@ class KitController extends BackendController
 
                 $model->attributes=$_POST['Kit'];
                 $model->retrieve='TER'.time();
+                $model->add_time=date('Y-m-d H:i:s');
                 $model->file = UploadedFile::getInstance($model, 'file');
                 if ($model->file) {
                     $model->file->saveAs('uploads/pdf/' .  $model->retrieve . '.' . $model->file->extension);

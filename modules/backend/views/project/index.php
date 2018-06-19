@@ -143,9 +143,9 @@ $this->params['breadcrumbs'][] = $this->title;
 <?php else:?>
                         <?php foreach($model as $pid): ?>
 
-                        <tr class="shows success" attr="<?=$pid['pro_id']?>">
+                        <tr class=" success" >
 
-                            <td>
+                            <td class="shows" attr="<?=$pid['pro_id']?>">
                                 <span class="glyphicon glyphicon-folder-open" style="padding-right :5px"></span><?=$pid['pro_name'];?>
                             </td>
                             <td>
@@ -263,7 +263,11 @@ echo LinkPager::widget([
              var ids='pid_'+attr;
              var node=$('.'+ids);
 
-             node.slideToggle();
+           if(node.is(':hidden')){
+               node.show();
+           }else {
+               node.hide();
+           }
          });
 
 

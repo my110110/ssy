@@ -8,6 +8,7 @@
 
 namespace app\modules\backend\controllers;
 
+use app\models\Kit;
 use yii;
 use app\modules\backend\components\BackendController;
 use yii\web\NotFoundHttpException;
@@ -86,7 +87,7 @@ class PnaController extends BackendController
     public function actionView($id)
     {
 
-        $child=Testmethod::find()->andFilterWhere(['pid'=>$id,'isdel'=>0])->all();
+        $child=Kit::find()->andFilterWhere(['rid'=>$id,'isdel'=>0,'type'=>'pna'])->all();
         return $this->render('view', [
             'model' => $this->findModel($id),
             'child'=>$child
@@ -189,8 +190,8 @@ class PnaController extends BackendController
         $model->isdel=1;
         if($model->save())
         {
-            CommonHelper::addlog(4,$model->id,$model->name,'particular');
-            return $this->showFlash('删除成功','success',['particular/index','id'=>$model->id]);
+            CommonHelper::addlog(4,$model->id,$model->name,'pna');
+            return $this->showFlash('删除成功','success',['pna/index','id'=>$model->id]);
         }
         return $this->showFlash('删除失败', 'danger',Yii::$app->getUser()->getReturnUrl());
     }
