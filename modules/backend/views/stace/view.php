@@ -20,8 +20,14 @@ $this->params['breadcrumbs'][] = ['label' => '样品管理', ['sample/view', 'id
             'class' => 'btn btn-primary',
 
         ]) ?>
+        <?= Html::a('新增实验结果', [''], [
+            'title'=>'返回项目',
+            'class' => 'btn btn-success n_add',
 
-        <?= Html::a('修改', ['update', 'id' => $model->id], ['class' => 'btn btn-warning','title'=>'修改']) ?>
+        ]) ?>
+        <?= Html::a('修改', ['update', 'id' => $model->id], [
+                'class' => 'btn btn-warning','title'=>'修改'])
+        ?>
         <?= Html::a('删除', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'title'=>'删除',
@@ -32,6 +38,14 @@ $this->params['breadcrumbs'][] = ['label' => '样品管理', ['sample/view', 'id
         ]) ?>
 
     </p>
+    <p class="r_add" style="display: none">
+        <?= Html::a('常规H&E染色', ['update', 'id' => $model->id], ['class' => 'btn btn-default','title'=>'修改']) ?>
+        <?= Html::a('特殊染色', ['update', 'id' => $model->id], ['class' => 'btn btn-default','title'=>'修改']) ?>
+        <?= Html::a('蛋白', ['update', 'id' => $model->id], ['class' => 'btn btn-default','title'=>'修改']) ?>
+        <?= Html::a('核酸', ['update', 'id' => $model->id], ['class' => 'btn btn-default','title'=>'修改']) ?>
+
+    </p>
+
     <div class="row clearfix" style="margin-top: 10px;">
         <div class="col-md-12 column">
             <table class="table table-hover table-bordered">
@@ -89,3 +103,20 @@ $this->params['breadcrumbs'][] = ['label' => '样品管理', ['sample/view', 'id
 
 
 </div>
+        <script><?php $this->beginBlock('js_end') ?>
+
+            $(function(){
+
+                $('.n_add').click(function () {
+                 $('.r_add').show();
+                 return false;
+                });
+
+
+            })
+
+            <?php $this->endBlock() ?>
+
+        </script>
+
+        <?php $this->registerJs($this->blocks['js_end'],\yii\web\View::POS_END); ?>

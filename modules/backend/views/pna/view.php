@@ -12,7 +12,6 @@ $this->params['breadcrumbs'][] = ['label' => '返回列表', 'url' => ['index', 
 ?>
 <div class="content-view">
 
-
     <p>
          <?php if($model->type==1):?>
         <?= Html::a('添加抗体', ['kit/create', 'id' => $model->id,'type'=>'pna'], [
@@ -38,6 +37,7 @@ $this->params['breadcrumbs'][] = ['label' => '返回列表', 'url' => ['index', 
         ]) ?>
 
     </p>
+
     <div class="row clearfix" style="margin-top: 10px;">
         <div class="col-md-12 column">
             <table class="table table-hover table-bordered">
