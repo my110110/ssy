@@ -21,6 +21,7 @@ use yii\helpers\ArrayHelper;
     <?=$form->field($model,'retrieve')->textInput(['readonly' => true]) ?>
     <?= $form->field($model, 'sid',['options'=>['tag'=>false]])->hiddenInput()->label(false)?>
     <?= $form->field($model, 'type',['options'=>['tag'=>false]])->hiddenInput()->label(false)?>
+    <?= $form->field($model, 'tid',['options'=>['tag'=>false]])->hiddenInput()->label(false)?>
 
     <div class="form-group text-right">
         <?= Html::submitButton('提交', ['class' => $model->isNewRecord ? 'btn btn-success ' : 'btn btn-primary ']) ?>

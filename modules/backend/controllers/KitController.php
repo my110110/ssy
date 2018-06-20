@@ -81,7 +81,9 @@ class KitController extends BackendController
     public function actionCreate($id,$type)
     {
         $model=new Kit();
-        $model->rid=$id;
+        $parent=Testmethod::findOne($id);
+        $model->rid=$parent->pid;
+        $model->tid=$id;
         $model->type=$type;
         $post = Yii::$app->request->post();
         if ($post)
@@ -104,7 +106,7 @@ class KitController extends BackendController
                     CommonHelper::addlog(1,$model->id,$model->name,'kit');
                     $tr->commit();
                     Yii::$app->getSession()->setFlash('success', '保存成功');
-                    return  $this->redirect(["$model->type/view",'id'=>$model->rid]);
+                    return  $this->redirect(["$model->type/view",'id'=>$model->tid]);
 
                 } else{
                     $tr->rollBack();
@@ -156,7 +158,7 @@ class KitController extends BackendController
                     {
                         $tr->commit();
                         Yii::$app->getSession()->setFlash('success', '修改成功');
-                        return  $this->redirect(["$model->type/view",'id'=>$model->rid]);
+                        return  $this->redirect(["$model->type/view",'id'=>$model->tid]);
                         // return $this->showFlash('添加成功','success',['project/index']);
                     }else{
                         $tr->rollBack();

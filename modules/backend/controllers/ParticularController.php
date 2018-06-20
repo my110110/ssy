@@ -13,7 +13,10 @@ use app\modules\backend\components\BackendController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\models\Particular;
+use app\models\Sdyeing;
 use app\models\Testmethod;
+use app\models\Kit;
+use app\models\Reagent;
 use yii\web\Response;
 use yii\data\Pagination;
 use app\helpers\CommonHelper;
@@ -101,9 +104,10 @@ class ParticularController extends BackendController
     public function actionAdd($id)
     {
         $model = new Sdyeing();
-        $routine=Routine::find()->andFilterWhere(['isdel'=>'0'])->all();
+        $particular=Particular::find()->andFilterWhere(['isdel'=>'0'])->all();
 
-        $reagent=Reagent::find()->andFilterWhere(['isdel'=>0,'type'=>'routine'])->all();
+        $reagent=Reagent::find()->andFilterWhere(['isdel'=>0,'type'=>'testmethod'])->all();
+        $kit=Kit::find()->andFilterWhere(['isdel'=>0,'type'=>'testmethod'])->all();
 
         $model ->yid= $id;
         $post = Yii::$app->request->post();
@@ -111,9 +115,10 @@ class ParticularController extends BackendController
             $tr=Yii::$app->db->beginTransaction();
             try{
                 $post['Sdyeing']['kit']=json_encode(  $post['Sdyeing']['kit']);
+                $post['Sdyeing']['rgid']=json_encode(  $post['Sdyeing']['rgid']);
                 $model->setAttributes($_POST['Sdyeing'],false);
                 $model->add_time=date('Y-m-d H:i:s');
-                $model->ntype=1;
+                $model->ntype=2;
                 $model->retrieve='ERHE'.time();
                 if ($model->load($post)&&$model->save() )
                 {
@@ -135,8 +140,9 @@ class ParticularController extends BackendController
         }
         return $this->render('add', [
             'model' => $model,
-            'routine'=>$routine,
-            'reagent'=>$reagent
+            'particular'=>$particular,
+            'reagent'=>$reagent,
+            'kit'=>$kit
         ]);
     }
 

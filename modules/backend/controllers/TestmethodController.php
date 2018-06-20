@@ -85,8 +85,8 @@ class TestmethodController extends BackendController
     public function actionView($id)
     {
 
-        $child=Reagent::find()->andFilterWhere(['sid'=>$id,'isdel'=>0,'type'=>'testmethod'])->all();
-        $kit=Kit::find()->andFilterWhere(['rid'=>$id,'isdel'=>0,'type'=>'testmethod'])->all();
+        $child=Reagent::find()->andFilterWhere(['tid'=>$id,'isdel'=>0,'type'=>'testmethod'])->all();
+        $kit=Kit::find()->andFilterWhere(['tid'=>$id,'isdel'=>0,'type'=>'testmethod'])->all();
         return $this->render('view', [
             'model' => $this->findModel($id),
             'child'=>$child,

@@ -14,7 +14,7 @@ use app\modules\backend\components\BackendController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\models\Pna;
-use app\models\Testmethod;
+use app\models\Sdyeing;
 use yii\web\Response;
 use yii\data\Pagination;
 use app\helpers\CommonHelper;
@@ -65,15 +65,62 @@ class PnaController extends BackendController
             'type'=>$type
         ]);
 
-//        $searchModel = new ProjectSearch();
-//
-//        $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $this->module->params['pageSize']);
-//        return $this->render('index', [
-//            'searchModel' => $searchModel,
-//            'dataProvider' => $dataProvider,
-//        ]);
-    }
 
+    }
+    /**
+     * Creates a new Content model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return mixed
+     */
+    public function actionAdd($id,$ntype)
+    {
+        $model = new Sdyeing();
+        if($ntype==3){
+
+            $type=1;//蛋白
+        }else{
+            $type=2;//核酸
+        }
+        $pna=Pna::find()->andFilterWhere(['isdel'=>'0','type'=>$type])->all();
+
+        $kit=Kit::find()->andFilterWhere(['isdel'=>0,'type'=>'pna'])->all();
+
+        $model ->yid= $id;
+        $model ->ntype= $ntype;
+        $post = Yii::$app->request->post();
+        if ($post) {
+            $tr=Yii::$app->db->beginTransaction();
+            try{
+                $post['Sdyeing']['kit']=json_encode(  $post['Sdyeing']['kit']);
+                $post['Sdyeing']['rgid']=json_encode(  $post['Sdyeing']['rgid']);
+                $model->setAttributes($_POST['Sdyeing'],false);
+                $model->add_time=date('Y-m-d H:i:s');
+                $model->ntype=2;
+                $model->retrieve='ERHE'.time();
+                if ($model->load($post)&&$model->save() )
+                {
+                    CommonHelper::addlog(1,$model->id,$model->section_name,'sdyeing');
+
+                    $tr->commit();
+                    return $this->showFlash('添加成功','success',['stace/view','id'=>$model->yid]);
+                }else{
+                    $tr->rollBack();
+                    return $this->showFlash('添加失败');
+                }
+            }catch (excepetion $e)
+            {
+                $tr->rollBack();
+                return $this->showFlash('添加失败');
+            }
+
+
+        }
+        return $this->render('add', [
+            'model' => $model,
+            'pna'=>$pna,
+            'kit'=>$kit
+        ]);
+    }
     public function actionUploadfile()
     {
 

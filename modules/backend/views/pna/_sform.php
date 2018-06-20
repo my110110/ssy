@@ -25,11 +25,13 @@ use kartik\file\FileInput;
 
 
     <div class="form-group">
-        <label class="control-label" for="sdyeing-nid">检测指标</label>
+        <label class="control-label" for="sdyeing-nid">
+检测指标
+        </label>
         <select id="sdyeing-nid" class="part form-control" name="Sdyeing[nid]" aria-invalid="false">
-            <?php if(count($particular)>0) :?>
-                <?php foreach ($particular as $particular):?>
-                    <option value="<?=$particular->id?>"><?=$particular->name?></option>
+            <?php if(count($pna)>0) :?>
+                <?php foreach ($pna as $pna):?>
+                    <option value="<?=$pna->id?>"><?=$pna->name?></option>
                 <?php endforeach;?>
             <?php endif;?>
         </select>
@@ -37,29 +39,20 @@ use kartik\file\FileInput;
         <div class="help-block"></div>
     </div>
 <div class="form-group">
-    <label class="control-label" >使用自配试剂</label>
+    <label class="control-label" >
+        <?php if($model->ntype==3){echo '使用抗体';}elseif($model->ntype==4){echo '使用核算试剂盒';}?>
+
+    </label>
     <div id="sdyeing-kit">
-        <?php if(count($reagent)>0) :?>
-            <?php foreach ($reagent as $reagent):?>
-            <div class="checkbox id<?=$reagent->sid?>  hid" ><label><input type="checkbox" name="Sdyeing[rgid][]" value="<?=$reagent->id?>" data-index="0"><?=$reagent->name?></label></div>
+        <?php if(count($kit)>0) :?>
+            <?php foreach ($kit as $kit):?>
+            <div class="checkbox id<?=$kit->rid?>  hid" ><label><input type="checkbox" name="Sdyeing[kit][]" value="<?=$kit->id?>" data-index="0"><?=$kit->name?></label></div>
             <?php endforeach;?>
         <?php endif;?>
     </div>
 
 <div class="help-block"></div>
 </div>
-    <div class="form-group">
-        <label class="control-label" >使用商品试剂</label>
-        <div id="sdyeing-kit">
-            <?php if(count($kit)>0) :?>
-                <?php foreach ($kit as $kit):?>
-                    <div class="checkbox id<?=$kit->rid?>  hid" ><label><input type="checkbox" name="Sdyeing[kit][]" value="<?=$kit->id?>" data-index="0"><?=$kit->name?></label></div>
-                <?php endforeach;?>
-            <?php endif;?>
-        </div>
-
-        <div class="help-block"></div>
-    </div>
     <?=$form->field($model,'section_thickness')->textInput() ?>
     <?=$form->field($model,'section_preprocessing')->textInput() ?>
     <?=$form->field($model,'place')->textInput() ?>

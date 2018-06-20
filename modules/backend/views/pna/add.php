@@ -17,8 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="tab-content">
             <?= $this->render('_sform', [
                 'model' => $model,
-                'particular'=>$particular,
-                'reagent'=>$reagent,
+                'pna'=>$pna,
                 'kit'=>$kit
             ]) ?>
         </div>

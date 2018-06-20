@@ -10,7 +10,7 @@ namespace app\modules\backend\controllers;
 
 use app\models\Company;
 use app\models\Reagent;
-use app\models\Routine;
+use app\models\Particular;
 use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 use yii;
 use app\models\Sample;
@@ -85,7 +85,9 @@ class ReagentController extends BackendController
 
         $model=new Reagent();
         $model->retrieve='ETR'.time();
-        $model->sid=$id;
+        $parent=Testmethod::findOne($id);
+        $model->tid=$id;
+        $model->sid=$parent->pid;
         $model->type=$type;
 
         $post = Yii::$app->request->post();
@@ -103,7 +105,7 @@ class ReagentController extends BackendController
                         CommonHelper::addlog(1,$model->id,$model->name,'reagent');
                         $tr->commit();
                         Yii::$app->getSession()->setFlash('success', '保存成功');
-                        return  $this->redirect(["$model->type/view",'id'=>$model->sid]);
+                        return  $this->redirect(["$model->type/view",'id'=>$model->tid]);
 
                 } else{
                     $tr->rollBack();
@@ -150,7 +152,7 @@ class ReagentController extends BackendController
                     {
                         $tr->commit();
                         Yii::$app->getSession()->setFlash('success', '修改成功');
-                        return  $this->redirect(["$model->type/view",'id'=>$model->sid]);
+                        return  $this->redirect(["$model->type/view",'id'=>$model->tid]);
                         // return $this->showFlash('添加成功','success',['project/index']);
                     }else{
                         $tr->rollBack();
