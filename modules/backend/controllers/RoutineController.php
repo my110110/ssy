@@ -16,6 +16,8 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\models\Routine;
 use app\models\Reagent;
+
+use app\models\Sdyeing;
 use yii\web\Response;
 use app\helpers\CategoryHelper;
 use yii\data\Pagination;
@@ -39,36 +41,6 @@ class RoutineController extends BackendController
             ],
         ];
     }
-   public function actionDelete_all()
-   {
-           Yii::$app->response->format = Response::FORMAT_JSON;
-
-           $ids =  Yii::$app->request->post('ids');
-           if(empty($ids)){
-               return ['data'=>'至少选择一个','code'=>1];
-           }
-           $attr = ['isdel'=>1];
-           /** @var $query ContentQuery */
-           $query = Project::find();
-
-           $query->andFilterWhere([
-               'in', 'pro_id', $ids
-           ]);
-           try {
-               Project::updateAll($attr,$query->where);
-               return [
-                   'code'=>0,
-                   'data'=>'操作成功'
-               ];
-           }catch(Exception $e)
-           {
-               return [
-                   'code'=>1,
-                   'data'=>$e->getMessage()
-               ];
-           }
-   }
-
 
 
     /**
@@ -126,7 +98,52 @@ class RoutineController extends BackendController
 
         ]);
     }
+        /**
+         * Creates a new Content model.
+         * If creation is successful, the browser will be redirected to the 'view' page.
+         * @return mixed
+         */
+        public function actionAdd($id)
+        {
+            $model = new Sdyeing();
+            $routine=Routine::find()->andFilterWhere(['isdel'=>'0'])->all();
 
+            $reagent=Reagent::find()->andFilterWhere(['isdel'=>0,'type'=>'routine'])->all();
+
+            $model ->yid= $id;
+            $post = Yii::$app->request->post();
+            if ($post) {
+                $tr=Yii::$app->db->beginTransaction();
+                try{
+                    $post['Sdyeing']['kit']=json_encode(  $post['Sdyeing']['kit']);
+                    $model->setAttributes($_POST['Sdyeing'],false);
+                    $model->add_time=date('Y-m-d H:i:s');
+                    $model->ntype=1;
+                    $model->retrieve='ERHE'.time();
+                    if ($model->load($post)&&$model->save() )
+                    {
+                        CommonHelper::addlog(1,$model->id,$model->section_name,'sdyeing');
+
+                        $tr->commit();
+                        return $this->showFlash('添加成功','success',['stace/view','id'=>$model->yid]);
+                    }else{
+                        $tr->rollBack();
+                        return $this->showFlash('添加失败');
+                    }
+                }catch (excepetion $e)
+                {
+                    $tr->rollBack();
+                    return $this->showFlash('添加失败');
+                }
+
+
+            }
+            return $this->render('add', [
+                'model' => $model,
+                'routine'=>$routine,
+                'reagent'=>$reagent
+            ]);
+        }
     /**
      * Creates a new Content model.
      * If creation is successful, the browser will be redirected to the 'view' page.

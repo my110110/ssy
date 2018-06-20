@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use app\components\behaviors\UploadBehavior;
 
 /**
  * This is the model class for table "sdyeing".
@@ -28,6 +29,8 @@ use Yii;
  * @property string $kit
  * @property string $rgid
  * @property string $attention
+ * @package app\models
+ * @method uploadImgFile()
  */
 class Sdyeing extends \yii\db\ActiveRecord
 {
@@ -38,7 +41,12 @@ class Sdyeing extends \yii\db\ActiveRecord
     {
         return 'sdyeing';
     }
-
+    static $section_type=[
+        '冰冻切片'=>'冰冻切片',
+        '石蜡切片'=>'石蜡切片',
+        '细胞爬片'=>'细胞爬片',
+        '细胞甩/辅片'=>'细胞甩/辅片',
+    ];
     /**
      * @inheritdoc
      */
@@ -62,13 +70,13 @@ class Sdyeing extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'retrieve' => 'Retrieve',
-            'section_name' => 'Section Name',
-            'section_type' => 'Section Type',
-            'section_thickness' => 'Section Thickness',
-            'section_preprocessing' => 'Section Preprocessing',
-            'testflow' => 'Testflow',
+            'section_name' => '切片名称',
+            'section_type' => '切片类型',
+            'section_thickness' => '切片厚度',
+            'section_preprocessing' => '切片预处理',
+            'testflow' => '实验流程',
             'img' => 'Img',
-            'place' => 'Place',
+            'place' => '存放位置',
             'add_user' => 'Add User',
             'add_time' => 'Add Time',
             'change_user' => 'Change User',
@@ -80,7 +88,38 @@ class Sdyeing extends \yii\db\ActiveRecord
             'ntype' => 'Ntype',
             'kit' => 'Kit',
             'rgid' => 'Rgid',
-            'attention' => 'Attention',
+            'attention' => '注意事项',
+            'imageFile'=>'切片数字图像文件'
         ];
     }
+
+
+    public function beforeSave($insert)
+    {
+
+        $res = parent::beforeSave($insert);
+        if($res==false){
+            return $res;
+        }
+        if (!$this->validate()) {
+            Yii::info('Model not updated due to validation error.', __METHOD__);
+            return false;
+        }
+        $file = $this->uploadImgFile();
+        if($file){
+            $this->img = $file;
+        }
+        return true;
+    }
+
+    public function behaviors()
+    {
+        return [
+            [
+                'class'=>UploadBehavior::className(),
+                'saveDir'=>'products-img/'
+            ]
+        ];
+    }
+
 }

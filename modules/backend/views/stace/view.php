@@ -39,7 +39,7 @@ $this->params['breadcrumbs'][] = ['label' => '样品管理', ['sample/view', 'id
 
     </p>
     <p class="r_add" style="display: none">
-        <?= Html::a('常规H&E染色', ['update', 'id' => $model->id], ['class' => 'btn btn-default','title'=>'修改']) ?>
+        <?= Html::a('常规H&E染色', ['routine/add', 'id' => $model->id], ['class' => 'btn btn-default','title'=>'修改']) ?>
         <?= Html::a('特殊染色', ['update', 'id' => $model->id], ['class' => 'btn btn-default','title'=>'修改']) ?>
         <?= Html::a('蛋白', ['update', 'id' => $model->id], ['class' => 'btn btn-default','title'=>'修改']) ?>
         <?= Html::a('核酸', ['update', 'id' => $model->id], ['class' => 'btn btn-default','title'=>'修改']) ?>
