@@ -47,6 +47,15 @@ class Sdyeing extends \yii\db\ActiveRecord
         '细胞爬片'=>'细胞爬片',
         '细胞甩/辅片'=>'细胞甩/辅片',
     ];
+
+    static $res_name=[
+        '1'=>'常规H&E染色实验结果',
+        '2'=>'特殊染色实验结果',
+        '3'=>'蛋白实验结果',
+        '4'=>'核酸实验结果'
+
+    ];
+
     /**
      * @inheritdoc
      */

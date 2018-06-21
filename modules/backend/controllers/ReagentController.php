@@ -11,6 +11,7 @@ namespace app\modules\backend\controllers;
 use app\models\Company;
 use app\models\Reagent;
 use app\models\Particular;
+use app\models\Routine;
 use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 use yii;
 use app\models\Sample;
@@ -85,9 +86,15 @@ class ReagentController extends BackendController
 
         $model=new Reagent();
         $model->retrieve='ETR'.time();
-        $parent=Testmethod::findOne($id);
+        if($type=='routine'){
+            $parent=Routine::findOne($id);
+            $model->sid=$parent->id;
+        }elseif($type=='testmethod'){
+            $parent=Testmethod::findOne($id);
+            $model->sid=$parent->pid;
+        }
         $model->tid=$id;
-        $model->sid=$parent->pid;
+
         $model->type=$type;
 
         $post = Yii::$app->request->post();

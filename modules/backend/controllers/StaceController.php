@@ -15,6 +15,7 @@ use app\modules\backend\components\BackendController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\models\Stace;
+use app\models\Sdyeing;
 use app\helpers\CommonHelper;
 class StaceController extends BackendController
 {
@@ -63,9 +64,11 @@ class StaceController extends BackendController
 
         $model=$this->findModel($id);
         $parent=Sample::findOne(['id'=>$model->sid]);
+        $res=Sdyeing::find()->andFilterWhere(['isdel'=>0,'yid'=>$id])->all();
         return $this->render('view', [
             'model' => $model,
-            'parent'=>$parent
+            'parent'=>$parent,
+            'res'=>$res
         ]);
     }
 

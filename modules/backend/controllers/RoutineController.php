@@ -115,7 +115,7 @@ class RoutineController extends BackendController
             if ($post) {
                 $tr=Yii::$app->db->beginTransaction();
                 try{
-                    $post['Sdyeing']['kit']=json_encode(  $post['Sdyeing']['kit']);
+                    $post['Sdyeing']['rgid']=isset($post['Sdyeing']['rgid']) ? json_encode(  $post['Sdyeing']['rgid']) : '';
                     $model->setAttributes($_POST['Sdyeing'],false);
                     $model->add_time=date('Y-m-d H:i:s');
                     $model->ntype=1;
@@ -144,6 +144,64 @@ class RoutineController extends BackendController
                 'reagent'=>$reagent
             ]);
         }
+
+
+    /**
+     * Updates an existing Content model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionChange($id)
+    {
+        $model =Sdyeing::findOne($id);
+        $routine=Routine::find()->andFilterWhere(['isdel'=>'0'])->all();
+
+        $reagent=Reagent::find()->andFilterWhere(['isdel'=>0,'type'=>'routine'])->all();
+
+        $post = Yii::$app->request->post();
+        if ($post)
+        {
+
+            $tr=Yii::$app->db->beginTransaction();
+            try {
+                $newkit=Kit::find()->select('id')->andFilterWhere(['type'=>'testmethod','rid'=> $post['Sdyeing']['nid']])->asArray()->all();
+                $kid=[];
+                foreach ($newkit as $vn)
+                {
+                    $kid[]=$vn['id'];
+                }
+                $kids=array_values(array_intersect(isset($post['Sdyeing']['kit']) ? $post['Sdyeing']['kit'] : [],$kid));
+                $post['Sdyeing']['kit']=!empty($kids) ? json_encode($kids) : '';
+                $model->setAttributes($_POST['Sdyeing'], false);
+
+
+                if ($model->load($post) && $model->save())
+                {
+
+                    CommonHelper::addlog(3, $model->id, $model->section_name, 'sdyeing');
+                    $tr->commit();
+                    return $this->showFlash('修改成功','success',['stace/view','id'=>$model->yid]);
+                } else {
+                    $tr->rollBack();
+                    return $this->showFlash('修改失败');
+                }
+
+            }catch (excepetion $e)
+            {
+                $tr->rollBack();
+                return $this->showFlash('修改失败');
+            }
+        } else {
+            return $this->render('change', [
+                'model' => $model,
+                'routine'=>$routine,
+                'reagent'=>$reagent
+            ]);
+        }
+    }
+
+
     /**
      * Creates a new Content model.
      * If creation is successful, the browser will be redirected to the 'view' page.

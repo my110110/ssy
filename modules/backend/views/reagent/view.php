@@ -8,6 +8,7 @@ use app\models\Stace;
 /* @var $this yii\web\View */
 /* @var $model app\models\Project */
 $this->title = $model->name;
+
 $this->params['breadcrumbs'][] = ['label' => '返回上级', ["$model->type/view", 'id' => $model->sid]];
 
 ?>

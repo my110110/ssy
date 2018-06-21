@@ -29,7 +29,7 @@ use kartik\file\FileInput;
         <select id="sdyeing-nid" class="part form-control" name="Sdyeing[nid]" aria-invalid="false">
             <?php if(count($particular)>0) :?>
                 <?php foreach ($particular as $particular):?>
-                    <option value="<?=$particular->id?>"><?=$particular->name?></option>
+                    <option value="<?=$particular->id?>"<?php if($particular->id==$model->nid){echo 'selected';}?>><?=$particular->name?></option>
                 <?php endforeach;?>
             <?php endif;?>
         </select>
@@ -41,7 +41,12 @@ use kartik\file\FileInput;
     <div id="sdyeing-kit">
         <?php if(count($reagent)>0) :?>
             <?php foreach ($reagent as $reagent):?>
-            <div class="checkbox id<?=$reagent->sid?>  hid" ><label><input type="checkbox" name="Sdyeing[rgid][]" value="<?=$reagent->id?>" data-index="0"><?=$reagent->name?></label></div>
+            <div class="checkbox id<?=$reagent->sid?>  hid" >
+                <label>
+                    <input type="checkbox" name="Sdyeing[rgid][]" value="<?=$reagent->id?>" data-index="0" <?php if(count(json_decode($model->rgid))>0&&in_array($reagent->id,json_decode($model->rgid))){echo 'checked';}?>>
+                    <?=$reagent->name?>
+                </label>
+            </div>
             <?php endforeach;?>
         <?php endif;?>
     </div>
@@ -53,7 +58,12 @@ use kartik\file\FileInput;
         <div id="sdyeing-kit">
             <?php if(count($kit)>0) :?>
                 <?php foreach ($kit as $kit):?>
-                    <div class="checkbox id<?=$kit->rid?>  hid" ><label><input type="checkbox" name="Sdyeing[kit][]" value="<?=$kit->id?>" data-index="0"><?=$kit->name?></label></div>
+                    <div class="checkbox id<?=$kit->rid?>  hid" >
+                        <label>
+                            <input type="checkbox" name="Sdyeing[kit][]" value="<?=$kit->id?>" data-index="0" <?php if(count(json_decode($model->kit))>0&&in_array($kit->id,json_decode($model->kit))){echo 'checked';}?>>
+                            <?=$kit->name?>
+                        </label>
+                    </div>
                 <?php endforeach;?>
             <?php endif;?>
         </div>

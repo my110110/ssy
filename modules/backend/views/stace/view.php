@@ -97,7 +97,25 @@ $this->params['breadcrumbs'][] = ['label' => '样品管理', ['sample/view', 'id
                         <td class="col-md-10"><?=$model->change_time?></td>
                     </tr>
                 <?php endif;?>
+                <?php if(count($res)>0) :?>
+                    <?php foreach ($res as $res):?>
+                        <tr class="warning">
+                            <td class="col-md-2"><?=\app\models\Sdyeing::$res_name[$res->ntype]?></td>
+                            <td class="col-md-10">
+                                <?= Html::a("$res->section_name", ['sdyeing/view', 'id' => $res->id]) ?>
+                                <?php if($res->ntype==1):?>
+                                   <?= Html::a('', ['routine/change', 'id' => $res->id], ['class' => 'glyphicon glyphicon-pencil','title'=>'修改']) ?>
+                               <?php elseif ($res->ntype==2):?>
+                                    <?= Html::a('', ['particular/change', 'id' => $res->id], ['class' => 'glyphicon glyphicon-pencil','title'=>'修改']) ?>
+                                <?php elseif (in_array($res->ntype,[3,4])):?>
+                                    <?= Html::a('', ['pna/change', 'id' => $res->id,'type'=>$res->ntype], ['class' => 'glyphicon glyphicon-pencil','title'=>'修改']) ?>
+                                <?php endif;?>
+                                <?= Html::a('', ['sdyeing/del', 'id' => $res->id], ['class' => 'glyphicon glyphicon-trash','title'=>'删除']) ?>
 
+                            </td>
+                        </tr>
+                    <?php endforeach;?>
+                <?php endif;?>
                 </tbody>
             </table>
 

@@ -9,16 +9,19 @@
 namespace app\modules\backend\controllers;
 
 use app\models\Kit;
+use app\models\Reagent;
+use app\models\Routine;
+use app\models\Particular;
+use app\models\Pna;
 use yii;
 use app\modules\backend\components\BackendController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use app\models\Pna;
 use app\models\Sdyeing;
 use yii\web\Response;
 use yii\data\Pagination;
 use app\helpers\CommonHelper;
-class PnaController extends BackendController
+class SdyeingController extends BackendController
 {
     /**
      * @inheritdoc
@@ -67,69 +70,6 @@ class PnaController extends BackendController
 
 
     }
-    /**
-     * Creates a new Content model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
-    public function actionAdd($id,$ntype)
-    {
-        $model = new Sdyeing();
-        if($ntype==3){
-
-            $type=1;//蛋白
-        }else{
-            $type=2;//核酸
-        }
-        $pna=Pna::find()->andFilterWhere(['isdel'=>'0','type'=>$type])->all();
-
-        $kit=Kit::find()->andFilterWhere(['isdel'=>0,'type'=>'pna'])->all();
-
-        $model ->yid= $id;
-        $model ->ntype= $ntype;
-        $post = Yii::$app->request->post();
-        if ($post) {
-            $tr=Yii::$app->db->beginTransaction();
-            try{
-                $post['Sdyeing']['kit']=isset($post['Sdyeing']['kit']) ? json_encode(  $post['Sdyeing']['kit']) : '';;
-                $post['Sdyeing']['rgid']=isset($post['Sdyeing']['rgid']) ? json_encode(  $post['Sdyeing']['rgid']) : '';
-                $model->setAttributes($_POST['Sdyeing'],false);
-                $model->add_time=date('Y-m-d H:i:s');
-                if($model->ntype==3){
-                    $model->retrieve='ERP'.time();
-
-                }elseif ($model->ntype==4){
-                    $model->retrieve='ERN'.time();
-
-                }
-                if ($model->load($post)&&$model->save() )
-                {
-                    CommonHelper::addlog(1,$model->id,$model->section_name,'sdyeing');
-
-                    $tr->commit();
-                    return $this->showFlash('添加成功','success',['stace/view','id'=>$model->yid]);
-                }else{
-                    $tr->rollBack();
-                    return $this->showFlash('添加失败');
-                }
-            }catch (excepetion $e)
-            {
-                $tr->rollBack();
-                return $this->showFlash('添加失败');
-            }
-
-
-        }
-        return $this->render('add', [
-            'model' => $model,
-            'pna'=>$pna,
-            'kit'=>$kit
-        ]);
-    }
-    public function actionUploadfile()
-    {
-
-    }
 
     /**
      * Displays a single Content model.
@@ -138,11 +78,37 @@ class PnaController extends BackendController
      */
     public function actionView($id)
     {
+        $model=$this->findModel($id);
+        //检测指标
+        if($model->ntype==1){
+            //常规H&E染色
+            $norm=Routine::findOne(['id'=>$model->nid]);
+            //自配试剂
+            $Reagent=Reagent::find()->andFilterWhere(['id'=>json_decode($model->rgid)?:0])->all();
+            $kit=array();
+        }elseif ($model->ntype==2){
+            $norm=Particular::findOne(['id'=>$model->nid]);
+            //自配试剂
+            $Reagent=Reagent::find()->andFilterWhere(['id'=>json_decode($model->rgid)?:0])->all();
 
-        $child=Kit::find()->andFilterWhere(['rid'=>$id,'isdel'=>0,'type'=>'pna'])->all();
+            //商品试剂
+            $kit=Kit::find()->andFilterWhere(['id'=>json_decode($model->kit)?:0])->all();
+        }
+        elseif ($model->ntype==3){
+            $norm=Pna::findOne(['id'=>$model->nid,'type'=>1]);
+            $kit=Kit::find()->andFilterWhere(['id'=>json_decode($model->kit)?:0])->all();
+            $Reagent=[];
+        }
+        elseif ($model->ntype==4){
+            $norm=Pna::findOne(['id'=>$model->nid,'type'=>2]);
+            $Reagent=[];
+            $kit=Kit::find()->andFilterWhere(['id'=>json_decode($model->kit)?:0])->all();
+        }
         return $this->render('view', [
-            'model' => $this->findModel($id),
-            'child'=>$child
+            'model' =>$model,
+            'norm'=>$norm,
+            'kit'=>$kit,
+            'Reagent'=>$Reagent
 
         ]);
     }
@@ -242,8 +208,8 @@ class PnaController extends BackendController
         $model->isdel=1;
         if($model->save())
         {
-            CommonHelper::addlog(4,$model->id,$model->name,'pna');
-            return $this->showFlash('删除成功','success',['pna/index','id'=>$model->id]);
+            CommonHelper::addlog(4,$model->id,$model->section_name,'sdyeing');
+            return $this->showFlash('删除成功','success',['stace/view','id'=>$model->yid]);
         }
         return $this->showFlash('删除失败', 'danger',Yii::$app->getUser()->getReturnUrl());
     }
@@ -256,7 +222,7 @@ class PnaController extends BackendController
      */
     protected function findModel($id)
     {
-        if (($model = Pna::findOne($id)) !== null)
+        if (($model = Sdyeing::findOne($id)) !== null)
         {
             return $model;
 

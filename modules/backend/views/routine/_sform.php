@@ -29,7 +29,7 @@ use kartik\file\FileInput;
         <select id="sdyeing-nid" class="part form-control" name="Sdyeing[nid]" aria-invalid="false">
             <?php if(count($routine)>0) :?>
                 <?php foreach ($routine as $routine):?>
-                    <option value="<?=$routine->id?>"><?=$routine->name?></option>
+                    <option value="<?=$routine->id?>" <?php if($routine->id==$model->nid){echo 'checked';}?>><?=$routine->name?></option>
                 <?php endforeach;?>
             <?php endif;?>
         </select>
@@ -41,7 +41,7 @@ use kartik\file\FileInput;
     <div id="sdyeing-kit">
         <?php if(count($reagent)>0) :?>
             <?php foreach ($reagent as $reagent):?>
-            <div class="checkbox id<?=$reagent->sid?>  hid" ><label><input type="checkbox" name="Sdyeing[kit][]" value="<?=$reagent->id?>" data-index="0"><?=$reagent->name?></label></div>
+            <div class="checkbox id<?=$reagent->sid?>  hid" ><label><input type="checkbox" name="Sdyeing[rgid][]" value="<?=$reagent->id?>" <?php if(in_array($reagent->id,json_decode($model->rgid))){echo 'checked';}?>><?=$reagent->name?></label></div>
             <?php endforeach;?>
         <?php endif;?>
     </div>

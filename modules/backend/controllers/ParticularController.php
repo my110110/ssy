@@ -114,12 +114,12 @@ class ParticularController extends BackendController
         if ($post) {
             $tr=Yii::$app->db->beginTransaction();
             try{
-                $post['Sdyeing']['kit']=json_encode(  $post['Sdyeing']['kit']);
-                $post['Sdyeing']['rgid']=json_encode(  $post['Sdyeing']['rgid']);
+                $post['Sdyeing']['kit']=isset($post['Sdyeing']['kit']) ? json_encode(  $post['Sdyeing']['kit']) : '';;
+                $post['Sdyeing']['rgid']=isset($post['Sdyeing']['rgid']) ? json_encode(  $post['Sdyeing']['rgid']) : '';
                 $model->setAttributes($_POST['Sdyeing'],false);
                 $model->add_time=date('Y-m-d H:i:s');
                 $model->ntype=2;
-                $model->retrieve='ERHE'.time();
+                $model->retrieve='ERSS'.time();
                 if ($model->load($post)&&$model->save() )
                 {
                     CommonHelper::addlog(1,$model->id,$model->section_name,'sdyeing');
@@ -146,6 +146,70 @@ class ParticularController extends BackendController
         ]);
     }
 
+    /**
+     * Updates an existing Content model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionChange($id)
+    {
+        $model =Sdyeing::findOne($id);
+        $particular=Particular::find()->andFilterWhere(['isdel'=>'0'])->all();
+        $reagent=Reagent::find()->andFilterWhere(['isdel'=>0,'type'=>'testmethod'])->all();
+        $kit=Kit::find()->andFilterWhere(['isdel'=>0,'type'=>'testmethod'])->all();
+
+        $post = Yii::$app->request->post();
+        if ($post)
+        {
+
+            $tr=Yii::$app->db->beginTransaction();
+            try {
+                $model->setAttributes($_POST['Sdyeing'], false);
+                $newkit = Kit::find()->select('id')->andFilterWhere(['type' => 'testmethod', 'rid' => $post['Sdyeing']['nid']])->asArray()->all();
+                $kid = [];
+                foreach ($newkit as $vn) {
+                    $kid[] = $vn['id'];
+                }
+                $newk=isset($post['Sdyeing']['kit']) ? $post['Sdyeing']['kit']: [ ];
+                $kids = array_values(array_intersect($newk, $kid));
+                $post['Sdyeing']['kit'] = !empty($kids) ? json_encode($kids) : '';
+
+
+                $newrg = Reagent::find()->select('id')->andFilterWhere(['type' => 'testmethod', 'sid' => $post['Sdyeing']['nid']])->asArray()->all();
+                $rgid = [];
+                foreach ($newrg as $v) {
+                    $rgid[] = $v['id'];
+                }
+                $nwrg=isset($post['Sdyeing']['rgid']) ? $post['Sdyeing']['rgid']:array();
+                $rgids = array_values(array_intersect($nwrg, $rgid));
+                $post['Sdyeing']['rgid'] = !empty($rgids) ? json_encode($rgids) : '';
+
+
+                if ($model->load($post) && $model->save())
+                {
+
+                    CommonHelper::addlog(3, $model->id, $model->section_name, 'sdyeing');
+                    $tr->commit();
+                    return $this->showFlash('修改成功', 'success', ['stace/view', 'id' => $model->yid]);
+                } else {
+                    $tr->rollBack();
+                    return $this->showFlash('修改失败');
+                }
+            }catch (excepetion $e)
+            {
+                $tr->rollBack();
+                return $this->showFlash('修改失败');
+            }
+        } else {
+            return $this->render('change', [
+                'model' => $model,
+                'particular'=>$particular,
+                'reagent'=>$reagent,
+                'kit'=>$kit
+            ]);
+        }
+    }
 
     /**
      * Creates a new Content model.
