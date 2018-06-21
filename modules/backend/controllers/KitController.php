@@ -81,8 +81,14 @@ class KitController extends BackendController
     public function actionCreate($id,$type)
     {
         $model=new Kit();
-        $parent=Testmethod::findOne($id);
-        $model->rid=$parent->pid;
+        if($type=='testmethod'){
+            $parent=Testmethod::findOne($id);
+            $model->rid=$parent->pid;
+        }elseif($type=='pna'){
+
+            $model->rid=$id;
+        }
+
         $model->tid=$id;
         $model->type=$type;
         $post = Yii::$app->request->post();

@@ -31,7 +31,9 @@ use kartik\file\FileInput;
         <select id="sdyeing-nid" class="part form-control" name="Sdyeing[nid]" aria-invalid="false">
             <?php if(count($pna)>0) :?>
                 <?php foreach ($pna as $pna):?>
-                    <option value="<?=$pna->id?>"><?=$pna->name?></option>
+                    <option value="<?=$pna->id?>" <?php if($pna->id==$model->nid){echo 'selected';}?>>
+                        <?=$pna->name?>
+                    </option>
                 <?php endforeach;?>
             <?php endif;?>
         </select>
@@ -46,7 +48,12 @@ use kartik\file\FileInput;
     <div id="sdyeing-kit">
         <?php if(count($kit)>0) :?>
             <?php foreach ($kit as $kit):?>
-            <div class="checkbox id<?=$kit->rid?>  hid" ><label><input type="checkbox" name="Sdyeing[kit][]" value="<?=$kit->id?>" data-index="0"><?=$kit->name?></label></div>
+            <div class="checkbox id<?=$kit->rid?>  hid" >
+                <label>
+                    <input type="checkbox" name="Sdyeing[kit][]" value="<?=$kit->id?>" <?php if(count(json_decode($model->kit))>0&&in_array($kit->id,json_decode($model->kit))){echo 'checked';}?>>
+                    <?=$kit->name?>
+                </label>
+            </div>
             <?php endforeach;?>
         <?php endif;?>
     </div>

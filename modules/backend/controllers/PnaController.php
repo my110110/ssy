@@ -126,6 +126,72 @@ class PnaController extends BackendController
             'kit'=>$kit
         ]);
     }
+
+
+    /**
+     * Updates an existing Content model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionChange($id,$ntype)
+    {
+        $model =Sdyeing::findOne($id);
+        if($ntype==3){
+
+            $type=1;//蛋白
+        }elseif($ntype==4){
+            $type=2;//核酸
+        }
+        $pna=Pna::find()->andFilterWhere(['isdel'=>'0','type'=>$type])->all();
+
+        $kit=Kit::find()->andFilterWhere(['isdel'=>0,'type'=>'pna'])->all();
+
+        $post = Yii::$app->request->post();
+        if ($post)
+        {
+
+            $tr=Yii::$app->db->beginTransaction();
+            try {
+                $model->setAttributes($_POST['Sdyeing'], false);
+                $newkit = Kit::find()->select('id')->andFilterWhere(['type' => 'pna', 'rid' => $post['Sdyeing']['nid']])->asArray()->all();
+                $kid = [];
+                foreach ($newkit as $vn) {
+                    $kid[] = $vn['id'];
+                }
+                $newk=isset($post['Sdyeing']['kit']) ? $post['Sdyeing']['kit']: [ ];
+                $kids = array_values(array_intersect($newk, $kid));
+                $post['Sdyeing']['kit'] = !empty($kids) ? json_encode($kids) : '';
+
+
+                if ($model->load($post) && $model->save())
+                {
+
+                    CommonHelper::addlog(3, $model->id, $model->section_name, 'sdyeing');
+                    $tr->commit();
+                    return $this->showFlash('修改成功','success',['stace/view','id'=>$model->yid]);
+                } else {
+                    $tr->rollBack();
+                    var_dump($model->getErrors());die;
+                    return $this->showFlash('修改失败');
+                }
+
+            }catch (excepetion $e)
+            {
+                $tr->rollBack();
+                return $this->showFlash('修改失败');
+            }
+        } else {
+            return $this->render('change', [
+                'model' => $model,
+                'pna'=>$pna,
+                'kit'=>$kit
+            ]);
+        }
+    }
+
+
+
     public function actionUploadfile()
     {
 

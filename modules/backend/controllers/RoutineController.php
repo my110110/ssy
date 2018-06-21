@@ -18,6 +18,7 @@ use app\models\Routine;
 use app\models\Reagent;
 
 use app\models\Sdyeing;
+use app\models\Kit;
 use yii\web\Response;
 use app\helpers\CategoryHelper;
 use yii\data\Pagination;
@@ -165,15 +166,17 @@ class RoutineController extends BackendController
 
             $tr=Yii::$app->db->beginTransaction();
             try {
-                $newkit=Kit::find()->select('id')->andFilterWhere(['type'=>'testmethod','rid'=> $post['Sdyeing']['nid']])->asArray()->all();
-                $kid=[];
-                foreach ($newkit as $vn)
-                {
-                    $kid[]=$vn['id'];
-                }
-                $kids=array_values(array_intersect(isset($post['Sdyeing']['kit']) ? $post['Sdyeing']['kit'] : [],$kid));
-                $post['Sdyeing']['kit']=!empty($kids) ? json_encode($kids) : '';
                 $model->setAttributes($_POST['Sdyeing'], false);
+                $newrg = Reagent::find()->select('id')->andFilterWhere(['type' => 'routine', 'sid' => $post['Sdyeing']['nid']])->asArray()->all();
+                $rgid = [];
+                foreach ($newrg as $v) {
+                    $rgid[] = $v['id'];
+                }
+                $nwrg=isset($post['Sdyeing']['rgid']) ? $post['Sdyeing']['rgid']:array();
+                $rgids = array_values(array_intersect($nwrg, $rgid));
+                $post['Sdyeing']['rgid'] = !empty($rgids) ? json_encode($rgids) : '';
+
+
 
 
                 if ($model->load($post) && $model->save())
@@ -184,6 +187,7 @@ class RoutineController extends BackendController
                     return $this->showFlash('修改成功','success',['stace/view','id'=>$model->yid]);
                 } else {
                     $tr->rollBack();
+                    var_dump($model->getErrors());die;
                     return $this->showFlash('修改失败');
                 }
 

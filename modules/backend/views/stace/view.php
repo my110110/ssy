@@ -108,7 +108,7 @@ $this->params['breadcrumbs'][] = ['label' => '样品管理', ['sample/view', 'id
                                <?php elseif ($res->ntype==2):?>
                                     <?= Html::a('', ['particular/change', 'id' => $res->id], ['class' => 'glyphicon glyphicon-pencil','title'=>'修改']) ?>
                                 <?php elseif (in_array($res->ntype,[3,4])):?>
-                                    <?= Html::a('', ['pna/change', 'id' => $res->id,'type'=>$res->ntype], ['class' => 'glyphicon glyphicon-pencil','title'=>'修改']) ?>
+                                    <?= Html::a('', ['pna/change', 'id' => $res->id,'ntype'=>$res->ntype], ['class' => 'glyphicon glyphicon-pencil','title'=>'修改']) ?>
                                 <?php endif;?>
                                 <?= Html::a('', ['sdyeing/del', 'id' => $res->id], ['class' => 'glyphicon glyphicon-trash','title'=>'删除']) ?>
 

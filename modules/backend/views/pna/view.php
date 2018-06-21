@@ -95,7 +95,7 @@ $this->params['breadcrumbs'][] = ['label' => '返回列表', 'url' => ['index', 
 
                 <tr class="default">
                     <td class="col-md-2">添加人</td>
-                    <td class="col-md-10"><?=AdminUser::getDoName($model->id,1,'particular')?></td>
+                    <td class="col-md-10"><?=AdminUser::getDoName($model->id,1,'pna')?></td>
                 </tr>
                 <tr class="info">
                     <td class="col-md-2">添加时间</td>
@@ -104,7 +104,7 @@ $this->params['breadcrumbs'][] = ['label' => '返回列表', 'url' => ['index', 
                 <?php if(!empty($model->change_user)):?>
                 <tr class="warning">
                     <td class="col-md-2">修改人</td>
-                    <td class="col-md-10"><?=AdminUser::getDoName($model->id,3,'particular')?></td>
+                    <td class="col-md-10"><?=AdminUser::getDoName($model->id,3,'pna')?></td>
                 </tr>
                     <tr class="default">
                         <td class="col-md-2">修改时间</td>

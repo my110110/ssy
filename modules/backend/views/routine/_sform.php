@@ -29,7 +29,7 @@ use kartik\file\FileInput;
         <select id="sdyeing-nid" class="part form-control" name="Sdyeing[nid]" aria-invalid="false">
             <?php if(count($routine)>0) :?>
                 <?php foreach ($routine as $routine):?>
-                    <option value="<?=$routine->id?>" <?php if($routine->id==$model->nid){echo 'checked';}?>><?=$routine->name?></option>
+                    <option value="<?=$routine->id?>" <?php if($routine->id==$model->nid){echo 'selected';}?>><?=$routine->name?></option>
                 <?php endforeach;?>
             <?php endif;?>
         </select>
