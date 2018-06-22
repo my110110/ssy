@@ -16,11 +16,22 @@ $this->params['breadcrumbs'][] = ['label' => '返回上级', ["$model->type/view
 
 
     <p>
-        <?= Html::a('返回上级', ["$model->type/view", 'id' => $model->sid], [
-            'title'=>'返回上级',
-            'class' => 'btn btn-primary',
 
-        ]) ?>
+        <?php if($ret==1):?>
+            <?= Html::a('返回列表',["reagent/index"], [
+                'title'=>'返回上级',
+                'class' => 'btn btn-primary',
+
+            ]) ?>
+
+        <?php else:?>
+            <?= Html::a('返回上级',["$model->type/view",'id'=>$model->sid], [
+                'title'=>'返回上级',
+                'class' => 'btn btn-primary',
+
+            ]) ?>
+        <?php endif;?>
+
         <?= Html::a('新增公司信息', ['company/create', 'id' => $model->id], ['class' => 'btn btn-info ','title'=>'修改']) ?>
 
         <?= Html::a('修改', ['update', 'id' => $model->id], ['class' => 'btn btn-warning','title'=>'修改']) ?>

@@ -84,7 +84,7 @@ $this->params['breadcrumbs'][] = ['label' => '项目管理', 'url' => ['project/
                     <?php foreach ($stace as $stace):?>
 
                         <tr class="warning">
-                            <td class="col-md-2">样本的特定组织与细胞标本</td>
+                            <td class="col-md-2">特定组织与细胞标本</td>
                             <td class="col-md-10">
                                 <?= Html::a($stace->name, ['stace/view', 'id' => $stace->id]) ?>
 

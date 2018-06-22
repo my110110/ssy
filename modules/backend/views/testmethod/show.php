@@ -13,7 +13,7 @@ use yii\widgets\LinkPager;
 /* @var $searchModel app\modules\backend\models\ProjectSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 /* @var $pagination yii\data\Pagination */
-$this->title = '自配试剂列表';
+$this->title = '商品试剂盒列表';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <style type="text/css">
@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="tab-content cos">
             <div class="row clearfix">
                 <?php $form = ActiveForm::begin([
-                    'action' => ['index'],
+                    'action' => ['show','type'=>$type],
                     'method' => 'get',
                 ]); ?>
 
@@ -106,7 +106,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
                                     <td>
-                                        <?=AdminUser::getDoName($sarch->id,1,'reagent')?>
+                                        <?=AdminUser::getDoName($sarch->id,1,'kit')?>
                                     </td>
                                     <td>
                                         <?=$sarch['add_time']?>
@@ -115,9 +115,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                         <?=$sarch['change_time']?>
                                     </td>
                                     <td>
-                                        <?= Html::a('<span class="glyphicon glyphicon-zoom-in"></span>', ['reagent/view', 'id' => $sarch['id'],'ret'=>'1'], ['title'=>'查看']) ?>
-                                        <?= Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['reagent/update', 'id' => $sarch['id'],'ret'=>'1','type'=>$sarch->type], ['title'=>'修改']) ?>
-                                        <?= Html::a('<span class="	glyphicon glyphicon-trash"></span>', ['reagent/delete', 'id' => $sarch['id'],'ret'=>'1'], [
+                                        <?= Html::a('<span class="glyphicon glyphicon-zoom-in"></span>', ['kit/view', 'id' => $sarch['id'],'ret'=>'1'], ['title'=>'查看']) ?>
+                                        <?= Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['kit/update', 'id' => $sarch['id'],'ret'=>'1'], ['title'=>'修改']) ?>
+                                        <?= Html::a('<span class="	glyphicon glyphicon-trash"></span>', ['kit/delete', 'id' => $sarch['id'],'ret'=>'1'], [
                                             'title'=>'删除',
                                             'data' => [
                                                 'confirm' => '确定要删除这个数据吗?',
@@ -141,7 +141,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
                                     <td>
-                                        <?=AdminUser::getDoName($pid->id,1,'reagent')?>
+                                        <?=AdminUser::getDoName($pid->id,1,'kit')?>
                                     </td>
                                     <td>
                                         <?=$pid['add_time']?>
@@ -150,9 +150,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                         <?=$pid['change_time']?>
                                     </td>
                                     <td>
-                                        <?= Html::a('<span class="glyphicon glyphicon-zoom-in"></span>', ['reagent/view', 'id' => $pid['id'],'ret'=>'1'], ['title'=>'查看']) ?>
-                                        <?= Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['reagent/update', 'id' => $pid['id'],'ret'=>'1','type'=>$pid->type], ['title'=>'修改']) ?>
-                                        <?= Html::a('<span class="	glyphicon glyphicon-trash"></span>', ['reagent/delete', 'id' => $pid['id'],'ret'=>'1'], [
+                                        <?= Html::a('<span class="glyphicon glyphicon-zoom-in"></span>', ['kit/view', 'id' => $pid['id'],'ret'=>'1','typeid'=>$pid['typeid']], ['title'=>'查看']) ?>
+                                        <?= Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['kit/update', 'id' => $pid['id'],'ret'=>'1','typeid'=>$pid['typeid']], ['title'=>'修改']) ?>
+                                        <?= Html::a('<span class="	glyphicon glyphicon-trash"></span>', ['kit/delete', 'id' => $pid['id'],'ret'=>'1','typeid'=>$pid['typeid']], [
                                             'title'=>'删除',
                                             'data' => [
                                                 'confirm' => '确定要删除这个数据吗?',

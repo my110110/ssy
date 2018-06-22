@@ -13,7 +13,12 @@ use yii\widgets\LinkPager;
 /* @var $searchModel app\modules\backend\models\ProjectSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 /* @var $pagination yii\data\Pagination */
-$this->title = '抗体列表';
+if($type==1){
+    $this->title = '抗体列表';
+}else{
+    $this->title = '核算试剂盒列表';
+}
+
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <style type="text/css">
@@ -152,7 +157,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     <td>
                                         <?= Html::a('<span class="glyphicon glyphicon-zoom-in"></span>', ['kit/view', 'id' => $pid['id'],'ret'=>'1'], ['title'=>'查看']) ?>
                                         <?= Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['kit/update', 'id' => $pid['id'],'ret'=>'1'], ['title'=>'修改']) ?>
-                                        <?= Html::a('<span class="	glyphicon glyphicon-trash"></span>', ['kit/delete', 'id' => $pid['id'],'typeid'=>$pid['typeid']], [
+                                        <?= Html::a('<span class="	glyphicon glyphicon-trash"></span>', ['kit/delete', 'id' => $pid['id'],'ret'=>'1'], [
                                             'title'=>'删除',
                                             'data' => [
                                                 'confirm' => '确定要删除这个数据吗?',

@@ -7,17 +7,17 @@ use yii\web\UrlManager;
  */
 ?>
 <aside class="main-sidebar">
-    <section class="sidebar" style="height: auto;">
+    <section class="sidebar" style="height: auto;padding-top: 5px">
         <!-- search form -->
-        <form action="#" method="get" class="sidebar-form">
-            <div class="input-group">
-                <input type="text" id="menu-keyword" name="q" class="form-control" placeholder="Search..."/>
-                <span class="input-group-btn">
-                <button type='button' name='search' id='search-btn' class="btn btn-flat"><i class="fa fa-search"></i>
-                </button>
-                </span>
-            </div>
-        </form>
+<!--        <form action="#" method="get" class="sidebar-form">-->
+<!--            <div class="input-group">-->
+<!--                <input type="text" id="menu-keyword" name="q" class="form-control" placeholder="Search..."/>-->
+<!--                <span class="input-group-btn">-->
+<!--                <button type='button' name='search' id='search-btn' class="btn btn-flat"><i class="fa fa-search"></i>-->
+<!--                </button>-->
+<!--                </span>-->
+<!--            </div>-->
+<!--        </form>-->
         <!-- /.search form -->
         <li><a href="/backend/project/index.html"><i class="fa fa-bars"></i>
                 <span>实验项目</span></a>
@@ -46,6 +46,15 @@ use yii\web\UrlManager;
         </li>
         <li><a href="/backend/pna/show.html?type=1"><i class="fa fa-bars"></i>
                 <span>抗体列表</span></a>
+        </li>
+        <li><a href="/backend/pna/show.html?type=2"><i class="fa fa-bars"></i>
+                <span>核酸试剂盒列表</span></a>
+        </li>
+        <li><a href="/backend/testmethod/show.html?type=3"><i class="fa fa-bars"></i>
+                <span>商品试剂盒列表</span></a>
+        </li>
+        <li><a href="/backend/reagent/index.html"><i class="fa fa-bars"></i>
+                <span>自配试剂列表</span></a>
         </li>
         <li><a href="/backend/config/index.html"><i class="fa fa-bars"></i>
                 <span>网站配置</span>

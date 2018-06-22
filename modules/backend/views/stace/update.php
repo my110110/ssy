@@ -11,11 +11,27 @@ $this->params['breadcrumbs'][] = '修改';
 ?>
 <div class="content-update">
     <div class="nav-tabs-custom">
-        <ul class="nav nav-tabs" role="tablist">
-            <li role="presentation"><?= Html::a('返回样品详情', ['sample/view','id'=>$model->sid]) ?></li>
-            <li role="presentation" class="active"><?= Html::a('修改样品组织', '#') ?></li>
-        </ul>
+
         <div class="tab-content">
+            <p>
+
+
+                <?= Html::a('返回列表', ['stace/index'], [
+                    'title'=>'返回列表',
+                    'class' => 'btn btn-primary',
+
+                ]) ?>
+
+                <?= Html::a('返回样品详情', ['sample/view', 'id' => $model->sid], [
+                    'title'=>'返回项目',
+                    'class' => 'btn btn-primary',
+
+                ]) ?>
+
+
+
+
+            </p>
             <?= $this->render('_form', [
                 'model' => $model,
                 'parent'=>$parent

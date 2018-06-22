@@ -13,12 +13,20 @@ $this->title = $model->name;
 
 
     <p>
+        <?php if($ret==1):?>
+        <?= Html::a('返回列表',["$model->type/show",'type'=>$model->typeid], [
+                'title'=>'返回上级',
+                'class' => 'btn btn-primary',
+
+        ]) ?>
+
+        <?php else:?>
         <?= Html::a('返回上级',["$model->type/view",'id'=>$model->rid], [
             'title'=>'返回上级',
             'class' => 'btn btn-primary',
 
         ]) ?>
-
+        <?php endif;?>
         <?= Html::a('修改', ['update', 'id' => $model->id], ['class' => 'btn btn-warning','title'=>'修改']) ?>
         <?= Html::a('删除', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',

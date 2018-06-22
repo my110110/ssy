@@ -14,11 +14,22 @@ $this->params['breadcrumbs'][] = '修改';
 
     <div class="nav-tabs-custom">
         <p>
-            <?= Html::a('返回上级', ["$model->type/view",'id'=>$model->rid], [
-                'title'=>'返回',
-                'class' => 'btn btn-primary',
 
-            ]) ?>
+            <?php if($ret==1):?>
+                <?= Html::a('返回列表',["$model->type/show",'type'=>$model->typeid], [
+                    'title'=>'返回上级',
+                    'class' => 'btn btn-primary',
+
+                ]) ?>
+
+            <?php else:?>
+                <?= Html::a('返回上级',["$model->type/view",'id'=>$model->rid], [
+                    'title'=>'返回上级',
+                    'class' => 'btn btn-primary',
+
+                ]) ?>
+            <?php endif;?>
+
             <?= Html::a('返回详情', ["view",'id'=>$model->id], [
                 'title'=>'返回',
                 'class' => 'btn btn-warning',

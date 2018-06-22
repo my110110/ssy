@@ -62,14 +62,15 @@ class KitController extends BackendController
      * @param integer $id
      * @return mixed
      */
-    public function actionView($id)
+    public function actionView($id,$ret=0)
     {
 
         $model=$this->findModel($id);
         $parent=Testmethod::findOne(['id'=>$model->rid]);
         return $this->render('view', [
             'model' => $model,
-            'parent'=>$parent
+            'parent'=>$parent,
+            'ret'=>$ret
         ]);
     }
 
@@ -130,7 +131,8 @@ class KitController extends BackendController
 
         }else{
             return $this->render('create', [
-                'model'=>$model
+                'model'=>$model,
+
             ]);
         }
 
@@ -142,7 +144,7 @@ class KitController extends BackendController
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id,$ret=0)
     {
         $model = $this->findModel($id);
         $post = Yii::$app->request->post();
@@ -182,6 +184,7 @@ class KitController extends BackendController
         } else {
             return $this->render('update', [
                 'model' => $model,
+                'ret'=>$ret
             ]);
         }
     }

@@ -15,9 +15,10 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\models\Testmethod;
 use app\models\Reagent;
-use yii\web\Response;
 use yii\data\Pagination;
 use app\helpers\CommonHelper;
+use app\models\UploadFile;
+
 class TestmethodController extends BackendController
 {
     /**
@@ -63,15 +64,50 @@ class TestmethodController extends BackendController
             'pagination'=>$pagination
         ]);
 
-//        $searchModel = new ProjectSearch();
-//
-//        $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $this->module->params['pageSize']);
-//        return $this->render('index', [
-//            'searchModel' => $searchModel,
-//            'dataProvider' => $dataProvider,
-//        ]);
-    }
 
+    }
+    /**
+     * Lists all Content models.
+     * @return mixed
+     */
+    public function actionShow($type)
+    {
+
+        //分页读取类别数据
+        $search=New Kit();
+        $model =  Kit::find();
+        $search->scenario='search';
+
+        if(isset(Yii::$app->request->queryParams['Kit']))
+        {
+
+            $parms=Yii::$app->request->queryParams['Kit'];
+            if(isset($parms['retrieve']))
+                $model->andFilterWhere(['retrieve' => $parms['retrieve'],]);
+            if(isset($parms['name']))
+                $model->andFilterWhere(['like', 'name', $parms['name']]);
+
+        }
+        $pagination = new Pagination([
+            'defaultPageSize' => 10,
+            'totalCount' => $model->count(),
+        ]);
+        $model->andFilterWhere(['isdel'=> 0,'typeid'=>$type,'type'=>'testmethod']);
+        $model = $model->orderBy('id ASC')
+            ->offset($pagination->offset)
+            ->limit($pagination->limit)
+            ->all();
+
+        return $this->render('show', [
+            'model' => $model,
+            'pagination' => $pagination,
+            'search'=>$search,
+            'type'=>$type,
+            'file'=>new UploadFile()
+        ]);
+
+
+    }
     public function actionUploadfile()
     {
 

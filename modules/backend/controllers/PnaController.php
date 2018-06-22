@@ -96,7 +96,7 @@ class PnaController extends BackendController
             'defaultPageSize' => 10,
             'totalCount' => $model->count(),
         ]);
-        $model->andFilterWhere(['isdel'=> 0,'typeid'=>$type]);
+        $model->andFilterWhere(['isdel'=> 0,'typeid'=>$type,'type'=>'pna']);
         $model = $model->orderBy('id ASC')
             ->offset($pagination->offset)
             ->limit($pagination->limit)

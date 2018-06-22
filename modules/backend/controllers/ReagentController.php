@@ -20,6 +20,8 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\models\Testmethod;
 use app\helpers\CommonHelper;
+use yii\data\Pagination;
+use app\models\UploadFile;
 class ReagentController extends BackendController
 {
     /**
@@ -45,15 +47,36 @@ class ReagentController extends BackendController
     public function actionIndex()
     {
 
-        $pro_id=Yii::$app->request->queryParams;
-        $project=new Project();
-        $project=$project->findOne(['pro_id'=>$pro_id]);
-        $searchModel = new Principal();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $this->module->params['pageSize']);
+        //分页读取类别数据
+        $search=New Reagent();
+        $model =  Reagent::find();
+        $search->scenario='search';
+
+        if(isset(Yii::$app->request->queryParams['Reagent']))
+        {
+
+            $parms=Yii::$app->request->queryParams['Reagent'];
+            if(isset($parms['retrieve']))
+                $model->andFilterWhere(['retrieve' => $parms['retrieve'],]);
+            if(isset($parms['name']))
+                $model->andFilterWhere(['like', 'name', $parms['name']]);
+
+        }
+        $pagination = new Pagination([
+            'defaultPageSize' => 10,
+            'totalCount' => $model->count(),
+        ]);
+        $model->andFilterWhere(['isdel'=> 0]);
+        $model = $model->orderBy('id ASC')
+            ->offset($pagination->offset)
+            ->limit($pagination->limit)
+            ->all();
+
         return $this->render('index', [
-            'dataProvider' => $dataProvider,
-            'pro_id'=>$pro_id,
-            'project'=>$project
+            'model' => $model,
+            'pagination' => $pagination,
+            'search'=>$search,
+            'file'=>new UploadFile()
         ]);
     }
 
@@ -62,7 +85,7 @@ class ReagentController extends BackendController
      * @param integer $id
      * @return mixed
      */
-    public function actionView($id)
+    public function actionView($id,$ret)
     {
 
         $model=$this->findModel($id);
@@ -71,7 +94,8 @@ class ReagentController extends BackendController
         return $this->render('view', [
             'model' => $model,
             'parent'=>$parent,
-            'child'=>$child
+            'child'=>$child,
+            'ret'=>$ret
         ]);
     }
 
