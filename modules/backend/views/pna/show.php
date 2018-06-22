@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="tab-content cos">
             <div class="row clearfix">
                 <?php $form = ActiveForm::begin([
-                    'action' => ['show'],
+                    'action' => ['show','type'=>$type],
                     'method' => 'get',
                 ]); ?>
 
@@ -106,7 +106,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
                                     <td>
-                                        <?=AdminUser::getUserName($sarch['add_user'])?>
+                                        <?=AdminUser::getDoName($sarch->id,1,'kit')?>
                                     </td>
                                     <td>
                                         <?=$sarch['add_time']?>
@@ -115,9 +115,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                         <?=$sarch['change_time']?>
                                     </td>
                                     <td>
-                                        <?= Html::a('<span class="glyphicon glyphicon-zoom-in"></span>', ['view', 'id' => $sarch['id'],'ret'=>'1'], ['title'=>'查看']) ?>
-                                        <?= Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['update', 'id' => $sarch['id'],'ret'=>'1'], ['title'=>'修改']) ?>
-                                        <?= Html::a('<span class="	glyphicon glyphicon-trash"></span>', ['delete', 'id' => $sarch['id'],'ret'=>'1'], [
+                                        <?= Html::a('<span class="glyphicon glyphicon-zoom-in"></span>', ['kit/view', 'id' => $sarch['id'],'ret'=>'1'], ['title'=>'查看']) ?>
+                                        <?= Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['kit/update', 'id' => $sarch['id'],'ret'=>'1'], ['title'=>'修改']) ?>
+                                        <?= Html::a('<span class="	glyphicon glyphicon-trash"></span>', ['kit/delete', 'id' => $sarch['id'],'ret'=>'1'], [
                                             'title'=>'删除',
                                             'data' => [
                                                 'confirm' => '确定要删除这个数据吗?',
@@ -150,9 +150,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                         <?=$pid['change_time']?>
                                     </td>
                                     <td>
-                                        <?= Html::a('<span class="glyphicon glyphicon-zoom-in"></span>', ['view', 'id' => $pid['id'],'ret'=>'1'], ['title'=>'查看']) ?>
-                                        <?= Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['update', 'id' => $pid['id'],'ret'=>'1'], ['title'=>'修改']) ?>
-                                        <?= Html::a('<span class="	glyphicon glyphicon-trash"></span>', ['delete', 'id' => $pid['id']], [
+                                        <?= Html::a('<span class="glyphicon glyphicon-zoom-in"></span>', ['kit/view', 'id' => $pid['id'],'ret'=>'1'], ['title'=>'查看']) ?>
+                                        <?= Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['kit/update', 'id' => $pid['id'],'ret'=>'1'], ['title'=>'修改']) ?>
+                                        <?= Html::a('<span class="	glyphicon glyphicon-trash"></span>', ['kit/delete', 'id' => $pid['id'],'typeid'=>$pid['typeid']], [
                                             'title'=>'删除',
                                             'data' => [
                                                 'confirm' => '确定要删除这个数据吗?',

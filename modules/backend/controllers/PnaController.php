@@ -106,6 +106,7 @@ class PnaController extends BackendController
             'model' => $model,
             'pagination' => $pagination,
             'search'=>$search,
+            'type'=>$type,
             'file'=>new UploadFile()
         ]);
 
