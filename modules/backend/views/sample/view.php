@@ -14,11 +14,20 @@ $this->params['breadcrumbs'][] = ['label' => '项目管理', 'url' => ['project/
 
 
     <p>
+        <?php if($ret==1):?>
+            <?= Html::a('返回列表', ['sample/index'], [
+                'title'=>'返回列表',
+                'class' => 'btn btn-primary',
+
+            ]) ?>
+            <?php else:?>
         <?= Html::a('返回分组', ['group/view', 'id' => $model->gid], [
             'title'=>'返回项目',
             'class' => 'btn btn-primary',
 
         ]) ?>
+
+        <?php endif;?>
         <?= Html::a('新增实验样本的特定组织与细胞标本', ['stace/create', 'id' => $model->id], ['class' => 'btn btn-info ','title'=>'修改']) ?>
 
         <?= Html::a('修改', ['update', 'id' => $model->id], ['class' => 'btn btn-warning','title'=>'修改']) ?>

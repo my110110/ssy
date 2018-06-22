@@ -14,11 +14,21 @@ $this->params['breadcrumbs'][] = ['label' => '项目管理', 'url' => ['project/
 
 
     <p>
-        <?= Html::a('返回项目', ['project/view', 'id' => $model->pro_id], [
-            'title'=>'返回项目',
-            'class' => 'btn btn-primary',
 
-        ]) ?>
+        <?php if($ret==1):?>
+            <?= Html::a('返回列表', ['group/index'], [
+                'title'=>'返回列表',
+                'class' => 'btn btn-primary',
+
+            ]) ?>
+        <?php else:?>
+            <?= Html::a('返回项目', ['project/view', 'id' => $model->pro_id], [
+                'title'=>'返回项目',
+                'class' => 'btn btn-primary',
+
+            ]) ?>
+        <?php endif;?>
+
         <?= Html::a('添加样品', ['sample/create', 'id' => $model->id], ['class' => 'btn btn-info','title'=>'新增样品']) ?>
 
         <?= Html::a('修改', ['update', 'id' => $model->id], ['class' => 'btn btn-warning','title'=>'修改']) ?>
@@ -75,7 +85,7 @@ $this->params['breadcrumbs'][] = ['label' => '项目管理', 'url' => ['project/
                 </tr>
                     <tr class="default">
                         <td class="col-md-2">项目修改时间</td>
-                        <td class="col-md-10"><?=$model->group_update_time?></td>
+                        <td class="col-md-10"><?=$model->group_change_time?></td>
                     </tr>
                 <?php endif;?>
                 <?php if(count($sample)>0) :?>

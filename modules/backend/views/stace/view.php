@@ -15,11 +15,22 @@ $this->params['breadcrumbs'][] = ['label' => '样品管理', ['sample/view', 'id
 
 
     <p>
-        <?= Html::a('返回样本', ['sample/view', 'id' => $model->sid], [
-            'title'=>'返回项目',
-            'class' => 'btn btn-primary',
 
-        ]) ?>
+
+        <?php if($ret==1):?>
+            <?= Html::a('返回列表', ['stace/index'], [
+                'title'=>'返回列表',
+                'class' => 'btn btn-primary',
+
+            ]) ?>
+        <?php else:?>
+            <?= Html::a('返回样本', ['sample/view', 'id' => $model->sid], [
+                'title'=>'返回项目',
+                'class' => 'btn btn-primary',
+
+            ]) ?>
+        <?php endif;?>
+
         <?= Html::a('新增实验结果', [''], [
             'title'=>'返回项目',
             'class' => 'btn btn-success n_add',
@@ -97,25 +108,15 @@ $this->params['breadcrumbs'][] = ['label' => '样品管理', ['sample/view', 'id
                         <td class="col-md-10"><?=$model->change_time?></td>
                     </tr>
                 <?php endif;?>
-                <?php if(count($res)>0) :?>
-                    <?php foreach ($res as $res):?>
-                        <tr class="warning">
-                            <td class="col-md-2"><?=\app\models\Sdyeing::$res_name[$res->ntype]?></td>
-                            <td class="col-md-10">
-                                <?= Html::a("$res->section_name", ['sdyeing/view', 'id' => $res->id]) ?>
-                                <?php if($res->ntype==1):?>
-                                   <?= Html::a('', ['routine/change', 'id' => $res->id], ['class' => 'glyphicon glyphicon-pencil','title'=>'修改']) ?>
-                               <?php elseif ($res->ntype==2):?>
-                                    <?= Html::a('', ['particular/change', 'id' => $res->id], ['class' => 'glyphicon glyphicon-pencil','title'=>'修改']) ?>
-                                <?php elseif (in_array($res->ntype,[3,4])):?>
-                                    <?= Html::a('', ['pna/change', 'id' => $res->id,'ntype'=>$res->ntype], ['class' => 'glyphicon glyphicon-pencil','title'=>'修改']) ?>
-                                <?php endif;?>
-                                <?= Html::a('', ['sdyeing/del', 'id' => $res->id], ['class' => 'glyphicon glyphicon-trash','title'=>'删除']) ?>
+               <tr>
+                   <td colspan="2">
+                       <?= Html::a('查看实验结果', ['sdyeing/index', 'yid' => $model->id], [
+                           'title'=>'返回项目',
+                           'class' => 'btn btn-primary',
 
-                            </td>
-                        </tr>
-                    <?php endforeach;?>
-                <?php endif;?>
+                       ]) ?>
+                   </td>
+               </tr>
                 </tbody>
             </table>
 

@@ -54,6 +54,17 @@ class Stace extends \yii\db\ActiveRecord
     }
 
     /**
+     * 定义场景
+     */
+    public function scenarios()
+    {
+        return [
+            'search'=>[['name', 'retrieve'],'safe'],
+            'default'=>['name','description','handle','retrieve','postion','place']
+        ];
+    }
+
+    /**
      * @inheritdoc
      */
     public function attributeLabels()
@@ -75,5 +86,12 @@ class Stace extends \yii\db\ActiveRecord
             'del_time' => 'Del Time',
             'del_user' => 'Del User',
         ];
+    }
+
+    static function getParName($id)
+    {
+        $user= self::findOne($id);
+        return $user->name;
+
     }
 }

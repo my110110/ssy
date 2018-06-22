@@ -53,4 +53,10 @@ class Particular extends \yii\db\ActiveRecord
             'change_time' => 'Change Time',
         ];
     }
+    static function getParName($id)
+    {
+        $user= self::findOne($id);
+        return $user->name;
+
+    }
 }

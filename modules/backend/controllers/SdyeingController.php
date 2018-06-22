@@ -21,6 +21,7 @@ use app\models\Sdyeing;
 use yii\web\Response;
 use yii\data\Pagination;
 use app\helpers\CommonHelper;
+use app\models\UploadFile;
 class SdyeingController extends BackendController
 {
     /**
@@ -45,18 +46,31 @@ class SdyeingController extends BackendController
      * Lists all Content models.
      * @return mixed
      */
-    public function actionIndex($type)
+    public function actionIndex($yid=0)
     {
         //分页读取类别数据
+        $search=New Sdyeing();
+        $model =  Sdyeing::find();
+        $search->scenario='search';
 
-        $model =  Pna::find();
+        if(isset(Yii::$app->request->queryParams['Sdyeing']))
+        {
 
+            $parms=Yii::$app->request->queryParams['Sdyeing'];
+            if(isset($parms['retrieve']))
+                $model->andFilterWhere(['retrieve' => $parms['retrieve'],]);
+            if(isset($parms['section_name']))
+                $model->andFilterWhere(['like', 'section_name', $parms['section_name']]);
 
+        }
         $pagination = new Pagination([
             'defaultPageSize' => 10,
             'totalCount' => $model->count(),
         ]);
-        $model->andFilterWhere(['isdel'=> 0,'type'=>$type]);
+        if($yid>0){
+            $model->andFilterWhere(['yid'=> $yid]);
+        }
+        $model->andFilterWhere(['isdel'=> 0]);
         $model = $model->orderBy('id ASC')
             ->offset($pagination->offset)
             ->limit($pagination->limit)
@@ -64,10 +78,10 @@ class SdyeingController extends BackendController
 
         return $this->render('index', [
             'model' => $model,
-            'pagination'=>$pagination,
-            'type'=>$type
+            'pagination' => $pagination,
+            'search'=>$search,
+            'file'=>new UploadFile()
         ]);
-
 
     }
 
@@ -210,6 +224,18 @@ class SdyeingController extends BackendController
         {
             CommonHelper::addlog(4,$model->id,$model->section_name,'sdyeing');
             return $this->showFlash('删除成功','success',['stace/view','id'=>$model->yid]);
+        }
+        return $this->showFlash('删除失败', 'danger',Yii::$app->getUser()->getReturnUrl());
+    }
+
+    public function actionDelete($id)
+    {
+        $model=$this->findModel($id);
+        $model->isdel=1;
+        if($model->save())
+        {
+            CommonHelper::addlog(4,$model->id,$model->section_name,'sdyeing');
+            return $this->showFlash('删除成功','success',['sdyeing/index']);
         }
         return $this->showFlash('删除失败', 'danger',Yii::$app->getUser()->getReturnUrl());
     }

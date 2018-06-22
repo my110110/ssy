@@ -78,19 +78,21 @@ class KitController extends BackendController
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate($id,$type)
+    public function actionCreate($id,$type,$typeid=0)
     {
         $model=new Kit();
         if($type=='testmethod'){
             $parent=Testmethod::findOne($id);
             $model->rid=$parent->pid;
+            $model->typeid=3;
         }elseif($type=='pna'){
-
             $model->rid=$id;
+            $model->typeid=$typeid;
         }
 
         $model->tid=$id;
         $model->type=$type;
+
         $post = Yii::$app->request->post();
         if ($post)
         {
@@ -105,8 +107,9 @@ class KitController extends BackendController
                 $model->file = UploadedFile::getInstance($model, 'file');
                 if ($model->file) {
                     $model->file->saveAs('uploads/pdf/' .  $model->retrieve . '.' . $model->file->extension);
+                    $model->pdf='uploads/pdf/' .  $model->retrieve . '.' . $model->file->extension;
                 }
-                $model->pdf='uploads/pdf/' .  $model->retrieve . '.' . $model->file->extension;
+
                 if ($model->load($post)&&$model->save() )
                 {
                     CommonHelper::addlog(1,$model->id,$model->name,'kit');

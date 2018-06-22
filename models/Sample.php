@@ -44,6 +44,17 @@ class Sample extends \yii\db\ActiveRecord
     }
 
     /**
+     * 定义场景
+     */
+    public function scenarios()
+    {
+        return [
+            'search'=>[['name', 'retrieve'],'safe'],
+            'default'=>['name','descript','img','retrieve']
+        ];
+    }
+
+    /**
      * @inheritdoc
      */
     public function attributeLabels()
@@ -55,5 +66,13 @@ class Sample extends \yii\db\ActiveRecord
             'retrieve' => 'Retrieve',
             'descript' => '样本描述',
         ];
+    }
+
+
+    static function getParName($id)
+    {
+        $user= self::findOne($id);
+        return $user->name;
+
     }
 }

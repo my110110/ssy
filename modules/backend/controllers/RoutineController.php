@@ -153,7 +153,7 @@ class RoutineController extends BackendController
      * @param integer $id
      * @return mixed
      */
-    public function actionChange($id)
+    public function actionChange($id,$ret=0)
     {
         $model =Sdyeing::findOne($id);
         $routine=Routine::find()->andFilterWhere(['isdel'=>'0'])->all();
@@ -184,8 +184,12 @@ class RoutineController extends BackendController
 
                     CommonHelper::addlog(3, $model->id, $model->section_name, 'sdyeing');
                     $tr->commit();
-                    return $this->showFlash('修改成功','success',['stace/view','id'=>$model->yid]);
-                } else {
+                    if($ret==1){
+                        return $this->showFlash('修改成功', 'success', ['sdyeing/index']);
+                    }else{
+                        return $this->showFlash('修改成功', 'success', ['stace/view', 'id' => $model->yid]);
+
+                    }                } else {
                     $tr->rollBack();
                     var_dump($model->getErrors());die;
                     return $this->showFlash('修改失败');

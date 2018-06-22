@@ -57,4 +57,11 @@ class Routine extends \yii\db\ActiveRecord
             'isdel' => 'Isdel',
         ];
     }
+
+    static function getParName($id)
+    {
+        $user= self::findOne($id);
+        return $user->name;
+
+    }
 }

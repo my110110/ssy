@@ -49,6 +49,17 @@ class Group extends \yii\db\ActiveRecord
     }
 
     /**
+     * 定义场景
+     */
+    public function scenarios()
+    {
+        return [
+            'search'=>[['group_name', 'group_retrieve'],'safe'],
+            'default'=>['group_name','group_retrieve','group_experiment_type','group_description','group_sample_count']
+        ];
+    }
+
+    /**
      * @inheritdoc
      */
     public function attributeLabels()
@@ -71,4 +82,11 @@ class Group extends \yii\db\ActiveRecord
             'group_del_user' => 'Group Del User',
         ];
     }
+    static function getParName($id)
+    {
+        $user= self::findOne($id);
+        return $user->group_name;
+
+    }
+
 }

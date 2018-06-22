@@ -17,6 +17,8 @@ use yii\filters\VerbFilter;
 use app\models\Stace;
 use app\models\Sdyeing;
 use app\helpers\CommonHelper;
+use yii\data\Pagination;
+use app\models\UploadFile;
 class StaceController extends BackendController
 {
     /**
@@ -42,15 +44,36 @@ class StaceController extends BackendController
     public function actionIndex()
     {
 
-        $pro_id=Yii::$app->request->queryParams;
-        $project=new Project();
-        $project=$project->findOne(['pro_id'=>$pro_id]);
-        $searchModel = new Principal();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $this->module->params['pageSize']);
+        //分页读取类别数据
+        $search=New Stace();
+        $model =  Stace::find();
+        $search->scenario='search';
+
+        if(isset(Yii::$app->request->queryParams['Stace']))
+        {
+
+            $parms=Yii::$app->request->queryParams['Stace'];
+            if(isset($parms['retrieve']))
+                $model->andFilterWhere(['retrieve' => $parms['retrieve'],]);
+            if(isset($parms['name']))
+                $model->andFilterWhere(['like', 'name', $parms['name']]);
+
+        }
+        $pagination = new Pagination([
+            'defaultPageSize' => 10,
+            'totalCount' => $model->count(),
+        ]);
+        $model->andFilterWhere(['isdel'=> 0]);
+        $model = $model->orderBy('id ASC')
+            ->offset($pagination->offset)
+            ->limit($pagination->limit)
+            ->all();
+
         return $this->render('index', [
-            'dataProvider' => $dataProvider,
-            'pro_id'=>$pro_id,
-            'project'=>$project
+            'model' => $model,
+            'pagination' => $pagination,
+            'search'=>$search,
+            'file'=>new UploadFile()
         ]);
     }
 
@@ -59,7 +82,7 @@ class StaceController extends BackendController
      * @param integer $id
      * @return mixed
      */
-    public function actionView($id)
+    public function actionView($id,$ret=0)
     {
 
         $model=$this->findModel($id);
@@ -68,7 +91,8 @@ class StaceController extends BackendController
         return $this->render('view', [
             'model' => $model,
             'parent'=>$parent,
-            'res'=>$res
+            'res'=>$res,
+            'ret'=>$ret
         ]);
     }
 
@@ -130,7 +154,7 @@ class StaceController extends BackendController
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id,$ret=0)
     {
         $model = $this->findModel($id);
         $parent=Sample::findOne(['id'=>$model->sid]);
@@ -150,8 +174,13 @@ class StaceController extends BackendController
                     {
                         $tr->commit();
                         Yii::$app->getSession()->setFlash('success', '修改成功');
-                        return  $this->redirect(['sample/view','id'=>$model->sid]);
-                        // return $this->showFlash('添加成功','success',['project/index']);
+                        if($ret==1){
+                            return  $this->redirect(['stace/index']);
+
+                        }else{
+                            return  $this->redirect(['sample/view','id'=>$model->sid]);
+
+                        }
                     }else{
                         $tr->rollBack();
                         return $this->showFlash('修改失败');

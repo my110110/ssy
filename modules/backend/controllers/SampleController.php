@@ -17,6 +17,10 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\models\Group;
 use app\helpers\CommonHelper;
+use yii\data\Pagination;
+use app\models\UploadFile;
+
+
 class SampleController extends BackendController
 {
     /**
@@ -42,16 +46,39 @@ class SampleController extends BackendController
     public function actionIndex()
     {
 
-        $pro_id=Yii::$app->request->queryParams;
-        $project=new Project();
-        $project=$project->findOne(['pro_id'=>$pro_id]);
-        $searchModel = new Principal();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $this->module->params['pageSize']);
-        return $this->render('index', [
-            'dataProvider' => $dataProvider,
-            'pro_id'=>$pro_id,
-            'project'=>$project
+        //分页读取类别数据
+        $search=New Sample();
+        $model =  Sample::find();
+        $search->scenario='search';
+
+        if(isset(Yii::$app->request->queryParams['Sample']))
+        {
+
+            $parms=Yii::$app->request->queryParams['Sample'];
+            if(isset($parms['retrieve']))
+                $model->andFilterWhere(['retrieve' => $parms['retrieve'],]);
+            if(isset($parms['name']))
+                $model->andFilterWhere(['like', 'name', $parms['name']]);
+
+        }
+        $pagination = new Pagination([
+            'defaultPageSize' => 10,
+            'totalCount' => $model->count(),
         ]);
+        $model->andFilterWhere(['isdel'=> 0]);
+        $model = $model->orderBy('id ASC')
+            ->offset($pagination->offset)
+            ->limit($pagination->limit)
+            ->all();
+
+        return $this->render('index', [
+            'model' => $model,
+            'pagination' => $pagination,
+            'search'=>$search,
+            'file'=>new UploadFile()
+        ]);
+
+
     }
 
     /**
@@ -59,7 +86,7 @@ class SampleController extends BackendController
      * @param integer $id
      * @return mixed
      */
-    public function actionView($id)
+    public function actionView($id,$ret=0)
     {
         $model=$this->findModel($id);
         $stace=Stace::findAll(['sid'=>$id,'isdel'=>'0']);
@@ -68,7 +95,8 @@ class SampleController extends BackendController
         return $this->render('view', [
             'model' => $model,
             'group'=>$group,
-            'stace'=>$stace
+            'stace'=>$stace,
+            'ret'=>$ret
         ]);
     }
 
@@ -131,7 +159,7 @@ class SampleController extends BackendController
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id,$ret=0)
     {
         $sample = $this->findModel($id);
         $model=Group::findOne(['id'=>$sample->gid]);
@@ -151,7 +179,12 @@ class SampleController extends BackendController
                     {
                         $tr->commit();
                         Yii::$app->getSession()->setFlash('success', '修改成功');
-                        return  $this->redirect(['project/view','id'=>$model->pro_id]);
+                        if($ret==1){
+                            return  $this->redirect(['sample/index']);
+                        }else{
+                            return  $this->redirect(['group/view','id'=>$model->id]);
+
+                        }
                         // return $this->showFlash('添加成功','success',['project/index']);
                     }else{
                         $tr->rollBack();
@@ -186,6 +219,18 @@ class SampleController extends BackendController
         if($model->save()){
             CommonHelper::addlog(4,$model->id,$model->name,'sample');
             return $this->showFlash('删除成功','success',['group/view','id'=>$model->gid]);
+        }
+        return $this->showFlash('删除失败', 'danger',Yii::$app->getUser()->getReturnUrl());
+    }
+    public function actionDelete($id)
+    {
+        $model=Sample::findOne(['id'=>$id]);
+        $model->isdel=1;
+        $model->del_user=Yii::$app->user->id;
+        $model->del_time=date('Y-m-d H:i:s');
+        if($model->save()){
+            CommonHelper::addlog(4,$model->id,$model->name,'sample');
+            return $this->showFlash('删除成功','success',['sample/index']);
         }
         return $this->showFlash('删除失败', 'danger',Yii::$app->getUser()->getReturnUrl());
     }

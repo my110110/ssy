@@ -88,4 +88,11 @@ class Principal extends \yii\db\ActiveRecord
 
         return $dataProvider;
     }
+
+    static function getParName($id)
+    {
+        $user= self::findOne($id);
+        return $user->name;
+
+    }
 }

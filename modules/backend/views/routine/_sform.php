@@ -41,7 +41,7 @@ use kartik\file\FileInput;
     <div id="sdyeing-kit">
         <?php if(count($reagent)>0) :?>
             <?php foreach ($reagent as $reagent):?>
-            <div class="checkbox id<?=$reagent->sid?>  hid" ><label><input type="checkbox" name="Sdyeing[rgid][]" value="<?=$reagent->id?>" <?php if(in_array($reagent->id,json_decode($model->rgid))){echo 'checked';}?>><?=$reagent->name?></label></div>
+            <div class="checkbox id<?=$reagent->sid?>  hid" ><label><input type="checkbox" name="Sdyeing[rgid][]" value="<?=$reagent->id?>" <?php if(count(json_decode($model->rgid))>0&&in_array($reagent->id,json_decode($model->rgid))){echo 'checked';}?>><?=$reagent->name?></label></div>
             <?php endforeach;?>
         <?php endif;?>
     </div>

@@ -16,6 +16,9 @@ use app\modules\backend\components\BackendController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\models\Group;
+use yii\data\Pagination;
+use app\models\UploadFile;
+
 use app\helpers\CommonHelper;
 class GroupController extends BackendController
 {
@@ -41,17 +44,39 @@ class GroupController extends BackendController
      */
     public function actionIndex()
     {
+        //分页读取类别数据
+        $search=New Group();
+        $model =  Group::find();
+        $search->scenario='search';
 
-        $pro_id=Yii::$app->request->queryParams;
-        $project=new Project();
-        $project=$project->findOne(['pro_id'=>$pro_id]);
-        $searchModel = new Principal();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $this->module->params['pageSize']);
-        return $this->render('index', [
-            'dataProvider' => $dataProvider,
-            'pro_id'=>$pro_id,
-            'project'=>$project
+        if(isset(Yii::$app->request->queryParams['Group']))
+        {
+
+            $parms=Yii::$app->request->queryParams['Group'];
+            if(isset($parms['group_retrieve']))
+                $model->andFilterWhere(['group_retrieve' => $parms['group_retrieve'],]);
+            if(isset($parms['group_name']))
+                $model->andFilterWhere(['like', 'group_name', $parms['group_name']]);
+
+        }
+        $pagination = new Pagination([
+            'defaultPageSize' => 10,
+            'totalCount' => $model->count(),
         ]);
+        $model->andFilterWhere(['isdel'=> 0]);
+        $model = $model->orderBy('id ASC')
+            ->offset($pagination->offset)
+            ->limit($pagination->limit)
+            ->all();
+
+        return $this->render('index', [
+            'model' => $model,
+            'pagination' => $pagination,
+            'search'=>$search,
+            'file'=>new UploadFile()
+        ]);
+
+
     }
 
     /**
@@ -59,12 +84,13 @@ class GroupController extends BackendController
      * @param integer $id
      * @return mixed
      */
-    public function actionView($id)
+    public function actionView($id,$ret=0)
     {
         $sample=Sample::find()->andFilterWhere(['gid'=>$id,'isdel'=>0])->all();
         return $this->render('view', [
             'model' => $this->findModel($id),
-            'sample'=>$sample
+            'sample'=>$sample,
+            'ret'=>$ret
         ]);
     }
 
@@ -97,7 +123,6 @@ class GroupController extends BackendController
                         $tr->commit();
                         Yii::$app->getSession()->setFlash('success', '保存成功');
                         return  $this->redirect(['project/view','id'=>$model->pro_id]);
-                       // return $this->showFlash('添加成功','success',['project/index']);
 
                 } else{
                     $tr->rollBack();
@@ -125,7 +150,7 @@ class GroupController extends BackendController
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id,$ret=0)
     {
         $group = $this->findModel($id);
         $model=Group::findOne(['pro_id'=>$group->pro_id]);
@@ -145,8 +170,13 @@ class GroupController extends BackendController
                     {
                         $tr->commit();
                         Yii::$app->getSession()->setFlash('success', '修改成功');
-                        return  $this->redirect(['project/view','id'=>$model->pro_id]);
-                        // return $this->showFlash('添加成功','success',['project/index']);
+                        if($ret==1){
+                            return  $this->redirect(['group/index']);
+
+                        }else{
+                            return  $this->redirect(['project/view','id'=>$model->pro_id]);
+                        }
+
                     }else{
                         $tr->rollBack();
                         return $this->showFlash('修改失败');
@@ -183,7 +213,18 @@ class GroupController extends BackendController
         }
         return $this->showFlash('删除失败', 'danger',Yii::$app->getUser()->getReturnUrl());
     }
-
+    public function actionDelete($id)
+    {
+        $model=Group::findOne(['id'=>$id]);
+        $model->isdel=1;
+        $model->group_del_user=Yii::$app->user->id;
+        $model->group_del_time=date('Y-m-d H:i:s');
+        if($model->save()){
+            CommonHelper::addlog(4,$model->id,$model->group_name,'group');
+            return $this->showFlash('删除成功','success',['group/index']);
+        }
+        return $this->showFlash('删除失败', 'danger',Yii::$app->getUser()->getReturnUrl());
+    }
     /**
      * Finds the Content model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

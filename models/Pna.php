@@ -72,4 +72,11 @@ class Pna extends \yii\db\ActiveRecord
             'change_user' => 'Change User',
         ];
     }
+
+    static function getParName($id)
+    {
+        $user= self::findOne($id);
+        return $user->name;
+
+    }
 }

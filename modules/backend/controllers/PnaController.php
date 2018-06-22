@@ -18,6 +18,8 @@ use app\models\Sdyeing;
 use yii\web\Response;
 use yii\data\Pagination;
 use app\helpers\CommonHelper;
+use app\models\UploadFile;
+
 class PnaController extends BackendController
 {
     /**
@@ -67,6 +69,49 @@ class PnaController extends BackendController
 
 
     }
+
+    /**
+     * Lists all Content models.
+     * @return mixed
+     */
+    public function actionShow($type)
+    {
+
+        //分页读取类别数据
+        $search=New Kit();
+        $model =  Kit::find();
+        $search->scenario='search';
+
+        if(isset(Yii::$app->request->queryParams['Kit']))
+        {
+
+            $parms=Yii::$app->request->queryParams['Kit'];
+            if(isset($parms['retrieve']))
+                $model->andFilterWhere(['retrieve' => $parms['retrieve'],]);
+            if(isset($parms['name']))
+                $model->andFilterWhere(['like', 'name', $parms['name']]);
+
+        }
+        $pagination = new Pagination([
+            'defaultPageSize' => 10,
+            'totalCount' => $model->count(),
+        ]);
+        $model->andFilterWhere(['isdel'=> 0,'typeid'=>$type]);
+        $model = $model->orderBy('id ASC')
+            ->offset($pagination->offset)
+            ->limit($pagination->limit)
+            ->all();
+
+        return $this->render('show', [
+            'model' => $model,
+            'pagination' => $pagination,
+            'search'=>$search,
+            'file'=>new UploadFile()
+        ]);
+
+
+    }
+
     /**
      * Creates a new Content model.
      * If creation is successful, the browser will be redirected to the 'view' page.
@@ -134,7 +179,7 @@ class PnaController extends BackendController
      * @param integer $id
      * @return mixed
      */
-    public function actionChange($id,$ntype)
+    public function actionChange($id,$ntype,$ret=0)
     {
         $model =Sdyeing::findOne($id);
         if($ntype==3){
@@ -169,10 +214,13 @@ class PnaController extends BackendController
 
                     CommonHelper::addlog(3, $model->id, $model->section_name, 'sdyeing');
                     $tr->commit();
-                    return $this->showFlash('修改成功','success',['stace/view','id'=>$model->yid]);
-                } else {
+                    if($ret==1){
+                        return $this->showFlash('修改成功', 'success', ['sdyeing/index']);
+                    }else{
+                        return $this->showFlash('修改成功', 'success', ['stace/view', 'id' => $model->yid]);
+
+                    }                } else {
                     $tr->rollBack();
-                    var_dump($model->getErrors());die;
                     return $this->showFlash('修改失败');
                 }
 

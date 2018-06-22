@@ -14,13 +14,13 @@ $this->params['breadcrumbs'][] = ['label' => '返回列表', 'url' => ['index', 
 
     <p>
          <?php if($model->type==1):?>
-        <?= Html::a('添加抗体', ['kit/create', 'id' => $model->id,'type'=>'pna'], [
+        <?= Html::a('添加抗体', ['kit/create', 'id' => $model->id,'type'=>'pna','typeid'=>1], [
             'title'=>'添加抗体',
             'class' => 'btn btn-success',
 
         ]) ?>
    <?php elseif ($model->type==2):?>
-         <?= Html::a('添加检测试剂盒', ['kit/create', 'id' => $model->id,'type'=>'pna'], [
+         <?= Html::a('添加检测试剂盒', ['kit/create', 'id' => $model->id,'type'=>'pna','typeid'=>2], [
              'title'=>'添加检测试剂盒',
              'class' => 'btn btn-success',
 

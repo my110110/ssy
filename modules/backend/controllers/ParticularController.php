@@ -152,7 +152,7 @@ class ParticularController extends BackendController
      * @param integer $id
      * @return mixed
      */
-    public function actionChange($id)
+    public function actionChange($id,$ret=0)
     {
         $model =Sdyeing::findOne($id);
         $particular=Particular::find()->andFilterWhere(['isdel'=>'0'])->all();
@@ -191,7 +191,13 @@ class ParticularController extends BackendController
 
                     CommonHelper::addlog(3, $model->id, $model->section_name, 'sdyeing');
                     $tr->commit();
-                    return $this->showFlash('修改成功', 'success', ['stace/view', 'id' => $model->yid]);
+                    if($ret==1){
+                        return $this->showFlash('修改成功', 'success', ['sdyeing/index']);
+                    }else{
+                        return $this->showFlash('修改成功', 'success', ['stace/view', 'id' => $model->yid]);
+
+                    }
+
                 } else {
                     $tr->rollBack();
                     return $this->showFlash('修改失败');
