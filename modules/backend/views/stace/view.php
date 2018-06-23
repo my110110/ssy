@@ -5,6 +5,8 @@ use yii\widgets\DetailView;
 use app\modules\backend\models\AdminUser;
 use app\models\Project;
 use app\models\Stace;
+use kartik\form\ActiveForm;
+
 /* @var $this yii\web\View */
 /* @var $model app\models\Project */
 $this->title = $model->name;
@@ -119,7 +121,37 @@ $this->params['breadcrumbs'][] = ['label' => '样品管理', ['sample/view', 'id
                </tr>
                 </tbody>
             </table>
+            <div class="tab-content cos">
+                <div class="row clearfix">
+                    <?php $form = ActiveForm::begin([
+                        'action' => ['sdyeing/uploadfile','pid'=>$model->id],
+                        'method' => 'post',
+                        'options' => ['enctype' => 'multipart/form-data']
+                    ]); ?>
 
+                    <?= $form->field($file, 'file',
+                        ['options'=>
+                            ['tag'=>false ],
+                            'template' => '<div class=" col-md-2 column ace-file-input"> 
+                             {input}</div>',
+
+                        ])->fileInput() ?>
+                    <div class=" col-md-2 column ace-pid-input">
+                        <select id="sdyeing-nid" class="part form-control" name="ntype" aria-invalid="false">
+
+                                    <option value="1">常规H&E染色</option>
+                                    <option value="2">特殊染色</option>
+                                    <option value="3">蛋白</option>
+                                      <option value="3">核酸</option>
+
+                        </select>
+
+                        <div class="help-block"></div>
+                    </div>
+                    <?= Html::submitButton('导入实验结果', ['class' => 'btn btn-primary uploadfile']) ?>
+                    <?php ActiveForm::end(); ?>
+                </div>
+            </div>
 
 </div>
         <script><?php $this->beginBlock('js_end') ?>

@@ -61,7 +61,11 @@ class Routine extends \yii\db\ActiveRecord
     static function getParName($id)
     {
         $user= self::findOne($id);
-        return $user->name;
+        if($user){
+            return $user->name;
+        }else{
+            return '';
+        }
 
     }
 }

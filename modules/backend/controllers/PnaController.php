@@ -142,10 +142,10 @@ class PnaController extends BackendController
                 $model->setAttributes($_POST['Sdyeing'],false);
                 $model->add_time=date('Y-m-d H:i:s');
                 if($model->ntype==3){
-                    $model->retrieve='ERP'.time();
+                    $model->retrieve='ERP'.time().'A'.rand(0,9);
 
                 }elseif ($model->ntype==4){
-                    $model->retrieve='ERN'.time();
+                    $model->retrieve='ERN'.time().'A'.rand(0,9);
 
                 }
                 if ($model->load($post)&&$model->save() )
@@ -272,9 +272,9 @@ class PnaController extends BackendController
         $model = new Pna();
         $model->type=$type;
         if($type==1){
-            $model->retrieve='ETP'.time();
+            $model->retrieve='ETP'.time().'A'.rand(0,9);
         }elseif ($type==2){
-            $model->retrieve='ETN'.time();
+            $model->retrieve='ETN'.time().'A'.rand(0,9);
         }
 
         $post = Yii::$app->request->post();

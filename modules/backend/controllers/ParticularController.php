@@ -119,7 +119,7 @@ class ParticularController extends BackendController
                 $model->setAttributes($_POST['Sdyeing'],false);
                 $model->add_time=date('Y-m-d H:i:s');
                 $model->ntype=2;
-                $model->retrieve='ERSS'.time();
+                $model->retrieve='ERSS'.time().'A'.rand(0,9);
                 if ($model->load($post)&&$model->save() )
                 {
                     CommonHelper::addlog(1,$model->id,$model->section_name,'sdyeing');
@@ -225,7 +225,7 @@ class ParticularController extends BackendController
     public function actionCreate()
     {
         $model = new Particular();
-        $model->retrieve='ETS'.time();
+        $model->retrieve='ETS'.time().'A'.rand(0,9);
         $post = Yii::$app->request->post();
         if ($post) {
             $tr=Yii::$app->db->beginTransaction();

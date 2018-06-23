@@ -21,8 +21,12 @@ use yii\web\Response;
 use app\helpers\CategoryHelper;
 use yii\data\Pagination;
 use yii\helpers\ArrayHelper;
-use PHPExcel;
+use PHPExcel_Reader_Excel2007;
+use PHPExcel_Reader_CSV;
+use PHPExcel_Reader_Excel5;
 use app\models\UploadFile;
+use yii\web\UploadedFile;
+
 use app\helpers\CommonHelper;
 class ProjectController extends BackendController
 {
@@ -100,7 +104,7 @@ class ProjectController extends BackendController
             ->offset($pagination->offset)
             ->limit($pagination->limit)
             ->all();
-        $child=Project::find()->andFilterWhere(['>', 'pro_pid', 0])->all();
+        $child=Project::find()->andFilterWhere(['>', 'pro_pid', 0])->andFilterWhere(['isdel'=> 0])->all();
         $child = ArrayHelper::toArray($child);
         $model = ArrayHelper::toArray($model);
         foreach ($model as $k=>$md){
@@ -120,18 +124,96 @@ class ProjectController extends BackendController
             'file'=>new UploadFile()
         ]);
 
-//        $searchModel = new ProjectSearch();
-//
-//        $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $this->module->params['pageSize']);
-//        return $this->render('index', [
-//            'searchModel' => $searchModel,
-//            'dataProvider' => $dataProvider,
-//        ]);
+
     }
 
-    public function actionUploadfile()
+    public function actionUploadfile($pid=0)
     {
+        $model=new UploadFile();
+        $model->file = UploadedFile::getInstance($model, 'file');
+        if(!$model->file){
+            return $this->showFlash('未选择任何文件', 'danger',Yii::$app->getUser()->getReturnUrl());
+        }
+        $extension=$model->file->extension ;
+        if ($extension =='xlsx') {
+            $objReader = new PHPExcel_Reader_Excel2007();
+            $objExcel = $objReader ->load($model->file->tempName);
+        } else if ($extension =='xls') {
+            $objReader = new PHPExcel_Reader_Excel5();
+            $objExcel = $objReader ->load($model->file->tempName);
+        } else if ($extension=='csv') {
+            $PHPReader = new PHPExcel_Reader_CSV();
+            //默认输入字符集
+            $PHPReader->setInputEncoding('GBK');
+            //默认的分隔符
+            $PHPReader->setDelimiter(',');
+            //载入文件
+            $objExcel = $PHPReader->load($model->file->tempName);
+        }
 
+        $objWorksheet = $objExcel->getSheet(0);
+        $highestRow = $objWorksheet->getHighestRow();//最大行数，为数字
+        $highestColumn = $objWorksheet->getHighestColumn();//最大列数 为字母
+        $highestColumnIndex = \PHPExcel_Cell::columnIndexFromString($highestColumn); //将字母变为数字
+
+        $tableData = [];
+        for($row = 1;$row<=$highestRow;$row++){
+            for($col=0;$col< $highestColumnIndex;$col++){
+                $tableData[$row][$col] = $objWorksheet->getCellByColumnAndRow($col,$row)->getValue();
+            }
+        }
+        unset($tableData[0]);
+        unset($tableData[1]);
+        $Promodel=new Project();
+        $principal=new Principal();
+        $tr=Yii::$app->db->beginTransaction();
+        try{
+                foreach ($tableData as $k=>$v)
+                {
+
+
+                       $_model=clone $Promodel;
+                       $_principal=clone $principal;
+                       $_model->scenario='create';
+                       $_model->pro_name=trim($v['0']);
+                       $_model->pro_pid=$pid;
+                       $_model->pro_keywords=trim($v['1']);
+                       $_model->pro_kind_id=trim($v['2']);
+                       $_model->pro_sample_count=intval($v['3']);
+                       $_model->pro_description=trim($v['8']);
+                       $_model->pro_retrieve='PDS'.time().'D'.$k;
+                       $_model->pro_add_time=date('Y-m-d H:i:s');
+                       $_model->pro_user=Yii::$app->user->id;
+                       $_principal->name=trim($v['4']);
+                       $_principal->department=trim($v['5']);
+                       $_principal->email=trim($v['6']);
+                       $_principal->telphone=trim($v['7']);
+                       if($_model->save()){
+                           CommonHelper::addlog(1,$_model->pro_id,$_model->pro_name,'project');
+                           $_principal->pro_id=$_model->attributes['pro_id'];
+                           if(!$_principal->save()){
+                               $tr->rollBack();
+                               return $this->showFlash($_principal->getErrors());
+                           }
+                       }else{
+                           $tr->rollBack();
+                           return $this->showFlash('导入失败');
+                       }
+                   }
+
+            $tr->commit();
+                if($pid>0){
+                    return $this->showFlash('添加成功','success',['project/view','id'=>$pid]);
+
+                }else{
+                    return $this->showFlash('导入成功','success',['project/index']);
+
+                }
+        }catch (excepetion $e)
+        {
+            $tr->rollBack();
+            return $this->showFlash('导入失败');
+        }
     }
 
     /**
@@ -149,7 +231,8 @@ class ProjectController extends BackendController
             'model' => $this->findModel($id),
             'child'=>$chid,
             'Principal'=>$Principal,
-            'group'=>$group
+            'group'=>$group,
+            'file'=>new UploadFile()
         ]);
     }
 
@@ -171,7 +254,7 @@ class ProjectController extends BackendController
 
                 $model->setAttributes($_POST['Project'],false);
                 $model->pro_add_time=date('Y-m-d H:i:s');
-                $model->pro_retrieve='PDS'.time();
+                $model->pro_retrieve='PDS'.time().'A'.rand(0,9);
                 $model->pro_user=Yii::$app->user->id;
                 $principal->attributes=$_POST['Principal'];
                 if ($model->load($post)&&$model->save() )

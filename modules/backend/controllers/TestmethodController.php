@@ -145,7 +145,7 @@ class TestmethodController extends BackendController
             try{
                 $model->setAttributes($_POST['Testmethod'],false);
                 $model->add_time=date('Y-m-d H:i:s');
-                $model->retrieve='ETM'.time();
+                $model->retrieve='ETM'.time().'A'.rand(0,9);
 
                 if ($model->load($post)&&$model->save())
                 {

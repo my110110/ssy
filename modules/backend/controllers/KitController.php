@@ -103,7 +103,7 @@ class KitController extends BackendController
 
 
                 $model->attributes=$_POST['Kit'];
-                $model->retrieve='TER'.time();
+                $model->retrieve='TER'.time().'A'.rand(0,9);
                 $model->add_time=date('Y-m-d H:i:s');
                 $model->file = UploadedFile::getInstance($model, 'file');
                 if ($model->file) {

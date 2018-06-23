@@ -49,3 +49,40 @@ $directoryAsset = Yii::$app->assetManager->getPublishedUrl('@vendor/almasaeed201
     </html>
     <?php $this->endPage() ?>
 <?php endif ?>
+<style type="text/css">
+    .ace-file-input{
+        padding-right: 0;
+        margin-right: 0;
+    }
+    #uploadfile-file {
+        height: 23px;
+        width: 100%;
+        line-height: 23px;
+        border: 1px solid #ccc;
+        background: #ffffff;
+        margin-right: 0;
+        padding-right: 0;
+    }
+    .uploadfile{
+        height: 23px;
+        line-height: 1px;
+    }
+    .ace-pid-input{
+        width: auto;
+        line-height: 1px;
+    }
+    .part{
+        height: 23px;
+        line-height: 23px;
+        font-size: 12px;
+        padding: 0;
+        margin: 0;
+
+    }
+    .part option{
+        height: 24px;
+        line-height: 1px;
+        font-size: 12px;
+
+    }
+</style>

@@ -23,8 +23,11 @@ use yii\web\Response;
 use app\helpers\CategoryHelper;
 use yii\data\Pagination;
 use yii\helpers\ArrayHelper;
-use PHPExcel;
+use PHPExcel_Reader_Excel2007;
+use PHPExcel_Reader_CSV;
+use PHPExcel_Reader_Excel5;
 use app\models\UploadFile;
+use yii\web\UploadedFile;
 use app\helpers\CommonHelper;
 class RoutineController extends BackendController
 {
@@ -67,7 +70,8 @@ class RoutineController extends BackendController
 
         return $this->render('index', [
             'model' => $model,
-            'pagination'=>$pagination
+            'pagination'=>$pagination,
+            'file'=>new UploadFile()
         ]);
 
 //        $searchModel = new ProjectSearch();
@@ -120,7 +124,7 @@ class RoutineController extends BackendController
                     $model->setAttributes($_POST['Sdyeing'],false);
                     $model->add_time=date('Y-m-d H:i:s');
                     $model->ntype=1;
-                    $model->retrieve='ERHE'.time();
+                    $model->retrieve='ERHE'.time().'A'.rand(0,9);
                     if ($model->load($post)&&$model->save() )
                     {
                         CommonHelper::addlog(1,$model->id,$model->section_name,'sdyeing');
@@ -225,7 +229,7 @@ class RoutineController extends BackendController
 
                 $model->setAttributes($_POST['Routine'],false);
                 $model->add_time=date('Y-m-d H:i:s');
-                $model->retrieve='ETS'.time();
+                $model->retrieve='ETS'.time().'A'.rand(0,9);
                 if ($model->load($post)&&$model->save() )
                 {
                     CommonHelper::addlog(1,$model->id,$model->name,'routine');

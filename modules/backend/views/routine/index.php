@@ -124,7 +124,26 @@ echo LinkPager::widget([
     'lastPageLabel'=>'Last',
 ]);
 ?>
+<div class="tab-content cos">
+    <div class="row clearfix">
+        <?php $form = ActiveForm::begin([
+            'action' => ['uploadfile'],
+            'method' => 'post',
+            'options' => ['enctype' => 'multipart/form-data']
+        ]); ?>
 
+        <?= $form->field($file, 'file',
+            ['options'=>
+                ['tag'=>false ],
+                'template' => '<div class=" col-md-2 column ace-file-input"> 
+                             {input}</div>',
+
+            ])->fileInput() ?>
+        <?= Html::submitButton('上传指标', ['class' => 'btn btn-primary uploadfile']) ?>
+        <?php ActiveForm::end(); ?>
+    </div>
+
+</div>
 <div
 
 <script><?php $this->beginBlock('js_end') ?>

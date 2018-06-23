@@ -205,28 +205,7 @@ echo LinkPager::widget([
 ]);
 ?>
 
-<div class="tab-content cos">
-    <div class="row clearfix">
-        <?php $form = ActiveForm::begin([
-            'action' => ['uploadfile'],
-            'method' => 'post',
-            'options' => ['enctype' => 'multipart/form-data']
-        ]); ?>
 
-        <?= $form->field($file, 'file',
-            ['options'=>
-                ['tag'=>false ],
-                'template' => '<div class=" col-md-2 column"> 
-                            <div class="btn btn-info btn-file">
-                                 <i class="glyphicon glyphicon-folder-open">
-                         </i>&nbsp;  <span class="hidden-xs">选择 …</span>{input}</span> </div> </div>',
-
-            ])->fileInput() ?>
-        <?= Html::submitButton('上传项目', ['class' => 'btn btn-primary uploadfile']) ?>
-        <?php ActiveForm::end(); ?>
-    </div>
-
-</div>
 
 
 

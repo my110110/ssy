@@ -109,7 +109,7 @@ class ReagentController extends BackendController
 
 
         $model=new Reagent();
-        $model->retrieve='ETR'.time();
+        $model->retrieve='ETR'.time().'A'.rand(0,9);
         if($type=='routine'){
             $parent=Routine::findOne($id);
             $model->sid=$parent->id;

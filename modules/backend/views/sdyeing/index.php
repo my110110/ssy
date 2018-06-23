@@ -116,8 +116,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         <?=$sarch['retrieve'];?>
                                     </td>
                                     <td>
-                                        <?= Html::a(\app\models\Stace::getParName($sarch['yid']), ['stace/view', 'id' => $sarch['yid']], ['title'=>'查看']) ?>
-
+                                         <?= Html::a(\app\models\Stace::getParName($sarch['yid']), ['stace/view', 'id' => $sarch['yid']], ['title'=>'查看']) ?>
                                     </td>
 
                                <?php if($sarch['ntype']==1):?>
@@ -201,6 +200,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                                    <?php if($pid['ntype']==1):?>
                                     <td>
+
                                             <?= Html::a(\app\models\Routine::getParName($pid['nid']), ['routine/view', 'id' => $pid['nid']], ['title'=>'查看']) ?>
                                     </td>
                                     <td>

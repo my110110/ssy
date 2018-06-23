@@ -175,7 +175,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                 ]) ?>
                             </td>
                         </tr>
-                                <?php foreach($pid['child'] as $child): ?>
+
+                                <?php if(isset($pid['child'])){ foreach($pid['child'] as $child): ?>
                                         <tr class="hides warning pid_<?=$child['pro_pid']?>" >
                                             <td>
                                                 <span class="glyphicon glyphicon-folder-close" style="padding-right: 5px;"></span> <?=$child['pro_name'];?>
@@ -208,7 +209,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                 ]) ?>
                                             </td>
                                         </tr>
-                                <?php endforeach; ?>
+                                <?php endforeach;}  ?>
                         <?php endforeach; ?>
                         <?php endif;?>
                         </tbody>
@@ -240,10 +241,8 @@ echo LinkPager::widget([
         <?= $form->field($file, 'file',
             ['options'=>
                 ['tag'=>false ],
-                'template' => '<div class=" col-md-2 column"> 
-                            <div class="btn btn-info btn-file">
-                                 <i class="glyphicon glyphicon-folder-open">
-                         </i>&nbsp;  <span class="hidden-xs">选择 …</span>{input}</span> </div> </div>',
+                'template' => '<div class=" col-md-2 column ace-file-input"> 
+                             {input}</div>',
 
             ])->fileInput() ?>
         <?= Html::submitButton('上传项目', ['class' => 'btn btn-primary uploadfile']) ?>

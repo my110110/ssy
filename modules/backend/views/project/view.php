@@ -4,6 +4,8 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 use app\modules\backend\models\AdminUser;
 use app\models\Project;
+use kartik\form\ActiveForm;
+
 /* @var $this yii\web\View */
 /* @var $model app\models\Project */
 $this->title = $model->pro_name;
@@ -78,6 +80,10 @@ $this->params['breadcrumbs'][] = ['label' => '项目管理', 'url' => ['index']]
                     <td class="col-md-2">项目样品数</td>
                     <td class="col-md-10"><?=$model->pro_sample_count?></td>
                 </tr>
+                <tr class="active">
+                    <td class="col-md-2">项目描述</td>
+                    <td class="col-md-10"><?=$model->pro_description?></td>
+                </tr>
                 <tr class="default">
                     <td class="col-md-2">项目添加人</td>
                     <td class="col-md-10"><?=AdminUser::getUserName($model->pro_user)?></td>
@@ -143,6 +149,47 @@ $this->params['breadcrumbs'][] = ['label' => '项目管理', 'url' => ['index']]
                 <?php endif;?>
                 </tbody>
             </table>
+      <?php if($model->pro_pid==0):?>
 
+          <div class="tab-content cos">
+              <div class="row clearfix">
+                  <?php $form = ActiveForm::begin([
+                      'action' => ['uploadfile','pid'=>$model->pro_id],
+                      'method' => 'post',
+                      'options' => ['enctype' => 'multipart/form-data']
+                  ]); ?>
+
+                  <?= $form->field($file, 'file',
+                      ['options'=>
+                          ['tag'=>false ],
+                          'template' => '<div class=" col-md-2 column ace-file-input"> 
+                             {input}</div>',
+
+                      ])->fileInput() ?>
+                  <?= Html::submitButton('导入子项目', ['class' => 'btn btn-primary uploadfile']) ?>
+                  <?php ActiveForm::end(); ?>
+              </div>
+          </div>
+          <?php else:?>
+          <div class="tab-content cos">
+              <div class="row clearfix">
+                  <?php $form = ActiveForm::begin([
+                      'action' => ['group/uploadfile','pid'=>$model->pro_id],
+                      'method' => 'post',
+                      'options' => ['enctype' => 'multipart/form-data']
+                  ]); ?>
+
+                  <?= $form->field($file, 'file',
+                      ['options'=>
+                          ['tag'=>false ],
+                          'template' => '<div class=" col-md-2 column ace-file-input"> 
+                             {input}</div>',
+
+                      ])->fileInput() ?>
+                  <?= Html::submitButton('导入分组', ['class' => 'btn btn-primary uploadfile']) ?>
+                  <?php ActiveForm::end(); ?>
+              </div>
+          </div>
+      <?php endif;?>
 
 </div>

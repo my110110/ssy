@@ -12,6 +12,7 @@ class UploadFile extends Model
      * @var UploadedFile file attribute
      */
     public $file;
+    public $pid;
 
     /**
      * @return array the validation rules.
@@ -20,6 +21,7 @@ class UploadFile extends Model
     {
         return [
             [['file'], 'file'],
+            [['pid'],'integer']
         ];
     }
 

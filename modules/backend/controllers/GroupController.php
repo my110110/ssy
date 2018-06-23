@@ -17,7 +17,11 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\models\Group;
 use yii\data\Pagination;
+use PHPExcel_Reader_Excel2007;
+use PHPExcel_Reader_CSV;
+use PHPExcel_Reader_Excel5;
 use app\models\UploadFile;
+use yii\web\UploadedFile;
 
 use app\helpers\CommonHelper;
 class GroupController extends BackendController
@@ -78,7 +82,82 @@ class GroupController extends BackendController
 
 
     }
+    public function actionUploadfile($pid=0)
+    {
+        $model=new UploadFile();
+        $model->file = UploadedFile::getInstance($model, 'file');
+        if(!$model->file){
+            return $this->showFlash('未选择任何文件', 'danger',Yii::$app->getUser()->getReturnUrl());
+        }
+        $extension=$model->file->extension ;
+        if ($extension =='xlsx') {
+            $objReader = new PHPExcel_Reader_Excel2007();
+            $objExcel = $objReader ->load($model->file->tempName);
+        } else if ($extension =='xls') {
+            $objReader = new PHPExcel_Reader_Excel5();
+            $objExcel = $objReader ->load($model->file->tempName);
+        } else if ($extension=='csv') {
+            $PHPReader = new PHPExcel_Reader_CSV();
+            //默认输入字符集
+            $PHPReader->setInputEncoding('GBK');
+            //默认的分隔符
+            $PHPReader->setDelimiter(',');
+            //载入文件
+            $objExcel = $PHPReader->load($model->file->tempName);
+        }
 
+        $objWorksheet = $objExcel->getSheet(0);
+        $highestRow = $objWorksheet->getHighestRow();//最大行数，为数字
+        $highestColumn = $objWorksheet->getHighestColumn();//最大列数 为字母
+        $highestColumnIndex = \PHPExcel_Cell::columnIndexFromString($highestColumn); //将字母变为数字
+
+        $tableData = [];
+        for($row = 1;$row<=$highestRow;$row++){
+            for($col=0;$col< $highestColumnIndex;$col++){
+                $tableData[$row][$col] = $objWorksheet->getCellByColumnAndRow($col,$row)->getValue();
+            }
+        }
+        unset($tableData[0]);
+        unset($tableData[1]);
+        $Pmodel=new Group();
+        $tr=Yii::$app->db->beginTransaction();
+        try{
+            foreach ($tableData as $k=>$v)
+            {
+
+
+                $_model=clone $Pmodel;
+                $_model->group_name=trim($v['0']);
+                $_model->pro_id=$pid;
+                $_model->group_experiment_type=trim($v['1']);
+                $_model->group_sample_count=intval($v['2']);
+                $_model->group_description=trim($v['3']);
+                $_model->group_retrieve='PSEG'.time().'D'.$k;
+                $_model->group_add_time=date('Y-m-d H:i:s');
+                $_model->group_add_user=Yii::$app->user->id;
+                if($_model->save()){
+                    CommonHelper::addlog(1,$_model->id,$_model->group_name,'group');
+
+                }else{
+                    $tr->rollBack();
+                    return $this->showFlash('导入失败');
+                }
+            }
+
+            $tr->commit();
+            if($pid>0){
+                return $this->showFlash('导入成功','success',['project/view','id'=>$pid]);
+
+            }else{
+                return $this->showFlash('导入成功','success',['project/index']);
+
+            }
+        }catch (excepetion $e)
+        {
+            $tr->rollBack();
+            return $this->showFlash('导入失败');
+        }
+    }
     /**
      * Displays a single Content model.
      * @param integer $id
@@ -90,7 +169,8 @@ class GroupController extends BackendController
         return $this->render('view', [
             'model' => $this->findModel($id),
             'sample'=>$sample,
-            'ret'=>$ret
+            'ret'=>$ret,
+            'file'=>new UploadFile()
         ]);
     }
 
@@ -115,7 +195,7 @@ class GroupController extends BackendController
                 $group->attributes=$_POST['Group'];
                 $group->pro_id=$model->pro_id;
                 $group->group_add_time=date('Y-m-d H:i:s');
-                $group->group_retrieve='PSEG'.time();
+                $group->group_retrieve='PSEG'.time().'A0';
                 $group->group_add_user=Yii::$app->user->id;
                 if ($group->load($post)&&$group->save() )
                 {

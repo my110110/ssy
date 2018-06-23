@@ -12,7 +12,7 @@ use Yii;
  * @property string $pro_name
  * @property string $pro_description
  * @property string $pro_keywords
- * @property integer $pro_kind_id
+ * @property string $pro_kind_id
  * @property integer $pro_sample_count
  * @property string $pro_add_time
  * @property string $pro_update_time
@@ -45,7 +45,7 @@ class Project extends \yii\db\ActiveRecord
         return [
             [['pro_name', 'pro_kind_id',  'pro_add_time', 'pro_retrieve'], 'required','on' => ['create'],'message'=>"{attribute}不能为空"],
             [['pro_name', 'pro_kind_id',  'pro_retrieve'], 'required','on' => ['update']],
-            [['pro_kind_id', 'pro_sample_count', 'pro_pid'], 'integer','on' => ['create','update'],'message'=>"{attribute}不能为空"],
+            [['pro_sample_count', 'pro_pid'], 'integer','on' => ['create','update'],'message'=>"{attribute}不能为空"],
             [['pro_add_time', 'pro_change_user','pro_update_time','pro_user','isdel'], 'safe','on' => ['create','update']],
             [['pro_name', 'pro_keywords'], 'string', 'max' => 100,'on' => ['create','update'],'message'=>"{attribute}不能超过100位"],
             [['pro_description'], 'string', 'max' => 255,'on' => ['create','update'],'message'=>"{attribute}不能超过200位"],

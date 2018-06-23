@@ -3,9 +3,9 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use app\modules\backend\models\AdminUser;
-use app\models\Project;
+use app\models\Sdyeing;
 /* @var $this yii\web\View */
-/* @var $model app\models\Project */
+/* @var $model app\models\Sdyeing */
 $this->title = $model->section_name;
 $this->params['breadcrumbs'][] = ['label' => '返回', 'url' => ['stace/view', 'id' => $model->yid]];
 
@@ -30,18 +30,19 @@ $this->params['breadcrumbs'][] = ['label' => '返回', 'url' => ['stace/view', '
                 <tr class="success">
                     <td class="col-md-2">检测指标名称</td>
                     <td class="col-md-10">
-                        <?php if($model->ntype==1):?>
+
+                        <?php if(isset($norm)){if($model->ntype==1):?>
                             <?= Html::a("$norm->name", ['routine/view', 'id' => $norm->id]) ?>
                         <?php elseif ($model->ntype==2):?>
                              <?= Html::a("$norm->name", ['particular/view', 'id' => $norm->id]) ?>
                         <?php elseif (in_array($model->ntype,[3,4])):?>
                             <?= Html::a("$norm->name", ['particular/view', 'id' => $norm->id,'type'=>$norm->type]) ?>
-                        <?php endif;?>
+                        <?php endif;}?>
                     </td>
                 </tr>
                 <tr class="default">
                     <td class="col-md-2">检测指标检索号</td>
-                    <td class="col-md-10"><?=$norm->retrieve?></td>
+                    <td class="col-md-10"><?php if(isset($norm)):?><?=$norm->retrieve?><?php endif;?></td>
                 </tr>
                 <?php if($model->ntype==1):?>
                     <?php if(count($Reagent)>0) :?>
@@ -110,7 +111,10 @@ $this->params['breadcrumbs'][] = ['label' => '返回', 'url' => ['stace/view', '
                         <td class="col-md-10"><?=$model->attention?></td>
                     </tr>
                 <?php endif;?>
-
+                <tr class="success">
+                    <td class="col-md-2">切片类型</td>
+                    <td class="col-md-10"><?=Sdyeing::$section_type[$model->section_type]?></td>
+                </tr>
                 <tr class="success">
                     <td class="col-md-2">切片厚度</td>
                     <td class="col-md-10"><?=$model->section_thickness?></td>
