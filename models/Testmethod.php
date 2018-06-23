@@ -52,12 +52,12 @@ class Testmethod extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
+            'name' => '名称',
             'retrieve' => 'Retrieve',
-            'positive' => 'Positive',
-            'negative' => 'Negative',
-            'judge' => 'Judge',
-            'matters' => 'Matters',
+            'positive' => '阳性对照',
+            'negative' => '阴性对照',
+            'judge' => '结果判断',
+            'matters' => '注意事项',
             'add_time' => 'Add Time',
             'change_time' => 'Change Time',
             'chang_user' => 'Chang User',

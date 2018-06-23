@@ -15,11 +15,13 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\models\Pna;
 use app\models\Sdyeing;
-use yii\web\Response;
 use yii\data\Pagination;
 use app\helpers\CommonHelper;
+use PHPExcel_Reader_Excel2007;
+use PHPExcel_Reader_CSV;
+use PHPExcel_Reader_Excel5;
 use app\models\UploadFile;
-
+use yii\web\UploadedFile;
 class PnaController extends BackendController
 {
     /**
@@ -64,7 +66,8 @@ class PnaController extends BackendController
         return $this->render('index', [
             'model' => $model,
             'pagination'=>$pagination,
-            'type'=>$type
+            'type'=>$type,
+            'file'=>new UploadFile()
         ]);
 
 
@@ -241,9 +244,88 @@ class PnaController extends BackendController
 
 
 
-    public function actionUploadfile()
+    public function actionUploadfile($type=0)
     {
+        $model=new UploadFile();
+        $model->file = UploadedFile::getInstance($model, 'file');
+        if(!$model->file){
+            return $this->showFlash('未选择任何文件', 'danger',Yii::$app->getUser()->getReturnUrl());
+        }
+        $extension=$model->file->extension ;
+        if ($extension =='xlsx') {
+            $objReader = new PHPExcel_Reader_Excel2007();
+            $objExcel = $objReader ->load($model->file->tempName);
+        } else if ($extension =='xls') {
+            $objReader = new PHPExcel_Reader_Excel5();
+            $objExcel = $objReader ->load($model->file->tempName);
+        } else if ($extension=='csv') {
+            $PHPReader = new PHPExcel_Reader_CSV();
+            //默认输入字符集
+            $PHPReader->setInputEncoding('GBK');
+            //默认的分隔符
+            $PHPReader->setDelimiter(',');
+            //载入文件
+            $objExcel = $PHPReader->load($model->file->tempName);
+        }
 
+        $objWorksheet = $objExcel->getSheet(0);
+        $highestRow = $objWorksheet->getHighestRow();//最大行数，为数字
+        $highestColumn = $objWorksheet->getHighestColumn();//最大列数 为字母
+        $highestColumnIndex = \PHPExcel_Cell::columnIndexFromString($highestColumn); //将字母变为数字
+
+        $tableData = [];
+        for($row = 1;$row<=$highestRow;$row++){
+            for($col=0;$col< $highestColumnIndex;$col++){
+                $tableData[$row][$col] = $objWorksheet->getCellByColumnAndRow($col,$row)->getValue();
+            }
+        }
+        unset($tableData[0]);
+        unset($tableData[1]);
+        $Pmodel=new Pna();
+        $tr=Yii::$app->db->beginTransaction();
+        try{
+            foreach ($tableData as $k=>$v)
+            {
+
+
+                $_model=clone $Pmodel;
+                $_model->name=trim($v['0']);
+                $_model->OfficialSymbol=trim($v['1']);
+                $_model->OfficialFullName=trim($v['2']);
+                $_model->GeneID=trim($v['3']);
+                $_model->function=trim($v['4']);
+                $_model->NCBIgd=trim($v['5']);
+                $_model->GeneGards=trim($v['6']);
+                $_model->standard=trim($v['7']);
+                $_model->cells=trim($v['8']);
+                $_model->type=$type;
+                if($type==1){
+                    $_model->retrieve='ETP'.time().'D'.$k;
+                }elseif ($type==2){
+                    $_model->retrieve='ETN'.time().'D'.$k;
+                }
+
+                $_model->add_time=date('Y-m-d H:i:s');
+
+                if($_model->save()){
+                    CommonHelper::addlog(1,$_model->id,$_model->name,'pna');
+                }else{
+                    $tr->rollBack();
+                    return $this->showFlash('导入失败');
+                }
+            }
+
+            $tr->commit();
+            Yii::$app->getSession()->setFlash('success', '保存成功');
+
+            return  $this->redirect(['pna/index','type'=>$type]);
+
+
+        }catch (excepetion $e)
+        {
+            $tr->rollBack();
+            return $this->showFlash('导入失败');
+        }
     }
 
     /**
@@ -257,8 +339,8 @@ class PnaController extends BackendController
         $child=Kit::find()->andFilterWhere(['rid'=>$id,'isdel'=>0,'type'=>'pna'])->all();
         return $this->render('view', [
             'model' => $this->findModel($id),
-            'child'=>$child
-
+            'child'=>$child,
+             'file'=>new UploadFile()
         ]);
     }
 

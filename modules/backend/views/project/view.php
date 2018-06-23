@@ -53,6 +53,48 @@ $this->params['breadcrumbs'][] = ['label' => '项目管理', 'url' => ['index']]
         ]) ?>
 
     </p>
+    <?php if($model->pro_pid==0):?>
+
+        <div class="tab-content cos">
+            <div class="row clearfix">
+                <?php $form = ActiveForm::begin([
+                    'action' => ['uploadfile','pid'=>$model->pro_id],
+                    'method' => 'post',
+                    'options' => ['enctype' => 'multipart/form-data']
+                ]); ?>
+
+                <?= $form->field($file, 'file',
+                    ['options'=>
+                        ['tag'=>false ],
+                        'template' => '<div class=" col-md-2 column ace-file-input"> 
+                             {input}</div>',
+
+                    ])->fileInput() ?>
+                <?= Html::submitButton('导入子项目', ['class' => 'btn btn-primary uploadfile']) ?>
+                <?php ActiveForm::end(); ?>
+            </div>
+        </div>
+    <?php else:?>
+        <div class="tab-content cos">
+            <div class="row clearfix">
+                <?php $form = ActiveForm::begin([
+                    'action' => ['group/uploadfile','pid'=>$model->pro_id],
+                    'method' => 'post',
+                    'options' => ['enctype' => 'multipart/form-data']
+                ]); ?>
+
+                <?= $form->field($file, 'file',
+                    ['options'=>
+                        ['tag'=>false ],
+                        'template' => '<div class=" col-md-2 column ace-file-input"> 
+                             {input}</div>',
+
+                    ])->fileInput() ?>
+                <?= Html::submitButton('导入分组', ['class' => 'btn btn-primary uploadfile']) ?>
+                <?php ActiveForm::end(); ?>
+            </div>
+        </div>
+    <?php endif;?>
     <div class="row clearfix" style="margin-top: 10px;">
         <div class="col-md-12 column">
             <table class="table table-hover table-bordered">
@@ -149,47 +191,6 @@ $this->params['breadcrumbs'][] = ['label' => '项目管理', 'url' => ['index']]
                 <?php endif;?>
                 </tbody>
             </table>
-      <?php if($model->pro_pid==0):?>
 
-          <div class="tab-content cos">
-              <div class="row clearfix">
-                  <?php $form = ActiveForm::begin([
-                      'action' => ['uploadfile','pid'=>$model->pro_id],
-                      'method' => 'post',
-                      'options' => ['enctype' => 'multipart/form-data']
-                  ]); ?>
-
-                  <?= $form->field($file, 'file',
-                      ['options'=>
-                          ['tag'=>false ],
-                          'template' => '<div class=" col-md-2 column ace-file-input"> 
-                             {input}</div>',
-
-                      ])->fileInput() ?>
-                  <?= Html::submitButton('导入子项目', ['class' => 'btn btn-primary uploadfile']) ?>
-                  <?php ActiveForm::end(); ?>
-              </div>
-          </div>
-          <?php else:?>
-          <div class="tab-content cos">
-              <div class="row clearfix">
-                  <?php $form = ActiveForm::begin([
-                      'action' => ['group/uploadfile','pid'=>$model->pro_id],
-                      'method' => 'post',
-                      'options' => ['enctype' => 'multipart/form-data']
-                  ]); ?>
-
-                  <?= $form->field($file, 'file',
-                      ['options'=>
-                          ['tag'=>false ],
-                          'template' => '<div class=" col-md-2 column ace-file-input"> 
-                             {input}</div>',
-
-                      ])->fileInput() ?>
-                  <?= Html::submitButton('导入分组', ['class' => 'btn btn-primary uploadfile']) ?>
-                  <?php ActiveForm::end(); ?>
-              </div>
-          </div>
-      <?php endif;?>
 
 </div>

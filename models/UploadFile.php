@@ -20,6 +20,7 @@ class UploadFile extends Model
     public function rules()
     {
         return [
+            [['file'],'required'],
             [['file'], 'file'],
             [['pid'],'integer']
         ];

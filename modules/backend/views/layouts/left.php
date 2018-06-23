@@ -56,6 +56,9 @@ use yii\web\UrlManager;
         <li><a href="/backend/reagent/index.html"><i class="fa fa-bars"></i>
                 <span>自配试剂列表</span></a>
         </li>
+        <li><a href="/backend/testmethod/index.html"><i class="fa fa-bars"></i>
+                <span>测试方法列表</span></a>
+        </li>
         <li><a href="/backend/config/index.html"><i class="fa fa-bars"></i>
                 <span>网站配置</span>
                 <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>

@@ -1,9 +1,8 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\DetailView;
+use yii\widgets\ActiveForm;
 use app\modules\backend\models\AdminUser;
-use app\models\Project;
 /* @var $this yii\web\View */
 /* @var $model app\models\Project */
 $this->title = $model->name;
@@ -14,11 +13,22 @@ $this->params['breadcrumbs'][] = ['label' => '特殊染色', 'url' => ['particu 
 
 
     <p>
-        <?= Html::a('返回', ['particular/view', 'id' => $model->pid], [
-            'title'=>'返回',
-            'class' => 'btn btn-primary',
 
-        ]) ?>
+        <?php if($ret==1):?>
+            <?= Html::a('返回列表', ['testmethod/index'], [
+                'title'=>'返回列表',
+                'class' => 'btn btn-primary',
+
+            ]) ?>
+        <?php else:?>
+            <?= Html::a('返回上级', ['particular/view', 'id' => $model->pid], [
+                'title'=>'返回',
+                'class' => 'btn btn-primary',
+
+            ]) ?>
+
+        <?php endif;?>
+
         <?= Html::a('新增自配试剂', ['reagent/create', 'id' => $model->id,'type'=>'testmethod'], [
             'title'=>'添加负责人',
             'class' => 'btn btn-success',
@@ -41,6 +51,59 @@ $this->params['breadcrumbs'][] = ['label' => '特殊染色', 'url' => ['particu 
         ]) ?>
 
     </p>
+    <div class="tab-content cos">
+        <div class="row clearfix" style="margin-bottom: 10px;">
+            <?php $form = ActiveForm::begin([
+                'action' => [
+                    'reagent/uploadfile',
+                    'type'=>'testmethod',
+                    'pid'=>$model->pid,
+                    'tid'=>$model->id
+                ],
+                'method' => 'post',
+                'options' => ['enctype' => 'multipart/form-data']
+            ]); ?>
+
+            <?= $form->field($file, 'file',
+                ['options'=>
+                    ['tag'=>false ],
+                    'template' => '<div class=" col-md-2 column ace-file-input"> 
+                             {input}</div>',
+
+                ])->fileInput() ?>
+            <?= Html::submitButton('导入自配试剂', ['class' => 'btn btn-primary uploadfile']) ?>
+            <?php ActiveForm::end(); ?>
+        </div>
+
+
+    </div>
+    <div class="tab-content cos">
+        <div class="row clearfix">
+            <?php $form = ActiveForm::begin([
+                'action' => [
+                    'kit/uploadfile',
+                    'type'=>'testmethod',
+                    'typeid'=>3,
+                    'pid'=>$model->pid,
+                    'tid'=>$model->id
+                ],
+                'method' => 'post',
+                'options' => ['enctype' => 'multipart/form-data']
+            ]); ?>
+
+            <?= $form->field($file, 'file',
+                ['options'=>
+                    ['tag'=>false ],
+                    'template' => '<div class=" col-md-2 column ace-file-input"> 
+                             {input}</div>',
+
+                ])->fileInput() ?>
+            <?= Html::submitButton('导入商品试剂', ['class' => 'btn btn-primary uploadfile']) ?>
+            <?php ActiveForm::end(); ?>
+        </div>
+
+
+    </div>
     <div class="row clearfix" style="margin-top: 10px;">
         <div class="col-md-12 column">
             <table class="table table-hover table-bordered">
@@ -74,7 +137,9 @@ $this->params['breadcrumbs'][] = ['label' => '特殊染色', 'url' => ['particu 
                 </tr>
                 <tr class="default">
                     <td class="col-md-2">添加人</td>
-                    <td class="col-md-10"><?=AdminUser::getDoName($model->id,1,'testmethod')?></td>
+                    <td class="col-md-10">
+                        <?=AdminUser::getDoName($model->id,1,'testmethod')?>
+                    </td>
                 </tr>
                 <tr class="info">
                     <td class="col-md-2">添加时间</td>

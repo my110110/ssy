@@ -3,40 +3,63 @@
 use yii\helpers\Html;
 use app\modules\backend\widgets\GridView;
 use app\models\Project;
-use app\models\Principal;
+use app\models\Group;
 use app\modules\backend\models\AdminUser;
-use yii\grid\CheckboxColumn;
 use yii\widgets\ActiveForm;
 use yii\widgets\LinkPager;
-use yii\helpers\Url;
 
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\modules\backend\models\ProjectSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 /* @var $pagination yii\data\Pagination */
-$this->title = '常规染色';
+$this->title = '检测方法列表';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <style type="text/css">
-.head th{
-    font-size: inherit;
-    font-family: "Microsoft YaHei UI";
-}
+    .head th{
+        font-size: inherit;
+        font-family: "Microsoft YaHei UI";
+    }
 </style>
 <div class="content-index">
     <div class="nav-tabs-custom">
-        <ul class="nav nav-tabs" role="tablist">
-            <li role="presentation" class="active">
-                <?= Html::a('检测指标列表', ['index'],  ['class' => 'btn btn-dafault ','role'=>'button']) ?>
-            </li>
-            <li role="presentation">
-                <?= Html::a('添加检测指标', ['create'],['class' => 'btn btn-primary  ','role'=>'button']) ?>
-            </li>
-        </ul>
+
 
         <div class="tab-content cos">
+            <div class="row clearfix">
+                <?php $form = ActiveForm::begin([
+                    'action' => ['index'],
+                    'method' => 'get',
+                ]); ?>
 
+                <?= $form->field($search, 'name',
+                    ['options'=>
+                        ['tag'=>false ],
+                        'template' => '<div class=" col-md-2 column">  {input}</div>',
+
+                    ])->textInput
+                (
+                    [
+                        'autofocus' => true,
+                        'placeholder'=>'名称'
+                    ]
+                ) ?>
+                <?= $form->field($search, 'retrieve',
+                    ['options'=>
+                        ['tag'=>false ],
+                        'template' => '<div class=" col-md-2 column">  {input}</div>',
+
+                    ]) ->textInput
+                (
+                    [
+                        'autofocus' => true,
+                        'placeholder'=>'检索号'
+                    ]
+                )?>
+                <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
+                <?php ActiveForm::end(); ?>
+            </div>
 
             <div class="row clearfix" style="margin-top: 10px;">
                 <div class="col-md-12 column">
@@ -45,21 +68,24 @@ $this->params['breadcrumbs'][] = $this->title;
                         <tr class="info head">
 
                             <th>
-                               上传时间
+                                名称
                             </th>
                             <th>
                                 检索号
                             </th>
+
                             <th>
-                                名称
+                                检测指标
                             </th>
 
                             <th>
-                                项目创建人
+                                创建人
                             </th>
-
                             <th>
-                                项目更新时间
+                                创建时间
+                            </th>
+                            <th>
+                                更新时间
                             </th>
                             <th>
                                 操作
@@ -67,45 +93,86 @@ $this->params['breadcrumbs'][] = $this->title;
                         </tr>
                         </thead>
                         <tbody>
-<?php if(empty($model)):?>
-    <tr class="error">
-        <td colspan="7">没有数据</td>
-    </tr>
-    <?php else:?>
-                        <?php foreach($model as $model): ?>
+                        <?php if(empty($model)):?>
+                            <tr class="error">
+                                <td colspan="7">没有数据</td>
+                            </tr>
+                        <?php elseif(isset($_GET['Sample'])&&!empty(array_filter($_GET['Sample']))):?>
+                            <?php foreach($model as $sarch): ?>
+                                <tr class="shows success" >
 
-                        <tr class="shows success">
+                                    <td>
+                                        <?=$sarch['name'];?>
+                                    </td>
+                                    <td>
+                                        <?=$sarch['retrieve'];?>
+                                    </td>
 
-                            <td>
-                               <?=$model['add_time'];?>
-                            </td>
-                            <td>
-                                <?=$model['retrieve'];?>
-                            </td>
-                            <td>
-                                <?=$model['name'];?>
-                            </td>
-                            <td>
-                                <?=AdminUser::getDoName($model['id'],1,'particular')?>
-                            </td>
+                                    <td>
+                                        <?= Html::a(\app\models\Particular::getParName($sarch['pid']), ['particular/view', 'id' => $sarch['pid']], ['title'=>'查看']) ?>
+                                    </td>
 
-                            <td>
-                                <?=$model['change_time']?>
-                            </td>
-                            <td>
-                                <?= Html::a('<span class="glyphicon glyphicon-zoom-in"></span>', ['view', 'id' => $model['id']], ['title'=>'查看']) ?>
-                                <?= Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['update', 'id' => $model['id']], ['title'=>'修改']) ?>
-                                 <?= Html::a('<span class="glyphicon glyphicon-trash"></span>', ['del', 'id' => $model['id']], [
-                                    'title'=>'删除',
-                                    'data' => [
-                                        'confirm' => '确定要删除这个项目吗?',
-                                        'method' => 'post',
-                                    ],
-                                ]) ?>
-                            </td>
-                        </tr>
 
-                        <?php endforeach; ?>
+                                    <td>
+                                        <?=AdminUser::getDoName($sarch->id,1,'testmethod')?>
+
+                                    </td>
+                                    <td>
+                                        <?=$sarch['add_time']?>
+                                    </td>
+                                    <td>
+                                        <?=$sarch['change_time']?>
+                                    </td>
+                                    <td>
+                                        <?= Html::a('<span class="glyphicon glyphicon-zoom-in"></span>', ['view', 'id' => $sarch['id'],'ret'=>'1'], ['title'=>'查看']) ?>
+                                        <?= Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['update', 'id' => $sarch['id'],'ret'=>'1'], ['title'=>'修改']) ?>
+                                        <?= Html::a('<span class="	glyphicon glyphicon-trash"></span>', ['delete', 'id' => $sarch['id'],'ret'=>'1'], [
+                                            'title'=>'删除',
+                                            'data' => [
+                                                'confirm' => '确定要删除这个数据吗?',
+                                                'method' => 'post',
+                                            ],
+                                        ]) ?>
+                                    </td>
+                                </tr>
+
+                            <?php endforeach; ?>
+                        <?php else:?>
+                            <?php foreach($model as $pid): ?>
+                                <tr class="shows success" >
+                                    <td>
+                                        <?=$pid['name'];?>
+                                    </td>
+                                    <td>
+                                        <?=$pid['retrieve'];?>
+                                    </td>
+                                    <td>
+                                        <?= Html::a(\app\models\Particular::getParName($pid['pid']), ['particular/view', 'id' => $pid['pid']], ['title'=>'查看']) ?>
+                                    </td>
+
+                                    <td>
+                                        <?=AdminUser::getDoName($pid->id,1,'testmethod')?>
+                                    </td>
+                                    <td>
+                                        <?=$pid['add_time']?>
+                                    </td>
+                                    <td>
+                                        <?=$pid['change_time']?>
+                                    </td>
+                                    <td>
+                                        <?= Html::a('<span class="glyphicon glyphicon-zoom-in"></span>', ['view', 'id' => $pid['id'],'ret'=>'1'], ['title'=>'查看']) ?>
+                                        <?= Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['update', 'id' => $pid['id'],'ret'=>'1'], ['title'=>'修改']) ?>
+                                        <?= Html::a('<span class="	glyphicon glyphicon-trash"></span>', ['delete', 'id' => $pid['id']], [
+                                            'title'=>'删除',
+                                            'data' => [
+                                                'confirm' => '确定要删除这个数据吗?',
+                                                'method' => 'post',
+                                            ],
+                                        ]) ?>
+                                    </td>
+                                </tr>
+
+                            <?php endforeach; ?>
                         <?php endif;?>
                         </tbody>
                     </table>
@@ -125,26 +192,7 @@ echo LinkPager::widget([
 ]);
 ?>
 
-<div
-
-<script><?php $this->beginBlock('js_end') ?>
-
-        $(function(){
-
-         $('.hides').hide();
-         $('.shows').click(function () {
-             var attr=$(this).attr('attr');
-             var ids='pid_'+attr;
-             var node=$('.'+ids);
-
-             node.slideToggle();
-         });
 
 
-        })
 
-    <?php $this->endBlock() ?>
 
-</script>
-
-<?php $this->registerJs($this->blocks['js_end'],\yii\web\View::POS_END); ?>

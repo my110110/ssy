@@ -8,8 +8,6 @@
 
 namespace app\modules\backend\controllers;
 
-use app\models\Group;
-use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 use yii;
 use app\modules\backend\components\BackendController;
 use yii\web\NotFoundHttpException;
@@ -18,11 +16,7 @@ use app\models\Routine;
 use app\models\Reagent;
 
 use app\models\Sdyeing;
-use app\models\Kit;
-use yii\web\Response;
-use app\helpers\CategoryHelper;
 use yii\data\Pagination;
-use yii\helpers\ArrayHelper;
 use PHPExcel_Reader_Excel2007;
 use PHPExcel_Reader_CSV;
 use PHPExcel_Reader_Excel5;
@@ -74,18 +68,79 @@ class RoutineController extends BackendController
             'file'=>new UploadFile()
         ]);
 
-//        $searchModel = new ProjectSearch();
-//
-//        $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $this->module->params['pageSize']);
-//        return $this->render('index', [
-//            'searchModel' => $searchModel,
-//            'dataProvider' => $dataProvider,
-//        ]);
+
     }
 
     public function actionUploadfile()
     {
+        $model=new UploadFile();
+        $model->file = UploadedFile::getInstance($model, 'file');
+        if(!$model->file){
+            return $this->showFlash('未选择任何文件', 'danger',Yii::$app->getUser()->getReturnUrl());
+        }
+        $extension=$model->file->extension ;
+        if ($extension =='xlsx') {
+            $objReader = new PHPExcel_Reader_Excel2007();
+            $objExcel = $objReader ->load($model->file->tempName);
+        } else if ($extension =='xls') {
+            $objReader = new PHPExcel_Reader_Excel5();
+            $objExcel = $objReader ->load($model->file->tempName);
+        } else if ($extension=='csv') {
+            $PHPReader = new PHPExcel_Reader_CSV();
+            //默认输入字符集
+            $PHPReader->setInputEncoding('GBK');
+            //默认的分隔符
+            $PHPReader->setDelimiter(',');
+            //载入文件
+            $objExcel = $PHPReader->load($model->file->tempName);
+        }
 
+        $objWorksheet = $objExcel->getSheet(0);
+        $highestRow = $objWorksheet->getHighestRow();//最大行数，为数字
+        $highestColumn = $objWorksheet->getHighestColumn();//最大列数 为字母
+        $highestColumnIndex = \PHPExcel_Cell::columnIndexFromString($highestColumn); //将字母变为数字
+
+        $tableData = [];
+        for($row = 1;$row<=$highestRow;$row++){
+            for($col=0;$col< $highestColumnIndex;$col++){
+                $tableData[$row][$col] = $objWorksheet->getCellByColumnAndRow($col,$row)->getValue();
+            }
+        }
+        unset($tableData[0]);
+        unset($tableData[1]);
+        $Pmodel=new Routine();
+        $tr=Yii::$app->db->beginTransaction();
+        try{
+            foreach ($tableData as $k=>$v)
+            {
+
+
+                $_model=clone $Pmodel;
+                $_model->name=trim($v['0']);
+                $_model->axiom=trim($v['1']);
+                $_model->process=trim($v['2']);
+                $_model->retrieve='ETS'.time().'D'.$k;
+                $_model->add_time=date('Y-m-d H:i:s');
+
+                if($_model->save()){
+                    CommonHelper::addlog(1,$_model->id,$_model->name,'routine');
+                }else{
+                    $tr->rollBack();
+                    return $this->showFlash('导入失败');
+                }
+            }
+
+            $tr->commit();
+            Yii::$app->getSession()->setFlash('success', '保存成功');
+
+            return  $this->redirect(['routine/index']);
+
+
+        }catch (excepetion $e)
+        {
+            $tr->rollBack();
+            return $this->showFlash('导入失败');
+        }
     }
 
     /**
@@ -99,7 +154,8 @@ class RoutineController extends BackendController
         $child=Reagent::find()->andFilterWhere(['sid'=>$id,'isdel'=>0,'type'=>'routine'])->all();
         return $this->render('view', [
             'model' => $this->findModel($id),
-            'child'=>$child
+            'child'=>$child,
+            'file'=>new UploadFile()
 
         ]);
     }
@@ -193,9 +249,9 @@ class RoutineController extends BackendController
                     }else{
                         return $this->showFlash('修改成功', 'success', ['stace/view', 'id' => $model->yid]);
 
-                    }                } else {
+                    }
+                } else {
                     $tr->rollBack();
-                    var_dump($model->getErrors());die;
                     return $this->showFlash('修改失败');
                 }
 

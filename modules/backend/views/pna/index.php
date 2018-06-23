@@ -1,14 +1,9 @@
 <?php
 
 use yii\helpers\Html;
-use app\modules\backend\widgets\GridView;
-use app\models\Project;
-use app\models\Principal;
 use app\modules\backend\models\AdminUser;
-use yii\grid\CheckboxColumn;
 use yii\widgets\ActiveForm;
 use yii\widgets\LinkPager;
-use yii\helpers\Url;
 
 
 /* @var $this yii\web\View */
@@ -122,7 +117,26 @@ echo LinkPager::widget([
     'lastPageLabel'=>'Last',
 ]);
 ?>
+<div class="tab-content cos">
+    <div class="row clearfix">
+        <?php $form = ActiveForm::begin([
+            'action' => ['uploadfile','type'=>$type],
+            'method' => 'post',
+            'options' => ['enctype' => 'multipart/form-data']
+        ]); ?>
 
+        <?= $form->field($file, 'file',
+            ['options'=>
+                ['tag'=>false ],
+                'template' => '<div class=" col-md-2 column ace-file-input"> 
+                             {input}</div>',
+
+            ])->fileInput() ?>
+        <?= Html::submitButton('上传指标', ['class' => 'btn btn-primary uploadfile']) ?>
+        <?php ActiveForm::end(); ?>
+    </div>
+
+</div>
 <div
 
 <script><?php $this->beginBlock('js_end') ?>

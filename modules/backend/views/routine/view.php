@@ -1,9 +1,8 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\DetailView;
+use yii\widgets\ActiveForm;
 use app\modules\backend\models\AdminUser;
-use app\models\Project;
 /* @var $this yii\web\View */
 /* @var $model app\models\Project */
 $this->title = $model->name;
@@ -36,6 +35,31 @@ $this->params['breadcrumbs'][] = ['label' => '常规染色', 'url' => ['index']]
         ]) ?>
 
     </p>
+    <div class="tab-content cos">
+        <div class="row clearfix">
+            <?php $form = ActiveForm::begin([
+                'action' => [
+                    'reagent/uploadfile',
+                    'type'=>'routine',
+                    'pid'=>$model->id,
+                    'tid'=>$model->id
+                ],
+                'method' => 'post',
+                'options' => ['enctype' => 'multipart/form-data']
+            ]); ?>
+
+            <?= $form->field($file, 'file',
+                ['options'=>
+                    ['tag'=>false ],
+                    'template' => '<div class=" col-md-2 column ace-file-input"> 
+                             {input}</div>',
+
+                ])->fileInput() ?>
+            <?= Html::submitButton('导入检测试剂', ['class' => 'btn btn-primary uploadfile']) ?>
+            <?php ActiveForm::end(); ?>
+        </div>
+
+    </div>
     <div class="row clearfix" style="margin-top: 10px;">
         <div class="col-md-12 column">
             <table class="table table-hover table-bordered">

@@ -20,6 +20,11 @@ use app\models\Reagent;
 use yii\web\Response;
 use yii\data\Pagination;
 use app\helpers\CommonHelper;
+use PHPExcel_Reader_Excel2007;
+use PHPExcel_Reader_CSV;
+use PHPExcel_Reader_Excel5;
+use app\models\UploadFile;
+use yii\web\UploadedFile;
 class ParticularController extends BackendController
 {
     /**
@@ -63,21 +68,81 @@ class ParticularController extends BackendController
 
         return $this->render('index', [
             'model' => $model,
-            'pagination'=>$pagination
+            'pagination'=>$pagination,
+            'file'=>new UploadFile()
         ]);
 
-//        $searchModel = new ProjectSearch();
-//
-//        $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $this->module->params['pageSize']);
-//        return $this->render('index', [
-//            'searchModel' => $searchModel,
-//            'dataProvider' => $dataProvider,
-//        ]);
+
     }
 
     public function actionUploadfile()
     {
+        $model=new UploadFile();
+        $model->file = UploadedFile::getInstance($model, 'file');
+        if(!$model->file){
+            return $this->showFlash('未选择任何文件', 'danger',Yii::$app->getUser()->getReturnUrl());
+        }
+        $extension=$model->file->extension ;
+        if ($extension =='xlsx') {
+            $objReader = new PHPExcel_Reader_Excel2007();
+            $objExcel = $objReader ->load($model->file->tempName);
+        } else if ($extension =='xls') {
+            $objReader = new PHPExcel_Reader_Excel5();
+            $objExcel = $objReader ->load($model->file->tempName);
+        } else if ($extension=='csv') {
+            $PHPReader = new PHPExcel_Reader_CSV();
+            //默认输入字符集
+            $PHPReader->setInputEncoding('GBK');
+            //默认的分隔符
+            $PHPReader->setDelimiter(',');
+            //载入文件
+            $objExcel = $PHPReader->load($model->file->tempName);
+        }
 
+        $objWorksheet = $objExcel->getSheet(0);
+        $highestRow = $objWorksheet->getHighestRow();//最大行数，为数字
+        $highestColumn = $objWorksheet->getHighestColumn();//最大列数 为字母
+        $highestColumnIndex = \PHPExcel_Cell::columnIndexFromString($highestColumn); //将字母变为数字
+
+        $tableData = [];
+        for($row = 1;$row<=$highestRow;$row++){
+            for($col=0;$col< $highestColumnIndex;$col++){
+                $tableData[$row][$col] = $objWorksheet->getCellByColumnAndRow($col,$row)->getValue();
+            }
+        }
+        unset($tableData[0]);
+        unset($tableData[1]);
+        $Pmodel=new Particular();
+        $tr=Yii::$app->db->beginTransaction();
+        try{
+            foreach ($tableData as $k=>$v)
+            {
+
+
+                $_model=clone $Pmodel;
+                $_model->name=trim($v['0']);
+                $_model->retrieve='ETS'.time().'D'.$k;
+                $_model->add_time=date('Y-m-d H:i:s');
+
+                if($_model->save()){
+                    CommonHelper::addlog(1,$_model->id,$_model->name,'particular');
+                }else{
+                    $tr->rollBack();
+                    return $this->showFlash('导入失败');
+                }
+            }
+
+            $tr->commit();
+            Yii::$app->getSession()->setFlash('success', '保存成功');
+
+            return  $this->redirect(['particular/index']);
+
+
+        }catch (excepetion $e)
+        {
+            $tr->rollBack();
+            return $this->showFlash('导入失败');
+        }
     }
 
     /**
@@ -91,7 +156,8 @@ class ParticularController extends BackendController
         $child=Testmethod::find()->andFilterWhere(['pid'=>$id,'isdel'=>0])->all();
         return $this->render('view', [
             'model' => $this->findModel($id),
-            'child'=>$child
+            'child'=>$child,
+            'file'=>new UploadFile()
 
         ]);
     }
