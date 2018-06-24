@@ -29,12 +29,13 @@ $carouselItems = [];
                         </h3>
                         <p style="font-size: 14px;font-family: '微软雅黑'">
                             <?=$sarch['pro_description']?>                        </p>
-                        <p>
-                            <?= Html::a('查看详情', ['show', 'id' => $sarch['pro_id'],'at'=>1], ['class' => 'btn btn-primary btn-large','title'=>'查看']) ?>
-                            <?= Html::a('下载项目', ['export', 'id' => $sarch['pro_id'],'at'=>1], ['class' => 'btn btn-primary btn-large','title'=>'查看']) ?>
 
                         </p>
+
                     </div>
+                    <?= Html::a('查看详情', ['show', 'id' => $sarch['pro_id'],'at'=>1], ['class' => 'btn btn-primary btn-large','title'=>'查看']) ?>
+                    <?= Html::a('下载项目', ['export', 'id' => $sarch['pro_id'],'at'=>1], ['class' => 'btn btn-primary btn-large','title'=>'查看']) ?>
+
                 </div>
             <?php endforeach; ?>
         <?php else:?>
