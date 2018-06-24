@@ -183,71 +183,169 @@ class DetectionController extends Controller
         ]);
     }
 
-    /**
-     * Displays about page.
-     * @return string
-     * @throws NotFoundHttpException
-     */
-    public function actionAbout()
+    public  function actionExportroutine($id)
     {
-        $config = Config::getByName('about_us_page_id');
-        if(empty($config)){
-            throw new NotFoundHttpException('页面不存在');
+        ini_set("memory_limit", "2048M");
+        set_time_limit(0);
+
+        //获取用户ID
+
+        //去用户表获取用户信息
+
+        $data=Routine::find()->andFilterWhere(['id'=>$id])->all();
+        //获取传过来的信息（时间，公司ID之类的，根据需要查询资料生成表格）
+        $objectPHPExcel = new \PHPExcel();
+
+        //设置表格头的输出
+        $objectPHPExcel->setActiveSheetIndex()->setCellValue('A1', '指标名称');
+        $objectPHPExcel->setActiveSheetIndex()->setCellValue('B1', '检索号');
+        $objectPHPExcel->setActiveSheetIndex()->setCellValue('C1', '常规染色检测原理');
+        $objectPHPExcel->setActiveSheetIndex()->setCellValue('D1', '流程');
+
+        //跳转到recharge这个model文件的statistics方法去处理数据
+
+        //指定开始输出数据的行数
+        $n = 2;
+        foreach ($data as $v){
+            $objectPHPExcel->getActiveSheet()->setCellValue('A'.($n) ,$v['name']);
+            $objectPHPExcel->getActiveSheet()->setCellValue('B'.($n) ,$v['retrieve']);
+            $objectPHPExcel->getActiveSheet()->setCellValue('C'.($n) ,$v['axiom']);
+            $objectPHPExcel->getActiveSheet()->setCellValue('D'.($n) ,$v['process']);
+            $n = $n +1;
         }
-        return $this->actionPage($config['value']);
+        ob_end_clean();
+        ob_start();
+        header('Content-Type : application/vnd.ms-excel');
+
+        //设置输出文件名及格式
+        header('Content-Disposition:attachment;filename="'.date("YmdHis").'.xls"');
+
+        //导出.xls格式的话使用Excel5,若是想导出.xlsx需要使用Excel2007
+        $objWriter= \PHPExcel_IOFactory::createWriter($objectPHPExcel,'Excel5');
+        $objWriter->save('php://output');
+        ob_end_flush();
+
+        //清空数据缓存
+        unset($data);
     }
-    /**
-     * Displays products page
-     *
-     * @return string
-     */
-    public function actionSearch()
+    public  function actionExportparticular($id)
     {
-        $keyword = Html::encode(strip_tags(Yii::$app->request->get('keyword')));
-        Content::$currentType = null;
-        $query = Content::find()
-            ->andFilterWhere(['or',['like', 'title', $keyword],['like', 'description', $keyword]])
-            ->andFilterWhere(['status'=>Content::STATUS_ENABLE]);
-//        echo $query->createCommand()->getRawSql();
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-            'sort'=>['defaultOrder'=>['id'=>SORT_DESC]],
-            'pagination' => ['pageSize'=>Yii::$app->params['pageSize']]
-        ]);
-        $this->view->params['keyword'] = $keyword;
-        return $this->render('search', [
-            'searchModel' => new Content(),
-            'dataProvider' => $dataProvider
-        ]);
+        ini_set("memory_limit", "2048M");
+        set_time_limit(0);
+
+        //获取用户ID
+
+        //去用户表获取用户信息
+
+        $data=Particular::findOne($id);
+        $chid=Testmethod::find()->andFilterWhere(['pid'=>$id])->asArray()->all();
+
+        foreach ($chid as $k=>$v){
+            $chid[$k]['Rname']=$data->name;
+            $chid[$k]['Rretrieve']=$data->retrieve;
+        }
+
+        //获取传过来的信息（时间，公司ID之类的，根据需要查询资料生成表格）
+        $objectPHPExcel = new \PHPExcel();
+
+        //设置表格头的输出
+        $objectPHPExcel->setActiveSheetIndex()->setCellValue('A1', '指标名称');
+        $objectPHPExcel->setActiveSheetIndex()->setCellValue('B1', '指标检索号');
+        $objectPHPExcel->setActiveSheetIndex()->setCellValue('C1', '检测方法名称');
+        $objectPHPExcel->setActiveSheetIndex()->setCellValue('D1', '检测方法检索号');
+        $objectPHPExcel->setActiveSheetIndex()->setCellValue('E1', '阳性对照');
+        $objectPHPExcel->setActiveSheetIndex()->setCellValue('F1', '阴性对照');
+        $objectPHPExcel->setActiveSheetIndex()->setCellValue('G1', '结果判断');
+        $objectPHPExcel->setActiveSheetIndex()->setCellValue('H1', '注意事项');
+
+        //指定开始输出数据的行数
+        $n = 2;
+        foreach ($chid as $v){
+            $objectPHPExcel->getActiveSheet()->setCellValue('A'.($n) ,$v['Rname']);
+            $objectPHPExcel->getActiveSheet()->setCellValue('B'.($n) ,$v['Rretrieve']);
+            $objectPHPExcel->getActiveSheet()->setCellValue('C'.($n) ,$v['name']);
+            $objectPHPExcel->getActiveSheet()->setCellValue('D'.($n) ,$v['retrieve']);
+            $objectPHPExcel->getActiveSheet()->setCellValue('E'.($n) ,$v['positive']);
+            $objectPHPExcel->getActiveSheet()->setCellValue('F'.($n) ,$v['negative']);
+            $objectPHPExcel->getActiveSheet()->setCellValue('G'.($n) ,$v['judge']);
+            $objectPHPExcel->getActiveSheet()->setCellValue('H'.($n) ,$v['matters']);
+
+            $n = $n +1;
+        }
+        ob_end_clean();
+        ob_start();
+        header('Content-Type : application/vnd.ms-excel');
+
+        //设置输出文件名及格式
+        header('Content-Disposition:attachment;filename="'.date("YmdHis").'.xls"');
+
+        //导出.xls格式的话使用Excel5,若是想导出.xlsx需要使用Excel2007
+        $objWriter= \PHPExcel_IOFactory::createWriter($objectPHPExcel,'Excel5');
+        $objWriter->save('php://output');
+        ob_end_flush();
+
+        //清空数据缓存
+        unset($chid);
     }
 
-    /**
-     * config 页面
-     * @param int $id
-     * @throws NotFoundHttpException
-     * @return string
-     */
-    public function actionPage($id)
+    public  function actionExportpna($id)
     {
-        $page = Page::findOne($id);
-        if(empty($page)){
-            throw new NotFoundHttpException('页面不存在');
-        }
-        if(!empty($page->keywords)){
-            $this->view->registerMetaTag(['name'=>'keywords', 'content'=>$page->keywords],'keywords');
-        }
-        if(!empty($page->description)){
-            $this->view->registerMetaTag(['name'=>'description', 'content'=>$page->description], 'description');
-        }
-        return $this->render($page->template,[
-            'page'=>$page
-        ]);
-    }
+        ini_set("memory_limit", "2048M");
+        set_time_limit(0);
 
-    public function actionSearchChildren()
-    {
-        $this->layout = false;
-        return $this->render('search-children');
+        //获取用户ID
+
+        //去用户表获取用户信息
+
+        $data=Pna::find()->andFilterWhere(['id'=>$id])->asArray()->all();
+
+
+
+        //获取传过来的信息（时间，公司ID之类的，根据需要查询资料生成表格）
+        $objectPHPExcel = new \PHPExcel();
+
+        //设置表格头的输出
+        $objectPHPExcel->setActiveSheetIndex()->setCellValue('A1', '指标名称');
+        $objectPHPExcel->setActiveSheetIndex()->setCellValue('B1', '指标检索号');
+        $objectPHPExcel->setActiveSheetIndex()->setCellValue('C1', 'Official Symbol');
+        $objectPHPExcel->setActiveSheetIndex()->setCellValue('D1', 'Official Full Name');
+        $objectPHPExcel->setActiveSheetIndex()->setCellValue('E1', 'Gene ID');
+        $objectPHPExcel->setActiveSheetIndex()->setCellValue('F1', '基因/核酸功能');
+        $objectPHPExcel->setActiveSheetIndex()->setCellValue('G1', 'NCBI Gene Database ');
+        $objectPHPExcel->setActiveSheetIndex()->setCellValue('H1', 'GeneGards网址');
+        $objectPHPExcel->setActiveSheetIndex()->setCellValue('I1', '阳性结果判定标准');
+        $objectPHPExcel->setActiveSheetIndex()->setCellValue('J1', '阳性对照组织/细胞');
+
+
+        //指定开始输出数据的行数
+        $n = 2;
+        foreach ($data as $v){
+            $objectPHPExcel->getActiveSheet()->setCellValue('A'.($n) ,$v['name']);
+            $objectPHPExcel->getActiveSheet()->setCellValue('B'.($n) ,$v['retrieve']);
+            $objectPHPExcel->getActiveSheet()->setCellValue('C'.($n) ,$v['OfficialSymbol']);
+            $objectPHPExcel->getActiveSheet()->setCellValue('D'.($n) ,$v['OfficialFullName']);
+            $objectPHPExcel->getActiveSheet()->setCellValue('E'.($n) ,$v['GeneID']);
+            $objectPHPExcel->getActiveSheet()->setCellValue('F'.($n) ,$v['function']);
+            $objectPHPExcel->getActiveSheet()->setCellValue('G'.($n) ,$v['NCBIgd']);
+            $objectPHPExcel->getActiveSheet()->setCellValue('H'.($n) ,$v['GeneGards']);
+            $objectPHPExcel->getActiveSheet()->setCellValue('I'.($n) ,$v['standard']);
+            $objectPHPExcel->getActiveSheet()->setCellValue('J'.($n) ,$v['cells']);
+            $n = $n +1;
+        }
+        ob_end_clean();
+        ob_start();
+        header('Content-Type : application/vnd.ms-excel');
+
+        //设置输出文件名及格式
+        header('Content-Disposition:attachment;filename="'.date("YmdHis").'.xls"');
+
+        //导出.xls格式的话使用Excel5,若是想导出.xlsx需要使用Excel2007
+        $objWriter= \PHPExcel_IOFactory::createWriter($objectPHPExcel,'Excel5');
+        $objWriter->save('php://output');
+        ob_end_flush();
+
+        //清空数据缓存
+        unset($data);
     }
 
 }

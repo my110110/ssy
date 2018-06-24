@@ -63,6 +63,7 @@ $carouselItems = [];
 
 
             </div>
+            <?= Html::a('下载指标', ['exportroutine', 'id' => $model['id'],'at'=>1], ['class' => 'btn btn-success btn-large','title'=>'查看']) ?>
 
         </div>
 

@@ -13,6 +13,7 @@ use Yii;
 use app\components\AppController as Controller;
 use app\models\Feedback;
 use app\models\Config;
+use yii\base\Arrayable;
 use yii\data\ActiveDataProvider;
 use yii\web\NotFoundHttpException;
 use app\models\Page;
@@ -20,14 +21,12 @@ use app\models\Routine;
 use app\models\Reagent;
 use app\models\Kit;
 use app\models\Pna;
+use yii\helpers\ArrayHelper;
 
 use app\models\Particular;
 use yii\helpers\Html;
 use yii\data\Pagination;
-use PHPExcel;
-use PHPExcel_Style_Alignment;
-use PHPExcel_Style_Border;
-use PHPExcel_Style_Fill;
+use moonland\phpexcel\Excel;
 
 
 
@@ -284,8 +283,73 @@ class SiteController extends Controller
         $this->layout = false;
         return $this->render('search-children');
     }
+//    public  function actionExport($id)
+//    {
+//
+//        $project = Project::findOne($id);
+//
+//        Excel::export([
+//            'models' => $project,
+//            'fileName' => date('Y-m-d H:i:s'),
+//            'columns' => [
+//                'pro_name','pro_retrieve'
+//
+//            ],
+//            'headers'=>[
+//                'pro_name'=>'项目名称',
+//                'pro_retrieve'=>'检索号'
+//            ]
+//        ]);
+//    }
+
     public  function actionExport($id)
     {
-         $data=Project::find($id);
+        ini_set("memory_limit", "2048M");
+        set_time_limit(0);
+
+        //获取用户ID
+
+        //去用户表获取用户信息
+
+        $data=Project::find()->andFilterWhere(['pro_id'=>$id])->all();
+        //获取传过来的信息（时间，公司ID之类的，根据需要查询资料生成表格）
+        $objectPHPExcel = new \PHPExcel();
+
+        //设置表格头的输出
+        $objectPHPExcel->setActiveSheetIndex()->setCellValue('A1', '项目名称');
+        $objectPHPExcel->setActiveSheetIndex()->setCellValue('B1', '检索号');
+        $objectPHPExcel->setActiveSheetIndex()->setCellValue('C1', '项目关键字');
+        $objectPHPExcel->setActiveSheetIndex()->setCellValue('D1', '实验项目描述');
+        $objectPHPExcel->setActiveSheetIndex()->setCellValue('E1', '实验项目种属');
+        $objectPHPExcel->setActiveSheetIndex()->setCellValue('F1', '实验样本总数 ');
+
+        //跳转到recharge这个model文件的statistics方法去处理数据
+
+        //指定开始输出数据的行数
+        $n = 2;
+        foreach ($data as $v){
+            $objectPHPExcel->getActiveSheet()->setCellValue('A'.($n) ,$v['pro_name']);
+            $objectPHPExcel->getActiveSheet()->setCellValue('B'.($n) ,$v['pro_retrieve']);
+            $objectPHPExcel->getActiveSheet()->setCellValue('C'.($n) ,$v['pro_keywords']);
+            $objectPHPExcel->getActiveSheet()->setCellValue('D'.($n) ,$v['pro_description']);
+            $objectPHPExcel->getActiveSheet()->setCellValue('E'.($n) ,$v['pro_kind_id']);
+            $objectPHPExcel->getActiveSheet()->setCellValue('F'.($n) ,$v['pro_sample_count']);
+            $n = $n +1;
+        }
+        ob_end_clean();
+        ob_start();
+        header('Content-Type : application/vnd.ms-excel');
+
+        //设置输出文件名及格式
+        header('Content-Disposition:attachment;filename="'.date("YmdHis").'.xls"');
+
+        //导出.xls格式的话使用Excel5,若是想导出.xlsx需要使用Excel2007
+        $objWriter= \PHPExcel_IOFactory::createWriter($objectPHPExcel,'Excel5');
+        $objWriter->save('php://output');
+        ob_end_flush();
+
+        //清空数据缓存
+        unset($data);
     }
+
 }

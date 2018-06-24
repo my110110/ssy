@@ -31,6 +31,7 @@ $carouselItems = [];
                             <?=$sarch['pro_description']?>                        </p>
                         <p>
                             <?= Html::a('查看详情', ['show', 'id' => $sarch['pro_id'],'at'=>1], ['class' => 'btn btn-primary btn-large','title'=>'查看']) ?>
+                            <?= Html::a('下载项目', ['export', 'id' => $sarch['pro_id'],'at'=>1], ['class' => 'btn btn-primary btn-large','title'=>'查看']) ?>
 
                         </p>
                     </div>
@@ -63,6 +64,7 @@ $carouselItems = [];
                         </div>
                             <?php endif;  ?>
                         <?= Html::a('查看详情', ['show', 'id' => $pid['pro_id'],'at'=>1], ['class' => 'btn btn-primary btn-large','title'=>'查看']) ?>
+                        <?= Html::a('下载项目', ['export', 'id' => $pid['pro_id'],'at'=>1], ['class' => 'btn btn-success btn-large','title'=>'查看']) ?>
 
                         </p>
                     </div>
