@@ -58,7 +58,6 @@ $this->params['breadcrumbs'][] = $this->title;
                         ->textInput() ?>
                 </div>
             </div>
-            <?= $form->field($model, 'nav')->textarea(['rows' => 6]) ?>
 
             <div class="form-group">
                 <?= Html::submitButton('提交', ['class' => 'btn btn-primary']) ?>
