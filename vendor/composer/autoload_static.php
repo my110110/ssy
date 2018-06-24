@@ -39,6 +39,7 @@ class ComposerStaticInit64fcd2ce1ab75bd3b825b1ef292e1a27
         ),
         'm' => 
         array (
+            'moonland\\phpexcel\\' => 18,
             'mdm\\admin\\' => 10,
         ),
         'k' => 
@@ -168,6 +169,10 @@ class ComposerStaticInit64fcd2ce1ab75bd3b825b1ef292e1a27
             0 => __DIR__ . '/..' . '/phpdocumentor/reflection-common/src',
             1 => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src',
             2 => __DIR__ . '/..' . '/phpdocumentor/type-resolver/src',
+        ),
+        'moonland\\phpexcel\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/moonlandsoft/yii2-phpexcel',
         ),
         'mdm\\admin\\' => 
         array (
