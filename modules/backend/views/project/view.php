@@ -42,8 +42,8 @@ $this->params['breadcrumbs'][] = ['label' => '项目管理', 'url' => ['index']]
 
         ]) ?>
         <?php endif;?>
-        <?= Html::a('修改', ['update', 'pro_id' => $model->pro_id], ['class' => 'btn btn-warning','title'=>'修改']) ?>
-        <?= Html::a('删除', ['delete', 'pro_id' => $model->pro_id], [
+        <?= Html::a('修改', ['update', 'id' => $model->pro_id], ['class' => 'btn btn-warning','title'=>'修改']) ?>
+        <?= Html::a('删除', ['delete', 'id' => $model->pro_id], [
             'class' => 'btn btn-danger',
             'title'=>'删除',
             'data' => [

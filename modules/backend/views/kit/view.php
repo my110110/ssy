@@ -56,7 +56,7 @@ $this->title = $model->name;
 
 
                 <tr class="info">
-                    <td class="col-md-2">样品描述</td>
+                    <td class="col-md-2">公司名称</td>
                     <td class="col-md-10"><?=$model->company?></td>
                 </tr>
                 <tr class="info">

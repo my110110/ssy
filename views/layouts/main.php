@@ -4,29 +4,19 @@
 /* @var $content string */
 
 use yii\helpers\Html;
-use app\widgets\Nav;
-use yii\bootstrap\NavBar;
-use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
 use yii\widgets\ActiveForm;
-use yii\helpers\ArrayHelper;
-use yii\bootstrap\Carousel;
-use yii\helpers\Url;
+
 
 AppAsset::register($this);
 $carouselItems = [];
-if (isset($this->params['adList'])) {
-    foreach ($this->params['adList'] as $item) {
-        $carouselItems[] = [
-            'content' => '<a href="' . $item['link'] . '" target="_black"><img src="' . $item['image'] . '" style="width:100%"/></a>',
-//        'caption'=>'<h4>'.$item['title'].'</h4>',
-        ];
-    }
-}
+
 $brandLabel = Yii::$app->name;
 if(!empty(Yii::$app->params['logo'])){
     $brandLabel = '<img src="'.Yii::getAlias(Yii::$app->params['logo']).'"/>';
 }
+
+
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -37,69 +27,161 @@ if(!empty(Yii::$app->params['logo'])){
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) . '-' . Yii::$app->name ?></title>
     <?php $this->head() ?>
-    <script>
-        var _hmt = _hmt || [];
-        (function() {
-            var hm = document.createElement("script");
-            hm.src = "https://hm.baidu.com/hm.js?baf532329283c0cae060310499633101";
-            var s = document.getElementsByTagName("script")[0];
-            s.parentNode.insertBefore(hm, s);
-        })();
-        (function(){
-            var src = (document.location.protocol == "http:") ? "http://js.passport.qihucdn.com/11.0.1.js?44fe98c387976b344e710998b9ca68bb":"https://jspassport.ssl.qhimg.com/11.0.1.js?44fe98c387976b344e710998b9ca68bb";
-            document.write('<script src="' + src + '" id="sozz"><\/script>');
-        })();
-    </script>
+
 </head>
+<style type="text/css">
+
+    .show_dl{
+        width: auto;
+        height: auto;
+    }
+    .show_left{
+        width: auto;
+        height: auto;
+        display: block;
+        clear: both;
+        overflow: hidden;
+    }
+    .show_dl dd{
+        display: inline;
+        padding-right: 5px;
+        font-size: 14px;
+        font-family: "微软雅黑", Arial, "Trebuchet MS", Helvetica, Verdana;
+        color: #999;
+    }
+    .show_left dd{
+        overflow: hidden;
+        clear: both;
+        float: left;
+        margin-right: 10px;
+        font-family: "微软雅黑", Arial, "Trebuchet MS", Helvetica, Verdana;
+        font-size: 14px;
+        color: #999;
+    }
+    .show_li{
+        overflow: hidden;
+        clear: both;
+        margin-bottom: 2px;
+    }
+    .show_li dd{
+        float: left;margin-right: 10px;
+        font-family: "微软雅黑", Arial, "Trebuchet MS", Helvetica, Verdana;
+        font-size: 14px;
+        color: #999;
+    }
+    .show_li dd span,.show_left dd span, .show_dl dd span{
+        color: #000;
+        font-size: 13px;
+        margin-right: 3px;
+    }
+    .show_p{
+        font-size: 15px;
+        text-align:left;
+        line-height: inherit;
+        font-family: "微软雅黑";
+        padding-top: 2px;
+    }
+    .show_h4{
+        width: 100%;
+        text-align: left;
+        clear: both;
+        color: #00a0e9;
+        font-size: 16px;
+        font-family: "微软雅黑", Arial, "Trebuchet MS", Helvetica, Verdana;
+    }
+    .show_h5{
+        width: 100%;
+        text-align: left;
+        clear: both;
+        margin-top: 10px;
+        color: #0a568c;
+        font-size: 16px;
+        font-family: "微软雅黑", Arial, "Trebuchet MS", Helvetica, Verdana;
+    }
+    .show_group{
+        padding: 5px 0;
+        height: auto;
+        width: auto;
+        border-bottom: 1px dashed yellow;
+    }
+    .shows{
+        padding-right: 0;
+        padding-left: 0;
+        width: 100%;
+    }
+    .shows h3{
+        text-align: center;
+    }
+    .footer{
+        clear: both;
+        width: 100%;
+        position: fixed;
+        bottom: 0;
+    }
+</style>
 <body  class="skin-block fixed">
 <?php $this->beginBody() ?>
-<div class="wrap">
-    <div class="main-header">
-        <?php NavBar::begin([
-            'brandLabel' => $brandLabel,
-            'brandUrl' => Yii::$app->homeUrl,
-            'options' => [
-                'class' => 'navbar  navbar-static-top navbar-default ',
-            ],
-        ]);
-        echo Nav::widget(json_decode(Yii::$app->params['nav'], true));
-        ?>
-        <?php NavBar::end(); ?>
-    </div>
-    <div class="carousel slide" id="carousel-375217">
-        <?= Carousel::widget([
-            'options'=>['class'=>'carousel slide', 'data-ride'=>"carousel"],
-            'items' => $carouselItems,
-            'controls'=>['<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-    <span class="sr-only">Previous</span>',
-                '<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-    <span class="sr-only">Next</span>'],
-        ])?>
+<div class="container" style="width: 100%;border: none;background-color: #f8f8f8">
+    <div class="row clearfix" style="width: 80%;margin: 0 auto;border: none">
+        <div>
+            <nav class="navbar navbar-default" role="navigation" style="border: none">
 
 
-    <div class="container">
-        <?= Breadcrumbs::widget([
-            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-        ]) ?>
-        <?= $content ?>
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+                   <?php if(isset($_GET['at'])&&$_GET['at']==1):?>
+                    <ul class="nav navbar-nav">
+                        <li class="active">
+                            <a href="/?at=1">项目列表</a>
+                        </li>
+                        <li>
+                            <a href="/detection.html?at=2">检测指标</a>
+                        </li>
+
+                    </ul>
+                    <?php else:?>
+                       <ul class="nav navbar-nav">
+                           <li>
+                               <a href="/?at=1">项目列表</a>
+                           </li>
+                           <li  class="active">
+                               <a href="/detection.html?at=2">检测指标</a>
+                           </li>
+
+                       </ul>
+                   <?php endif;?>
+                    <form class="navbar-form navbar-right" role="search" style="padding-top: 10px;" action="/?at=1">
+                        <div class="form-group">
+                            <input type="text" name="Project[pro_name]" class="form-control" placeholder="项目名称" />
+                        </div>
+                        <div class="form-group">
+                            <input type="text"  name="Project[pro_retrieve]" class="form-control" placeholder="项目检索号"/>
+                        </div>
+                        <button type="submit" class="btn btn-default">Submit</button>
+                    </form>
+
+                </div>
+
+            </nav>
+        </div>
     </div>
+</div>
+<?php $this->beginBody() ?>
+<div class="login_bg">
+
+    <?= $content ?>
 
 </div>
+
+<?php $this->endBody() ?>
 <footer class="footer">
     <div class="container">
         <div class="row">
-            <div class="col-lg-12">&copy;  <?= date('Y') ?> 版权所有 侵权必究</div>
-        </div>
-        <div class="row">
-
-            <div class="col-lg-3">
-                <p>技术支持<a href="www.letmigo.com">郑永辉先生</a> <?= \app\widgets\Hook::widget(['configName'=>'tongji']); ?></p>
-            </div>
+            <div class="col-lg-12" style="text-align: center">&copy;  <?= date('Y') ?> 版权所有 侵权必究</div>
         </div>
     </div>
 </footer>
 <?php $this->endBody() ?>
-<?= \app\widgets\Hook::widget(['configName'=>'tongji']); ?>
 </body>
 </html>
 <?php $this->endPage() ?>

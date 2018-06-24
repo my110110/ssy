@@ -9,6 +9,7 @@ use app\models\Group;
 use app\models\Sample;
 use app\models\Sdyeing;
 use app\models\Stace;
+use app\models\Testmethod;
 use Yii;
 use app\components\AppController as Controller;
 use app\models\Feedback;
@@ -18,20 +19,17 @@ use yii\web\NotFoundHttpException;
 use app\models\Page;
 use app\models\Routine;
 use app\models\Reagent;
+use app\models\Company;
 use app\models\Kit;
 use app\models\Pna;
 
 use app\models\Particular;
 use yii\helpers\Html;
 use yii\data\Pagination;
-use PHPExcel;
-use PHPExcel_Style_Alignment;
-use PHPExcel_Style_Border;
-use PHPExcel_Style_Fill;
 
 
 
-class SiteController extends Controller
+class DetectionController extends Controller
 {
     /**
      * @inheritdoc
@@ -57,76 +55,67 @@ class SiteController extends Controller
     public function actionIndex()
     {
         //分页读取类别数据
-        $search=New Project();
-        $model =  Project::find();
-
-        if(isset(Yii::$app->request->queryParams['Project']))
-        {
-            $parms=Yii::$app->request->queryParams['Project'];
-            if(isset($parms['pro_retrieve']))
-                $model->andFilterWhere(['pro_retrieve' => $parms['pro_retrieve'],]);
-            if(isset($parms['pro_name']))
-                $model->andFilterWhere(['like', 'pro_name', $parms['pro_name']]);
-        }
-        $pagination = new Pagination([
-            'defaultPageSize' => 10,
-            'totalCount' => $model->count(),
-        ]);
-        $model->andFilterWhere(['isdel'=> 0,'pro_pid'=>0]);
-        $model = $model->orderBy('pro_id ASC')
-            ->offset($pagination->offset)
-            ->limit($pagination->limit)->asArray()
-            ->all();
-        $child=Project::find()->andFilterWhere(['>', 'pro_pid', 0])->andFilterWhere(['isdel'=> 0])->asArray()->all();
-        foreach ($model as $k=>$md){
-            foreach ($child as $c){
-                if($c['pro_pid']==$md['pro_id']){
-                    $model[$k]['child'][]=$c;
-                }
-            }
-
-
-        }
-
+        $routine=Routine::find()->andFilterWhere(['isdel'=>0])->all();
+        $Particular=Particular::find()->andFilterWhere(['isdel'=>0])->all();
+        $pna=Pna::find()->andFilterWhere(['isdel'=>0])->all();
         return $this->render('index', [
-            'model' => $model,
-            'pagination' => $pagination,
-            'search'=>$search,
-            'child'=>$child,
-            'at'=>1
+            'pna' => $pna,
+            'routine'=>$routine,
+            'Particular'=>$Particular,
+            'at'=>2
         ]);
     }
-  public function actionShow($id){
-          $model=Project::findOne($id);
-          $child=Project::find()->andFilterWhere(['pro_pid'=>$id,'isdel'=>0])->all();
-          $Principal=Principal::find()->andFilterWhere(['pro_id'=>$id,'status'=>0])->all();
-          $group=Group::find()->andFilterWhere(['pro_id'=>$id,'isdel'=>0])->all();
+  public function actionRoutine($id){
+          $model=Routine::findOne($id);
+          $child=Reagent::find()->andFilterWhere(['sid'=>$id,'isdel'=>0,'type'=>'routine'])->all();
 
 
 
-      return $this->render('show', [
+      return $this->render('routine', [
               'model' => $model,
               'child'=>$child,
-              'Principal'=>$Principal,
-              'group'=>$group,
-              'at'=>1
+
+              'at'=>2
           ]);
   }
-    public function actionGroup($id){
-        $model=Group::findOne($id);
-        $child=Sample::find()->andFilterWhere(['gid'=>$id,'isdel'=>0])->all();
-        return $this->render('group', [
+    public function actionPna($id){
+        $model=Pna::findOne($id);
+        $child=Kit::find()->andFilterWhere(['rid'=>$id,'isdel'=>0])->all();
+
+        return $this->render('pna', [
             'model' => $model,
             'child'=>$child,
+
+            'at'=>2
+        ]);
+    }
+    public function actionParticular($id){
+        $model=Particular::findOne($id);
+        $child=Testmethod::find()->andFilterWhere(['pid'=>$id,'isdel'=>0])->all();
+        return $this->render('particular', [
+            'model' => $model,
+            'child'=>$child,
+
+            'at'=>2
+        ]);
+    }
+
+
+    public function actionTestmethod($id){
+        $model=Testmethod::findOne($id);
+        $child=Reagent::find()->andFilterWhere(['tid'=>$id,'isdel'=>0,'type'=>'testmethod'])->all();
+        $kit=Kit::find()->andFilterWhere(['tid'=>$id,'isdel'=>0,'type'=>'testmethod'])->all();
+        return $this->render('testmethod', [
+            'model' => $model,
+            'child'=>$child,
+            'kit'=>$kit,
             'at'=>1
         ]);
     }
-    public function actionSample($id){
-        $model=Sample::findOne($id);
-        $child=Stace::find()->andFilterWhere(['sid'=>$id,'isdel'=>0])->all();
-        return $this->render('sample', [
+    public function actionKit($id){
+        $model=Kit::findOne($id);
+        return $this->render('kit', [
             'model' => $model,
-            'child'=>$child,
             'at'=>1
         ]);
     }
@@ -139,38 +128,14 @@ class SiteController extends Controller
             'at'=>1
         ]);
     }
-    public function actionSdyeing($id){
-        $model=Sdyeing::findOne($id);
-        if($model->ntype==1){
-            //常规H&E染色
-            $norm=Routine::findOne(['id'=>$model->nid]);
-            //自配试剂
-            $Reagent=Reagent::find()->andFilterWhere(['id'=>json_decode($model->rgid)?:0])->all();
-            $kit=array();
-        }elseif ($model->ntype==2){
-            $norm=Particular::findOne(['id'=>$model->nid]);
-            //自配试剂
-            $Reagent=Reagent::find()->andFilterWhere(['id'=>json_decode($model->rgid)?:0])->all();
+    public function actionReagent($id){
+        $model=Reagent::findOne($id);
+        $child=Company::find()->andFilterWhere(['rid'=>$id,'isdel'=>'0'])->all();
 
-            //商品试剂
-            $kit=Kit::find()->andFilterWhere(['id'=>json_decode($model->kit)?:0])->all();
-        }
-        elseif ($model->ntype==3){
-            $norm=Pna::findOne(['id'=>$model->nid,'type'=>1]);
-            $kit=Kit::find()->andFilterWhere(['id'=>json_decode($model->kit)?:0])->all();
-            $Reagent=[];
-        }
-        elseif ($model->ntype==4){
-            $norm=Pna::findOne(['id'=>$model->nid,'type'=>2]);
-            $Reagent=[];
-            $kit=Kit::find()->andFilterWhere(['id'=>json_decode($model->kit)?:0])->all();
-        }
-        return $this->render('sdyeing', [
+        return $this->render('reagent', [
             'model' => $model,
-            'at'=>1,
-            'norm'=>$norm,
-            'kit'=>$kit,
-            'Reagent'=>$Reagent
+            'at'=>2,
+            'child'=>$child,
         ]);
     }
     /**
@@ -284,9 +249,5 @@ class SiteController extends Controller
         $this->layout = false;
         return $this->render('search-children');
     }
-    public  function actionExport($id)
-    {
-         $data=Project::find($id);
-        Excel::export
-    }
+
 }

@@ -167,6 +167,13 @@ class AdminUser extends AppActiveRecord
      */
     static function getDoName($object,$operate,$operate_kind){
         $user= operatelog::findOne(['object'=>$object,'operate'=>$operate,'operate_kind'=>$operate_kind]);
-        return self::getUserName($user->user);
+        if($user){
+            return self::getUserName($user->user);
+        }else{
+            return '';
+        }
+
+
+
     }
 }

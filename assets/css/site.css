@@ -36,9 +36,9 @@ body {
     background-color: transparent;
 }
 
-.jumbotron .btn {
-    font-size: 21px;
-    padding: 14px 24px;
+.shows .btn {
+    font-size: 14px;
+    padding: 4px 10px;
 }
 
 .not-set {

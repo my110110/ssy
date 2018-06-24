@@ -58,6 +58,7 @@ $config = [
             'showScriptName' => false,
             'rules' => [
                 'index'=>'site/index',
+                'index'=>'site/index',
                 'about'=>'site/about',
                 'contact'=>'site/contact',
                 'search'=>'site/search',
