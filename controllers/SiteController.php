@@ -287,6 +287,5 @@ class SiteController extends Controller
     public  function actionExport($id)
     {
          $data=Project::find($id);
-        Excel::export
     }
 }
