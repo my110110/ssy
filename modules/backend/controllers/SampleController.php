@@ -122,6 +122,7 @@ class SampleController extends BackendController
         unset($tableData[0]);
         unset($tableData[1]);
         $Pmodel=new Sample();
+        $perent=Group::findOne($pid);
         $tr=Yii::$app->db->beginTransaction();
         try{
             foreach ($tableData as $k=>$v)
@@ -131,6 +132,7 @@ class SampleController extends BackendController
                 $_model=clone $Pmodel;
                 $_model->name=trim($v['0']);
                 $_model->gid=$pid;
+                $_model->pid=$perent->pro_id;
                 $_model->descript=trim($v['1']);
                 $_model->retrieve='PSEG'.time().'D'.$k;
                 $_model->add_time=date('Y-m-d H:i:s');
