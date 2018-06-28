@@ -93,7 +93,12 @@ class Project extends \yii\db\ActiveRecord
     static function getProName($id)
     {
         $user= self::findOne($id);
-        return $user->pro_name;
+        if($user){
+            return $user->pro_name;
+
+        }else{
+            return ' ';
+        }
 
     }
 
