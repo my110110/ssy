@@ -13,7 +13,7 @@ use yii;
 use app\modules\backend\components\BackendController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use app\modules\backend\Models\operatelog;
+use app\modules\backend\Models\OperateLog;
 
 use app\models\Reagent;
 use yii\data\Pagination;
@@ -46,7 +46,7 @@ class OperatelogController extends BackendController
     public function actionIndex()
     {
         //分页读取类别数据
-        $model =  operatelog::find();
+        $model =  OperateLog::find();
 
 
         $pagination = new Pagination([

@@ -5,7 +5,7 @@ namespace app\modules\backend\models;
 use Yii;
 
 /**
- * This is the model class for table "operatelog".
+ * This is the model class for table "OperateLog".
  *
  * @property integer $id
  * @property integer $operate
@@ -15,7 +15,7 @@ use Yii;
  * @property string $objectname
  * @property string $operate_time
  */
-class operatelog extends \yii\db\ActiveRecord
+class OperateLog extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc

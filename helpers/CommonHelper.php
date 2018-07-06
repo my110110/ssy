@@ -11,7 +11,7 @@ namespace app\helpers;
 use app\models\Category;
 use app\models\Content;
 use Yii;
-use app\modules\backend\models\operatelog;
+use app\modules\backend\models\OperateLog;
 
 class CommonHelper
 {
@@ -74,7 +74,7 @@ class CommonHelper
     }
     static public function addLog($operate,$object,$objectname,$operate_kind)
     {
-        $model=new operatelog();
+        $model=new OperateLog();
         $model->operate=$operate;
         $model->object=$object;
         $model->user=Yii::$app->user->id;
