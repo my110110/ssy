@@ -15,7 +15,7 @@ use Yii;
  * @property string $objectname
  * @property string $operate_time
  */
-class OperateLog extends \yii\db\ActiveRecord
+class Operatelog extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc

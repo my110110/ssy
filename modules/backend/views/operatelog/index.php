@@ -5,7 +5,7 @@ use app\modules\backend\widgets\GridView;
 use app\models\Project;
 use app\models\Group;
 use app\modules\backend\models\AdminUser;
-use app\modules\backend\models\OperateLog;
+use app\modules\backend\models\Operatelog;
 use yii\widgets\ActiveForm;
 use yii\widgets\LinkPager;
 
@@ -65,7 +65,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         <?=AdminUser::getUserName($pid['user']);?>
                                     </td>
                                     <td>
-                                        <?=OperateLog::$operate[$pid['operate']];?>
+                                        <?=Operatelog::$operate[$pid['operate']];?>
                                     </td>
                                     <td>
                                         <?=$pid['objectname'];?>
