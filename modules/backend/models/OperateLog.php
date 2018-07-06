@@ -5,7 +5,7 @@ namespace app\modules\backend\models;
 use Yii;
 
 /**
- * This is the model class for table "OperateLog".
+ * This is the model class for table "operatelog".
  *
  * @property integer $id
  * @property integer $operate
