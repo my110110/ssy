@@ -13,7 +13,7 @@ use yii;
 use app\modules\backend\components\BackendController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use app\modules\backend\Models\Operatelog;
+use app\modules\backend\models\Operatelog;
 
 use app\models\Reagent;
 use yii\data\Pagination;
