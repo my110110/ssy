@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use app\modules\backend\widgets\GridView;
-use app\models\Sample;
+use app\models\Project;
 use app\models\Group;
 use app\modules\backend\models\AdminUser;
 use yii\widgets\ActiveForm;
@@ -13,7 +13,7 @@ use yii\widgets\LinkPager;
 /* @var $searchModel app\modules\backend\models\ProjectSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 /* @var $pagination yii\data\Pagination */
-$this->title = '标本列表';
+$this->title = '商品试剂盒列表';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <style type="text/css">
@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="tab-content cos">
             <div class="row clearfix">
                 <?php $form = ActiveForm::begin([
-                    'action' => ['index'],
+                    'action' => ['show','type'=>$type],
                     'method' => 'get',
                 ]); ?>
 
@@ -73,14 +73,6 @@ $this->params['breadcrumbs'][] = $this->title;
                             <th>
                                 检索号
                             </th>
-
-                            <th>
-                                所属样品
-                            </th>
-                            <th>
-                                描述
-                            </th>
-
                             <th>
                                 创建人
                             </th>
@@ -100,7 +92,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             <tr class="error">
                                 <td colspan="7">没有数据</td>
                             </tr>
-                        <?php elseif(isset($_GET['Stace'])&&!empty(array_filter($_GET['Stace']))):?>
+                        <?php elseif(isset($_GET['Kit'])&&!empty(array_filter($_GET['Kit']))):?>
                             <?php foreach($model as $sarch): ?>
                                 <tr class="shows success" >
 
@@ -111,16 +103,10 @@ $this->params['breadcrumbs'][] = $this->title;
                                         <?=$sarch['retrieve'];?>
                                     </td>
 
-                                    <td>
-                                        <?= Html::a(Sample::getParName($sarch['sid']), ['sample/view', 'id' => $sarch['sid']], ['title'=>'查看']) ?>
-                                    </td>
-                                    <td>
-                                        <?=$sarch['description'];?>
-                                    </td>
 
 
                                     <td>
-                                        <?=AdminUser::getUserName($sarch['add_user'])?>
+                                        <?=AdminUser::getDoName($sarch->id,1,'kit')?>
                                     </td>
                                     <td>
                                         <?=$sarch['add_time']?>
@@ -129,9 +115,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                         <?=$sarch['change_time']?>
                                     </td>
                                     <td>
-                                        <?= Html::a('<span class="glyphicon glyphicon-zoom-in"></span>', ['view', 'id' => $sarch['id'],'ret'=>'1'], ['title'=>'查看']) ?>
-                                        <?= Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['update', 'id' => $sarch['id'],'ret'=>'1'], ['title'=>'修改']) ?>
-                                        <?= Html::a('<span class="	glyphicon glyphicon-trash"></span>', ['delete', 'id' => $sarch['id'],'ret'=>'1'], [
+                                        <?= Html::a('<span class="glyphicon glyphicon-zoom-in"></span>', ['kit/view', 'id' => $sarch['id'],'ret'=>'1'], ['title'=>'查看']) ?>
+                                        <?= Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['kit/update', 'id' => $sarch['id'],'ret'=>'1'], ['title'=>'修改']) ?>
+                                        <?= Html::a('<span class="	glyphicon glyphicon-trash"></span>', ['kit/delete', 'id' => $sarch['id'],'ret'=>'1'], [
                                             'title'=>'删除',
                                             'data' => [
                                                 'confirm' => '确定要删除这个数据吗?',
@@ -152,17 +138,10 @@ $this->params['breadcrumbs'][] = $this->title;
                                         <?=$pid['retrieve'];?>
                                     </td>
 
-                                    <td>
-                                        <?= Html::a(Sample::getParName($pid['sid']), ['sample/view', 'id' => $pid['sid']], ['title'=>'查看']) ?>
-
-                                    </td>
-                                    <td>
-                                        <?=$pid['description'];?>
-                                    </td>
 
 
                                     <td>
-                                        <?=AdminUser::getUserName($pid['add_user'])?>
+                                        <?=AdminUser::getDoName($pid->id,1,'kit')?>
                                     </td>
                                     <td>
                                         <?=$pid['add_time']?>
@@ -171,9 +150,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                         <?=$pid['change_time']?>
                                     </td>
                                     <td>
-                                        <?= Html::a('<span class="glyphicon glyphicon-zoom-in"></span>', ['view', 'id' => $pid['id'],'ret'=>'1'], ['title'=>'查看']) ?>
-                                        <?= Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['update', 'id' => $pid['id'],'ret'=>'1'], ['title'=>'修改']) ?>
-                                        <?= Html::a('<span class="	glyphicon glyphicon-trash"></span>', ['delete', 'id' => $pid['id']], [
+                                        <?= Html::a('<span class="glyphicon glyphicon-zoom-in"></span>', ['kit/view', 'id' => $pid['id'],'ret'=>'1','typeid'=>$pid['typeid']], ['title'=>'查看']) ?>
+                                        <?= Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['kit/update', 'id' => $pid['id'],'ret'=>'1','typeid'=>$pid['typeid']], ['title'=>'修改']) ?>
+                                        <?= Html::a('<span class="	glyphicon glyphicon-trash"></span>', ['kit/delete', 'id' => $pid['id'],'ret'=>'1','typeid'=>$pid['typeid']], [
                                             'title'=>'删除',
                                             'data' => [
                                                 'confirm' => '确定要删除这个数据吗?',
@@ -202,6 +181,29 @@ echo LinkPager::widget([
     'lastPageLabel'=>'Last',
 ]);
 ?>
+
+<div class="tab-content cos">
+    <div class="row clearfix">
+        <?php $form = ActiveForm::begin([
+            'action' => ['uploadfile'],
+            'method' => 'post',
+            'options' => ['enctype' => 'multipart/form-data']
+        ]); ?>
+
+        <?= $form->field($file, 'file',
+            ['options'=>
+                ['tag'=>false ],
+                'template' => '<div class=" col-md-2 column"> 
+                            <div class="btn btn-info btn-file">
+                                 <i class="glyphicon glyphicon-folder-open">
+                         </i>&nbsp;  <span class="hidden-xs">选择 …</span>{input}</span> </div> </div>',
+
+            ])->fileInput() ?>
+        <?= Html::submitButton('上传项目', ['class' => 'btn btn-primary uploadfile']) ?>
+        <?php ActiveForm::end(); ?>
+    </div>
+
+</div>
 
 
 
