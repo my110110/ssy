@@ -50,7 +50,7 @@ class OperatelogController extends BackendController
 
 
         $pagination = new Pagination([
-            'defaultPageSize' => 10,
+            'defaultPageSize' => 20,
             'totalCount' => $model->count(),
         ]);
         $model = $model->orderBy('id desc')

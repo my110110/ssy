@@ -87,7 +87,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
         </div>
     </div>
-</div>
 <?php // 显示分页
 echo LinkPager::widget([
     'pagination' => $pagination,
@@ -97,6 +96,8 @@ echo LinkPager::widget([
     'lastPageLabel'=>'Last',
 ]);
 ?>
+</div>
+
 
 
 
