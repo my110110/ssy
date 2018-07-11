@@ -12,7 +12,7 @@ $this->params['breadcrumbs'][] = '修改';
 <div class="content-update">
     <div class="nav-tabs-custom">
         <ul class="nav nav-tabs" role="tablist">
-            <li role="presentation"><?= Html::a('检测指标列表', ['index']) ?></li>
+            <li role="presentation"><?= Html::a('检测指标列表', ['index','type'=>$type]) ?></li>
             <li role="presentation" class="active"><?= Html::a('修改检测指标', '#') ?></li>
         </ul>
         <div class="tab-content">

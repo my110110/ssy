@@ -30,9 +30,11 @@ $this->params['breadcrumbs'][] = $this->title;
             <li role="presentation" class="active">
                 <?= Html::a('实验项目', ['index'],  ['class' => 'btn btn-dafault ','role'=>'button']) ?>
             </li>
+            <?php if(AdminUser::getUserRole(yii::$app->user->id)>0):?>
             <li role="presentation">
                 <?= Html::a('添加项目', ['create'],['class' => 'btn btn-primary  ','role'=>'button']) ?>
             </li>
+            <?php endif;?>
         </ul>
 
         <div class="tab-content cos">
@@ -229,7 +231,7 @@ echo LinkPager::widget([
     'lastPageLabel'=>'Last',
 ]);
 ?>
-
+<?php if(AdminUser::getUserRole(yii::$app->user->id)>0):?>
 <div class="tab-content cos">
     <div class="row clearfix">
         <?php $form = ActiveForm::begin([
@@ -248,7 +250,7 @@ echo LinkPager::widget([
         <?= Html::submitButton('上传项目', ['class' => 'btn btn-primary uploadfile']) ?>
         <?php ActiveForm::end(); ?>
     </div>
-
+    <?php endif;?>
 </div>
 
 

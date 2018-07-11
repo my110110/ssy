@@ -165,6 +165,13 @@ class AdminUser extends AppActiveRecord
     /**
      * 根据ID获取用户名
      */
+    static function getUserRole($id){
+        $user= self::findOne($id);
+        return $user->roles;
+    }
+    /**
+     * 根据ID获取用户名
+     */
     static function getDoName($object,$operate,$operate_kind){
         $user= Operatelog::findOne(['object'=>$object,'operate'=>$operate,'operate_kind'=>$operate_kind]);
         if($user){

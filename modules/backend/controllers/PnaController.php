@@ -399,7 +399,7 @@ class PnaController extends BackendController
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id,$type)
     {
         $model = $this->findModel($id);
         $post = Yii::$app->request->post();
@@ -428,6 +428,7 @@ class PnaController extends BackendController
         } else {
             return $this->render('update', [
                 'model' => $model,
+                'type'=>$type
             ]);
         }
     }

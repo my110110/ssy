@@ -9,6 +9,7 @@
 
 namespace app\modules\backend\controllers;
 
+use app\modules\backend\models\AdminUser;
 use yii\filters\VerbFilter;
 use app\modules\backend\components\BackendController;
 use app\modules\backend\models\ProductsSearch;
@@ -60,7 +61,6 @@ class ProductsController extends BackendController
     public function actionIndex()
     {
         $searchModel = new ProductsSearch();
-
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $this->module->params['pageSize']);
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -87,6 +87,9 @@ class ProductsController extends BackendController
      */
     public function actionCreate()
     {
+        if(AdminUser::getUserRole(Yii::$app->user->id)!=1){
+
+        }
         $model = new Products();
         $post = Yii::$app->request->post();
         if ($post) {

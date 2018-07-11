@@ -12,6 +12,7 @@ if(is_file($appPath . '/runtime/config/view.php')){
 
 $config = [
     'id' => 'basic',
+    'defaultRoute'=>'backend/default/index',
     'basePath' => dirname(__DIR__),
 //    'bootstrap' => ['log','assetsAutoCompress'],
     'bootstrap' => ['log',],

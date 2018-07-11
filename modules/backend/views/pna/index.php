@@ -86,9 +86,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <?=$model['change_time']?>
                             </td>
                             <td>
-                                <?= Html::a('<span class="glyphicon glyphicon-zoom-in"></span>', ['view', 'id' => $model['id']], ['title'=>'查看']) ?>
-                                <?= Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['update', 'id' => $model['id']], ['title'=>'修改']) ?>
-                                 <?= Html::a('<span class="glyphicon glyphicon-trash"></span>', ['del', 'id' => $model['id']], [
+                                <?= Html::a('<span class="glyphicon glyphicon-zoom-in"></span>', ['view', 'id' => $model['id'],'type'=>$type], ['title'=>'查看']) ?>
+                                <?= Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['update', 'id' => $model['id'],'type'=>$type], ['title'=>'修改']) ?>
+                                 <?= Html::a('<span class="glyphicon glyphicon-trash"></span>', ['del', 'id' => $model['id'],'type'=>$type], [
                                     'title'=>'删除',
                                     'data' => [
                                         'confirm' => '确定要删除这个项目吗?',

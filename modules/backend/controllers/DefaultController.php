@@ -46,16 +46,27 @@ class DefaultController extends BackendController
         {
             return $this->redirect(['/backend/default/index']);
         }
-
         $this->layout = 'main-login.php';
         $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
+        if(Yii::$app->request->post()){
+
+
+        $data=Yii::$app->request->post();
+        if(trim($data['submit'])=='youke'){
+            $data['LoginForm']['username']='demo';
+            $data['LoginForm']['password']='demo';
+        }
+
+        if ($model->load($data) && $model->login()) {
+
             return $this->redirect(['/backend/default/index']);
+        }
         }
         return $this->render('login', [
             'model' => $model,
         ]);
     }
+
     /**
      * Logout action.
      *

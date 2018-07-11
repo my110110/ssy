@@ -27,6 +27,7 @@ use app\models\Particular;
 use yii\helpers\Html;
 use yii\data\Pagination;
 use moonland\phpexcel\Excel;
+use \PHPExcel_Worksheet_Drawing;
 
 
 
