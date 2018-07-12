@@ -129,7 +129,9 @@ $this->params['breadcrumbs'][] = $this->title;
                     <?=$sarch['pro_update_time']?>
                 </td>
                 <td>
+                    <?= Html::a('<span class="	glyphicon glyphicon-download-alt"></span>', ['export', 'id' => $sarch['pro_id']], ['title'=>'下载']) ?>
                     <?= Html::a('<span class="glyphicon glyphicon-zoom-in"></span>', ['view', 'id' => $sarch['pro_id']], ['title'=>'查看']) ?>
+                     <?php if(AdminUser::getUserRole(yii::$app->user->id)==1):?>
                     <?= Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['update', 'id' => $sarch['pro_id']], ['title'=>'修改']) ?>
                     <?= Html::a('<span class="	glyphicon glyphicon-trash"></span>', ['delete', 'id' => $sarch['pro_id']], [
                         'title'=>'删除',
@@ -138,6 +140,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             'method' => 'post',
                         ],
                     ]) ?>
+                    <?php endif;?>
                 </td>
             </tr>
 
@@ -166,7 +169,10 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <?=$pid['pro_update_time']?>
                             </td>
                             <td>
+                                <?= Html::a('<span class="	glyphicon glyphicon-download-alt"></span>', ['export', 'id' => $pid['pro_id']], ['title'=>'下载']) ?>
                                 <?= Html::a('<span class="glyphicon glyphicon-zoom-in"></span>', ['view', 'id' => $pid['pro_id']], ['title'=>'查看']) ?>
+
+                                <?php if(AdminUser::getUserRole(yii::$app->user->id)==1):?>
                                 <?= Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['update', 'id' => $pid['pro_id']], ['title'=>'修改']) ?>
                                  <?= Html::a('<span class="	glyphicon glyphicon-trash"></span>', ['delete', 'id' => $pid['pro_id']], [
                                     'title'=>'删除',
@@ -175,6 +181,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         'method' => 'post',
                                     ],
                                 ]) ?>
+                                <?php endif;?>
                             </td>
                         </tr>
 
@@ -199,6 +206,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                                 <?=$child['pro_update_time']?>
                                             </td>
                                             <td>
+                                                <?= Html::a('<span class="	glyphicon glyphicon-download-alt"></span>', ['export', 'id' => $child['pro_id']], ['title'=>'下载']) ?>
+                                                <?php if(AdminUser::getUserRole(yii::$app->user->id)==1):?>
                                                 <?= Html::a('<span class="glyphicon glyphicon-zoom-in"></span>', ['view', 'id' => $child['pro_id']], ['title'=>'查看']) ?>
                                                 <?= Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['update', 'id' => $child['pro_id']], ['title'=>'修改']) ?>
                                                 <?= Html::a('<span class="	glyphicon glyphicon-trash"></span>', ['delete', 'id' => $child['pro_id']], [
@@ -209,6 +218,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                         'method' => 'post',
                                                     ],
                                                 ]) ?>
+                                              <?php endif;?>
                                             </td>
                                         </tr>
                                 <?php endforeach;}  ?>

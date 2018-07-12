@@ -9,16 +9,14 @@
 namespace app\modules\backend\controllers;
 
 use app\models\Group;
-use phpDocumentor\Reflection\DocBlock\Tags\Var_;
+use app\modules\backend\models\AdminUser;
 use yii;
 use app\models\Project;
-use app\modules\backend\models\ProjectSearch;
 use app\modules\backend\components\BackendController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\models\Principal;
 use yii\web\Response;
-use app\helpers\CategoryHelper;
 use yii\data\Pagination;
 use yii\helpers\ArrayHelper;
 use PHPExcel_Reader_Excel2007;
@@ -26,8 +24,9 @@ use PHPExcel_Reader_CSV;
 use PHPExcel_Reader_Excel5;
 use app\models\UploadFile;
 use yii\web\UploadedFile;
-
 use app\helpers\CommonHelper;
+use moonland\phpexcel\Excel;
+use \PHPExcel_Worksheet_Drawing;
 class ProjectController extends BackendController
 {
     /**
@@ -44,7 +43,21 @@ class ProjectController extends BackendController
             ],
         ];
     }
-   public function actionDelete_all()
+
+   public function beforeAction($action)
+   {
+       if((!in_array($this->action->id,['index','view','export']))&&(AdminUser::getUserRole(Yii::$app->user->id)!=1))
+       {
+           return $this->showFlash('没有权限', 'error',Yii::$app->getUser()->getReturnUrl());
+
+       }else{
+           return parent::beforeAction($action);
+       }
+
+
+   }
+
+    public function actionDelete_all()
    {
            Yii::$app->response->format = Response::FORMAT_JSON;
 
@@ -244,6 +257,7 @@ class ProjectController extends BackendController
      */
     public function actionCreate()
     {
+
         $model = new Project();
         $principal=new Principal();
         $model->pro_pid=Yii::$app->request->get('pro_pid');
@@ -294,6 +308,55 @@ class ProjectController extends BackendController
             'model' => $model,
             'principal'=>$principal
         ]);
+    }
+    public  function actionExport($id)
+    {
+        ini_set("memory_limit", "2048M");
+        set_time_limit(0);
+
+        //获取用户ID
+
+        //去用户表获取用户信息
+
+        $data=Project::find()->andFilterWhere(['pro_id'=>$id])->all();
+        //获取传过来的信息（时间，公司ID之类的，根据需要查询资料生成表格）
+        $objectPHPExcel = new \PHPExcel();
+
+        //设置表格头的输出
+        $objectPHPExcel->setActiveSheetIndex()->setCellValue('A1', '项目名称');
+        $objectPHPExcel->setActiveSheetIndex()->setCellValue('B1', '检索号');
+        $objectPHPExcel->setActiveSheetIndex()->setCellValue('C1', '项目关键字');
+        $objectPHPExcel->setActiveSheetIndex()->setCellValue('D1', '实验项目描述');
+        $objectPHPExcel->setActiveSheetIndex()->setCellValue('E1', '实验项目种属');
+        $objectPHPExcel->setActiveSheetIndex()->setCellValue('F1', '实验样本总数 ');
+
+        //跳转到recharge这个model文件的statistics方法去处理数据
+
+        //指定开始输出数据的行数
+        $n = 2;
+        foreach ($data as $v){
+            $objectPHPExcel->getActiveSheet()->setCellValue('A'.($n) ,$v['pro_name']);
+            $objectPHPExcel->getActiveSheet()->setCellValue('B'.($n) ,$v['pro_retrieve']);
+            $objectPHPExcel->getActiveSheet()->setCellValue('C'.($n) ,$v['pro_keywords']);
+            $objectPHPExcel->getActiveSheet()->setCellValue('D'.($n) ,$v['pro_description']);
+            $objectPHPExcel->getActiveSheet()->setCellValue('E'.($n) ,$v['pro_kind_id']);
+            $objectPHPExcel->getActiveSheet()->setCellValue('F'.($n) ,$v['pro_sample_count']);
+            $n = $n +1;
+        }
+        ob_end_clean();
+        ob_start();
+        header('Content-Type : application/vnd.ms-excel');
+
+        //设置输出文件名及格式
+        header('Content-Disposition:attachment;filename="'.date("YmdHis").'.xls"');
+
+        //导出.xls格式的话使用Excel5,若是想导出.xlsx需要使用Excel2007
+        $objWriter= \PHPExcel_IOFactory::createWriter($objectPHPExcel,'Excel5');
+        $objWriter->save('php://output');
+        ob_end_flush();
+
+        //清空数据缓存
+        unset($data);
     }
 
     /**

@@ -23,6 +23,7 @@ $this->params['breadcrumbs'][] = ['label' => '项目管理', 'url' => ['index']]
 
             ]) ?>
         <?php endif;?>
+        <?php if(AdminUser::getUserRole(yii::$app->user->id)==1):?>
         <?php if(!$model->pro_pid>0):?>
         <?= Html::a('添加子项目', ['create', 'pro_pid' => $model->pro_id], [
             'title'=>'添加子项目',
@@ -51,8 +52,10 @@ $this->params['breadcrumbs'][] = ['label' => '项目管理', 'url' => ['index']]
                 'method' => 'post',
             ],
         ]) ?>
-
+        <?php endif;?>
     </p>
+    <?php if(AdminUser::getUserRole(yii::$app->user->id)==1):?>
+
     <?php if($model->pro_pid==0):?>
 
         <div class="tab-content cos">
@@ -94,6 +97,7 @@ $this->params['breadcrumbs'][] = ['label' => '项目管理', 'url' => ['index']]
                 <?php ActiveForm::end(); ?>
             </div>
         </div>
+     <?php endif;?>
     <?php endif;?>
     <div class="row clearfix" style="margin-top: 10px;">
         <div class="col-md-12 column">
@@ -152,12 +156,13 @@ $this->params['breadcrumbs'][] = ['label' => '项目管理', 'url' => ['index']]
                                 科室</span>：<?=$Principal->department?><span style="margin-left: 3px;">-</span><span style="margin-left: 5px;">
                                 邮箱</span>：<?=$Principal->email?><span style="margin-left: 3px;">-</span><span style="margin-left: 5px;">
                                 电话</span>：<?=$Principal->telphone?>
+                   <?php if(AdminUser::getUserRole(yii::$app->user->id)==1):?>
                             <?= Html::a('', ['principal/update', 'id' => $Principal->id], ['class' => 'glyphicon glyphicon-pencil','title'=>'修改']) ?>
                             <?= Html::a('', ['principal/delete', 'id' => $Principal->id], ['class' => 'glyphicon glyphicon-trash','title'=>'删除', 'data' => [
                                 'confirm' => '确定要删除这个项目负责人吗?',
                                 'method' => 'post',
                             ],]) ?>
-
+                    <?php endif;?>
                         </td>
                     </tr>
                 <?php endforeach;?>
@@ -167,10 +172,11 @@ $this->params['breadcrumbs'][] = ['label' => '项目管理', 'url' => ['index']]
                         <td class="col-md-2">子项目</td>
                         <td class="col-md-10">
                            <?= Html::a("$child->pro_name", ['view', 'id' => $child->pro_id]) ?>
+                        <?php if(AdminUser::getUserRole(yii::$app->user->id)==1):?>
 
-<?= Html::a('', ['principal/update', 'id' => $child->pro_id], ['class' => 'glyphicon glyphicon-pencil','title'=>'修改']) ?>
+                            <?= Html::a('', ['principal/update', 'id' => $child->pro_id], ['class' => 'glyphicon glyphicon-pencil','title'=>'修改']) ?>
                             <?= Html::a('', ['project/del', 'id' => $child->pro_id], ['class' => 'glyphicon glyphicon-trash','title'=>'删除']) ?>
-
+                           <?php endif;?>
                         </td>
                     </tr>
                 <?php endforeach;?>
@@ -181,10 +187,10 @@ $this->params['breadcrumbs'][] = ['label' => '项目管理', 'url' => ['index']]
                                     <td class="col-md-2">项目分组</td>
                                     <td class="col-md-10">
                                         <?= Html::a("$group->group_name", ['group/view', 'id' => $group->id]) ?>
-
+                                        <?php if(AdminUser::getUserRole(yii::$app->user->id)==1):?>
                                         <?= Html::a('', ['group/update', 'id' => $group->id], ['class' => 'glyphicon glyphicon-pencil','title'=>'修改']) ?>
                                         <?= Html::a('', ['group/del', 'id' => $group->id], ['class' => 'glyphicon glyphicon-trash','title'=>'删除']) ?>
-
+                                        <?php endif;?>
                                     </td>
                                 </tr>
                     <?php endforeach;?>

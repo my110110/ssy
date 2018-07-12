@@ -30,7 +30,7 @@ $this->params['breadcrumbs'][] = ['label' => '项目管理', 'url' => ['project/
 
             ]) ?>
         <?php endif;?>
-
+        <?php if(AdminUser::getUserRole(yii::$app->user->id)==1):?>
         <?= Html::a('添加样品', ['sample/create', 'id' => $model->id], ['class' => 'btn btn-info','title'=>'新增样品']) ?>
 
         <?= Html::a('修改', ['update', 'id' => $model->id], ['class' => 'btn btn-warning','title'=>'修改']) ?>
@@ -42,8 +42,9 @@ $this->params['breadcrumbs'][] = ['label' => '项目管理', 'url' => ['project/
                 'method' => 'post',
             ],
         ]) ?>
-
+        <?php endif;?>
     </p>
+    <?php if(AdminUser::getUserRole(yii::$app->user->id)==1):?>
     <div class="tab-content cos">
         <div class="row clearfix">
             <?php $form = ActiveForm::begin([
@@ -63,6 +64,7 @@ $this->params['breadcrumbs'][] = ['label' => '项目管理', 'url' => ['project/
             <?php ActiveForm::end(); ?>
         </div>
     </div>
+    <?php endif;?>
     <div class="row clearfix" style="margin-top: 10px;">
         <div class="col-md-12 column">
             <table class="table table-hover table-bordered">
@@ -115,10 +117,10 @@ $this->params['breadcrumbs'][] = ['label' => '项目管理', 'url' => ['project/
                             <td class="col-md-2">样本</td>
                             <td class="col-md-10">
                                 <?= Html::a("$sample->name", ['sample/view', 'id' => $sample->id]) ?>
-
+                        <?php if(AdminUser::getUserRole(yii::$app->user->id)==1):?>
                                 <?= Html::a('', ['sample/update', 'id' => $sample->id], ['class' => 'glyphicon glyphicon-pencil','title'=>'修改']) ?>
                                 <?= Html::a('', ['sample/del', 'id' => $sample->id], ['class' => 'glyphicon glyphicon-trash','title'=>'删除']) ?>
-
+                        <?php endif;?>
                             </td>
                         </tr>
                     <?php endforeach;?>

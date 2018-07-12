@@ -173,8 +173,11 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <?=$pid['group_change_time']?>
                             </td>
                             <td>
+
                                 <?= Html::a('<span class="glyphicon glyphicon-zoom-in"></span>', ['view', 'id' => $pid['id'],'ret'=>'1'], ['title'=>'查看']) ?>
-                                <?= Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['update', 'id' => $pid['id'],'ret'=>'1'], ['title'=>'修改']) ?>
+        <?php if(AdminUser::getUserRole(yii::$app->user->id)==1):?>
+
+            <?= Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['update', 'id' => $pid['id'],'ret'=>'1'], ['title'=>'修改']) ?>
                                  <?= Html::a('<span class="	glyphicon glyphicon-trash"></span>', ['delete', 'id' => $pid['id'],'ret'=>'1'], [
                                     'title'=>'删除',
                                     'data' => [
@@ -182,6 +185,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         'method' => 'post',
                                     ],
                                 ]) ?>
+                                <?php endif;?>
                             </td>
                         </tr>
 

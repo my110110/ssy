@@ -71,10 +71,10 @@ use yii\web\UrlManager;
                     <i class="fa fa-angle-left pull-right"></i></span></a>
             <ul class="treeview-menu">
                 <li><a href="/backend/admin-user/index.html"><i class="glyphicon glyphicon-th-large"></i>  <span>管理员列表</span></a></li>
-                <li><a href="/backend/rbac/assignment/index.html"><i class="glyphicon glyphicon-th-large"></i>  <span>权限配置</span></a></li>
-                <li><a href="/backend/rbac/role/index.html"><i class="glyphicon glyphicon-th-large"></i>  <span>角色列表</span></a></li>
-                <li><a href="/backend/rbac/permission/index.html"><i class="glyphicon glyphicon-th-large"></i>  <span>权限列表</span></a></li>
-                <li><a href="/backend/rbac/rule/index.html"><i class="glyphicon glyphicon-th-large"></i>  <span>规则列表</span></a></li>
+<!--                <li><a href="/backend/rbac/assignment/index.html"><i class="glyphicon glyphicon-th-large"></i>  <span>权限配置</span></a></li>-->
+<!--                <li><a href="/backend/rbac/role/index.html"><i class="glyphicon glyphicon-th-large"></i>  <span>角色列表</span></a></li>-->
+<!--                <li><a href="/backend/rbac/permission/index.html"><i class="glyphicon glyphicon-th-large"></i>  <span>权限列表</span></a></li>-->
+<!--                <li><a href="/backend/rbac/rule/index.html"><i class="glyphicon glyphicon-th-large"></i>  <span>规则列表</span></a></li>-->
                 <li><a href="/backend/operatelog/index.html"><i class="glyphicon glyphicon-th-large"></i>  <span>操作日志</span></a></li>
 
             </ul>

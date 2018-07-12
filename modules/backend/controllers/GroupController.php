@@ -8,7 +8,6 @@
 
 namespace app\modules\backend\controllers;
 
-use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 use yii;
 use app\models\Project;
 use app\models\Sample;
@@ -22,7 +21,9 @@ use PHPExcel_Reader_CSV;
 use PHPExcel_Reader_Excel5;
 use app\models\UploadFile;
 use yii\web\UploadedFile;
-
+use moonland\phpexcel\Excel;
+use app\modules\backend\models\AdminUser;
+use \PHPExcel_Worksheet_Drawing;
 use app\helpers\CommonHelper;
 class GroupController extends BackendController
 {
@@ -41,6 +42,19 @@ class GroupController extends BackendController
         ];
     }
 
+
+    public function beforeAction($action)
+    {
+        if((!in_array($this->action->id,['index','view','export']))&&(AdminUser::getUserRole(Yii::$app->user->id)!=1))
+        {
+            return $this->showFlash('没有权限', 'error',Yii::$app->getUser()->getReturnUrl());
+
+        }else{
+            return parent::beforeAction($action);
+        }
+
+
+    }
 
     /**
      * Lists all Content models.
