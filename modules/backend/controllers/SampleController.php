@@ -9,7 +9,8 @@
 namespace app\modules\backend\controllers;
 
 use app\models\Stace;
-use phpDocumentor\Reflection\DocBlock\Tags\Var_;
+use app\modules\backend\models\AdminUser;
+
 use yii;
 use app\models\Sample;
 use app\modules\backend\components\BackendController;

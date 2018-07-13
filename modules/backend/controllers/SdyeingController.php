@@ -18,7 +18,7 @@ use app\modules\backend\components\BackendController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\models\Sdyeing;
-use yii\web\Response;
+use app\modules\backend\models\AdminUser;
 use yii\data\Pagination;
 use app\helpers\CommonHelper;
 use PHPExcel_Reader_Excel2007;
@@ -43,7 +43,18 @@ class SdyeingController extends BackendController
         ];
     }
 
+    public function beforeAction($action)
+    {
+        if((!in_array($this->action->id,['index','view','export']))&&(AdminUser::getUserRole(Yii::$app->user->id)!=1))
+        {
+            return $this->showFlash('没有权限', 'error',Yii::$app->getUser()->getReturnUrl());
 
+        }else{
+            return parent::beforeAction($action);
+        }
+
+
+    }
     public function actionUploadfile($pid=0)
     {
         $model=new UploadFile();

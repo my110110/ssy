@@ -245,7 +245,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     </td>
                                     <td>
                                         <?= Html::a('<span class="glyphicon glyphicon-zoom-in"></span>', ['view', 'id' => $pid['id'],'ret'=>'1'], ['title'=>'查看']) ?>
-
+                                        <?php if(AdminUser::getUserRole(yii::$app->user->id)==1):?>
                                        <?php if($pid['ntype']==1):?>
                                             <?= Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['routine/change', 'id' => $pid['id'],'ret'=>'1'], ['title'=>'修改']) ?>
                                         <?php elseif ($pid['ntype']==2):?>
@@ -263,6 +263,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                 'method' => 'post',
                                             ],
                                         ]) ?>
+                                        <?php endif;?>
                                     </td>
                                 </tr>
 
