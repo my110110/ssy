@@ -31,34 +31,34 @@ use yii\web\UrlManager;
                 <li><a href="/backend/pna/index.html?type=1"><i class="glyphicon glyphicon-th-large"></i>  <span>蛋白指标</span></a></li>
             </ul>
         </li>
-
-        <li><a href="/backend/group/index.html"><i class="fa fa-bars"></i>
-                <span>分组列表</span></a>
-        </li>
-        <li><a href="/backend/sample/index.html"><i class="fa fa-bars"></i>
-                <span>样品列表</span></a>
-        </li>
-        <li><a href="/backend/stace/index.html"><i class="fa fa-bars"></i>
-                <span>标本列表</span></a>
-        </li>
-        <li><a href="/backend/sdyeing/index.html"><i class="fa fa-bars"></i>
-                <span>实验结果</span></a>
-        </li>
-        <li><a href="/backend/pna/show.html?type=1"><i class="fa fa-bars"></i>
-                <span>抗体列表</span></a>
-        </li>
-        <li><a href="/backend/pna/show.html?type=2"><i class="fa fa-bars"></i>
-                <span>核酸试剂盒列表</span></a>
-        </li>
-        <li><a href="/backend/testmethod/show.html?type=3"><i class="fa fa-bars"></i>
-                <span>商品试剂盒列表</span></a>
-        </li>
-        <li><a href="/backend/reagent/index.html"><i class="fa fa-bars"></i>
-                <span>自配试剂列表</span></a>
-        </li>
-        <li><a href="/backend/testmethod/index.html"><i class="fa fa-bars"></i>
-                <span>测试方法列表</span></a>
-        </li>
+<!---->
+<!--        <li><a href="/backend/group/index.html"><i class="fa fa-bars"></i>-->
+<!--                <span>分组列表</span></a>-->
+<!--        </li>-->
+<!--        <li><a href="/backend/sample/index.html"><i class="fa fa-bars"></i>-->
+<!--                <span>样品列表</span></a>-->
+<!--        </li>-->
+<!--        <li><a href="/backend/stace/index.html"><i class="fa fa-bars"></i>-->
+<!--                <span>标本列表</span></a>-->
+<!--        </li>-->
+<!--        <li><a href="/backend/sdyeing/index.html"><i class="fa fa-bars"></i>-->
+<!--                <span>实验结果</span></a>-->
+<!--        </li>-->
+<!--        <li><a href="/backend/pna/show.html?type=1"><i class="fa fa-bars"></i>-->
+<!--                <span>抗体列表</span></a>-->
+<!--        </li>-->
+<!--        <li><a href="/backend/pna/show.html?type=2"><i class="fa fa-bars"></i>-->
+<!--                <span>核酸试剂盒列表</span></a>-->
+<!--        </li>-->
+<!--        <li><a href="/backend/testmethod/show.html?type=3"><i class="fa fa-bars"></i>-->
+<!--                <span>商品试剂盒列表</span></a>-->
+<!--        </li>-->
+<!--        <li><a href="/backend/reagent/index.html"><i class="fa fa-bars"></i>-->
+<!--                <span>自配试剂列表</span></a>-->
+<!--        </li>-->
+<!--        <li><a href="/backend/testmethod/index.html"><i class="fa fa-bars"></i>-->
+<!--                <span>测试方法列表</span></a>-->
+<!--        </li>-->
         <li><a href="/backend/config/index.html"><i class="fa fa-bars"></i>
                 <span>网站配置</span>
                 <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>

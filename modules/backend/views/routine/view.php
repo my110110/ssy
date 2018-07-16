@@ -18,6 +18,7 @@ $this->params['breadcrumbs'][] = ['label' => '常规染色', 'url' => ['index']]
             'class' => 'btn btn-primary',
 
         ]) ?>
+        <?php if(AdminUser::getUserRole(yii::$app->user->id)==1):?>
         <?= Html::a('添加检测试剂', ['reagent/create', 'id' => $model->id,'type'=>'routine'], [
             'title'=>'添加负责人',
             'class' => 'btn btn-success',
@@ -33,8 +34,9 @@ $this->params['breadcrumbs'][] = ['label' => '常规染色', 'url' => ['index']]
                 'method' => 'post',
             ],
         ]) ?>
-
+        <?php endif;?>
     </p>
+    <?php if(AdminUser::getUserRole(yii::$app->user->id)==1):?>
     <div class="tab-content cos">
         <div class="row clearfix">
             <?php $form = ActiveForm::begin([
@@ -60,6 +62,7 @@ $this->params['breadcrumbs'][] = ['label' => '常规染色', 'url' => ['index']]
         </div>
 
     </div>
+    <?php endif;?>
     <div class="row clearfix" style="margin-top: 10px;">
         <div class="col-md-12 column">
             <table class="table table-hover table-bordered">
@@ -108,10 +111,10 @@ $this->params['breadcrumbs'][] = ['label' => '常规染色', 'url' => ['index']]
                             <td class="col-md-2">检测试剂</td>
                             <td class="col-md-10">
                                 <?= Html::a("$child->name", ['reagent/view', 'id' => $child->id]) ?>
-
+                        <?php if(AdminUser::getUserRole(yii::$app->user->id)==1):?>
                                 <?= Html::a('', ['reagent/update', 'id' => $child->id,'type'=>$child->type], ['class' => 'glyphicon glyphicon-pencil','title'=>'修改']) ?>
                                 <?= Html::a('', ['reagent/del', 'id' => $child->id], ['class' => 'glyphicon glyphicon-trash','title'=>'删除']) ?>
-
+                                <?php endif;?>
                             </td>
                         </tr>
                     <?php endforeach;?>

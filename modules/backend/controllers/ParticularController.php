@@ -10,6 +10,8 @@ namespace app\modules\backend\controllers;
 
 use yii;
 use app\modules\backend\components\BackendController;
+use app\modules\backend\models\AdminUser;
+
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\models\Particular;
@@ -42,7 +44,18 @@ class ParticularController extends BackendController
         ];
     }
 
+    public function beforeAction($action)
+    {
+        if((!in_array($this->action->id,['index','view','export']))&&(AdminUser::getUserRole(Yii::$app->user->id)!=1))
+        {
+            return $this->showFlash('没有权限', 'error',Yii::$app->getUser()->getReturnUrl());
 
+        }else{
+            return parent::beforeAction($action);
+        }
+
+
+    }
 
 
     /**

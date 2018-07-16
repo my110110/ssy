@@ -11,8 +11,9 @@ $this->params['breadcrumbs'][] = ['label' => '返回列表', 'url' => ['index', 
 
 ?>
 <div class="content-view">
-
+    <?php if(AdminUser::getUserRole(yii::$app->user->id)==1):?>
     <p>
+
          <?php if($model->type==1):?>
         <?= Html::a('添加抗体', ['kit/create', 'id' => $model->id,'type'=>'pna','typeid'=>1], [
             'title'=>'添加抗体',
@@ -47,6 +48,7 @@ $this->params['breadcrumbs'][] = ['label' => '返回列表', 'url' => ['index', 
         $str='导入核酸试剂盒';
     }
     ?>
+
     <div class="tab-content cos">
         <div class="row clearfix">
             <?php $form = ActiveForm::begin([
@@ -73,6 +75,7 @@ $this->params['breadcrumbs'][] = ['label' => '返回列表', 'url' => ['index', 
         </div>
 
     </div>
+    <?php endif;?>
     <div class="row clearfix" style="margin-top: 10px;">
         <div class="col-md-12 column">
             <table class="table table-hover table-bordered">
@@ -153,10 +156,11 @@ $this->params['breadcrumbs'][] = ['label' => '返回列表', 'url' => ['index', 
                             <td class="col-md-2"><?php if($model->type==1){echo '抗体';}elseif($model->type==2){echo '核酸试剂盒';}?></td>
                             <td class="col-md-10">
                                 <?= Html::a("$child->name", ['kit/view', 'id' => $child->id]) ?>
+                                <?php if(AdminUser::getUserRole(yii::$app->user->id)==1):?>
 
                                 <?= Html::a('', ['kit/update', 'id' => $child->id], ['class' => 'glyphicon glyphicon-pencil','title'=>'修改']) ?>
                                 <?= Html::a('', ['kit/del', 'id' => $child->id], ['class' => 'glyphicon glyphicon-trash','title'=>'删除']) ?>
-
+                                <?php endif;?>
                             </td>
                         </tr>
                     <?php endforeach;?>

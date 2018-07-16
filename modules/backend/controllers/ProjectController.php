@@ -10,6 +10,7 @@ namespace app\modules\backend\controllers;
 
 use app\models\Group;
 use app\modules\backend\models\AdminUser;
+use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 use yii;
 use app\models\Project;
 use app\modules\backend\components\BackendController;
@@ -321,7 +322,10 @@ class ProjectController extends BackendController
         $data=Project::find()->andFilterWhere(['pro_id'=>$id])->all();
         //获取传过来的信息（时间，公司ID之类的，根据需要查询资料生成表格）
         $objectPHPExcel = new \PHPExcel();
-
+        if($data[0]->pro_pid==0)
+        {
+           $child=Project::find()->andFilterWhere(['pro_pid'=>$id,'isdel'=>0])->all();
+        }
         //设置表格头的输出
         $objectPHPExcel->setActiveSheetIndex()->setCellValue('A1', '项目名称');
         $objectPHPExcel->setActiveSheetIndex()->setCellValue('B1', '检索号');
@@ -343,6 +347,62 @@ class ProjectController extends BackendController
             $objectPHPExcel->getActiveSheet()->setCellValue('F'.($n) ,$v['pro_sample_count']);
             $n = $n +1;
         }
+        if(count($child))
+        {
+            $n=$n +3;
+            $objectPHPExcel->setActiveSheetIndex()->setCellValue('A'.($n), '子项目名称');
+            $objectPHPExcel->setActiveSheetIndex()->setCellValue('B'.($n), '子检索号');
+            $objectPHPExcel->setActiveSheetIndex()->setCellValue('C'.($n), '子项目关键字');
+            $objectPHPExcel->setActiveSheetIndex()->setCellValue('D'.($n), '子实验项目描述');
+            $objectPHPExcel->setActiveSheetIndex()->setCellValue('E'.($n), '子实验项目种属');
+            $objectPHPExcel->setActiveSheetIndex()->setCellValue('F'.($n), '子实验样本总数 ');
+            $n = $n +1;
+            foreach ($child as $v)
+            {
+                $objectPHPExcel->getActiveSheet()->setCellValue('A'.($n) ,$v['pro_name']);
+                $objectPHPExcel->getActiveSheet()->setCellValue('B'.($n) ,$v['pro_retrieve']);
+                $objectPHPExcel->getActiveSheet()->setCellValue('C'.($n) ,$v['pro_keywords']);
+                $objectPHPExcel->getActiveSheet()->setCellValue('D'.($n) ,$v['pro_description']);
+                $objectPHPExcel->getActiveSheet()->setCellValue('E'.($n) ,$v['pro_kind_id']);
+                $objectPHPExcel->getActiveSheet()->setCellValue('F'.($n) ,$v['pro_sample_count']);
+                $n = $n +1;
+
+                $gid[]=$v['pro_id'];
+            }
+
+        }
+        if(count($gid)>0)
+        {
+            $group=Group::find()->where(['in','pro_id'],$gid)->andFilterWhere(['isdel'=>'0'])->all();
+        }
+
+        if(count($group)>0)
+        {
+            $n=$n +3;
+            $objectPHPExcel->setActiveSheetIndex()->setCellValue('A'.($n), '项目分组名称');
+            $objectPHPExcel->setActiveSheetIndex()->setCellValue('B'.($n), '子检索号');
+            $objectPHPExcel->setActiveSheetIndex()->setCellValue('C'.($n), '子项目关键字');
+            $objectPHPExcel->setActiveSheetIndex()->setCellValue('D'.($n), '子实验项目描述');
+            $objectPHPExcel->setActiveSheetIndex()->setCellValue('E'.($n), '子实验项目种属');
+            $objectPHPExcel->setActiveSheetIndex()->setCellValue('F'.($n), '子实验样本总数 ');
+            $n = $n +1;
+            foreach ($group as $v)
+            {
+                $objectPHPExcel->getActiveSheet()->setCellValue('A'.($n) ,$v['pro_name']);
+                $objectPHPExcel->getActiveSheet()->setCellValue('B'.($n) ,$v['pro_retrieve']);
+                $objectPHPExcel->getActiveSheet()->setCellValue('C'.($n) ,$v['pro_keywords']);
+                $objectPHPExcel->getActiveSheet()->setCellValue('D'.($n) ,$v['pro_description']);
+                $objectPHPExcel->getActiveSheet()->setCellValue('E'.($n) ,$v['pro_kind_id']);
+                $objectPHPExcel->getActiveSheet()->setCellValue('F'.($n) ,$v['pro_sample_count']);
+                $n = $n +1;
+
+                $gid[]=$v['pro_id'];
+            }
+
+        }
+
+
+
         ob_end_clean();
         ob_start();
         header('Content-Type : application/vnd.ms-excel');
@@ -358,6 +418,7 @@ class ProjectController extends BackendController
         //清空数据缓存
         unset($data);
     }
+
 
     /**
      * Updates an existing Content model.

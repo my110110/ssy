@@ -9,6 +9,8 @@ use yii\bootstrap\Alert;
 
 BackendAsset::register($this);
 $directoryAsset = Yii::$app->assetManager->getPublishedUrl('@vendor/almasaeed2010/adminlte/dist');
+$assets_url=$this->getAssetManager()->getBundle(BackendAsset::className())->baseUrl;
+
 ?>
 <?php if (Yii::$app->controller->action->id === 'login'): ?>
     <?= $this->render('main-login', [
@@ -23,6 +25,11 @@ $directoryAsset = Yii::$app->assetManager->getPublishedUrl('@vendor/almasaeed201
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <?= Html::csrfMetaTags() ?>
         <title><?= Html::encode($this->title) ?></title>
+        <link href="<?=$assets_url?>/css/backend.min.css"  rel="stylesheet"/>
+        <script src="<?=$assets_url?>/layui.js"></script>
+        <link rel="stylesheet" href="<?=$assets_url?>/css/layui.css">
+
+        <link href="<?=$assets_url?>/layui/backend.css"  rel="stylesheet"/>
         <?php $this->head() ?>
     </head>
     <body class="hold-transition skin-blue sidebar-mini fixed">

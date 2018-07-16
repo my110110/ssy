@@ -39,7 +39,18 @@ class PnaController extends BackendController
         ];
     }
 
+    public function beforeAction($action)
+    {
+        if((!in_array($this->action->id,['index','view','export']))&&(AdminUser::getUserRole(Yii::$app->user->id)!=1))
+        {
+            return $this->showFlash('没有权限', 'error',Yii::$app->getUser()->getReturnUrl());
 
+        }else{
+            return parent::beforeAction($action);
+        }
+
+
+    }
 
 
     /**

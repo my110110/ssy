@@ -27,6 +27,8 @@ $this->title = $model->name;
 
         ]) ?>
         <?php endif;?>
+        <?php if(AdminUser::getUserRole(yii::$app->user->id)==1):?>
+
         <?= Html::a('修改', ['update', 'id' => $model->id], ['class' => 'btn btn-warning','title'=>'修改']) ?>
         <?= Html::a('删除', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
@@ -36,7 +38,7 @@ $this->title = $model->name;
                 'method' => 'post',
             ],
         ]) ?>
-
+        <?php endif;?>
     </p>
     <div class="row clearfix" style="margin-top: 10px;">
         <div class="col-md-12 column">

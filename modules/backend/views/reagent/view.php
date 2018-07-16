@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = ['label' => '返回上级', ["$model->type/view
 
             ]) ?>
         <?php endif;?>
-
+        <?php if(AdminUser::getUserRole(yii::$app->user->id)==1):?>
         <?= Html::a('新增公司信息', ['company/create', 'id' => $model->id], ['class' => 'btn btn-info ','title'=>'修改']) ?>
 
         <?= Html::a('修改', ['update', 'id' => $model->id], ['class' => 'btn btn-warning','title'=>'修改']) ?>
@@ -41,8 +41,9 @@ $this->params['breadcrumbs'][] = ['label' => '返回上级', ["$model->type/view
                 'method' => 'post',
             ],
         ]) ?>
-
+        <?php endif;?>
     </p>
+    <?php if(AdminUser::getUserRole(yii::$app->user->id)==1):?>
     <div class="tab-content cos">
         <div class="row clearfix">
             <?php $form = ActiveForm::begin([
@@ -63,6 +64,7 @@ $this->params['breadcrumbs'][] = ['label' => '返回上级', ["$model->type/view
         </div>
 
     </div>
+    <?php endif;?>
     <div class="row clearfix" style="margin-top: 10px;">
         <div class="col-md-12 column">
             <table class="table table-hover table-bordered">
@@ -105,8 +107,10 @@ $this->params['breadcrumbs'][] = ['label' => '返回上级', ["$model->type/view
                             <td class="col-md-2">公司</td>
                             <td class="col-md-10">
                                 <?= $child->company?>
-                                <?= Html::a('', ['company/update', 'id' => $child->id], ['class' => 'glyphicon glyphicon-pencil','title'=>'修改']) ?>
-                                <?= Html::a('', ['company/del', 'id' => $child->id], ['class' => 'glyphicon glyphicon-trash','title'=>'删除']) ?>
+                                <?php if(AdminUser::getUserRole(yii::$app->user->id)==1):?>
+                                   <?= Html::a('', ['company/update', 'id' => $child->id], ['class' => 'glyphicon glyphicon-pencil','title'=>'修改']) ?>
+                                   <?= Html::a('', ['company/del', 'id' => $child->id], ['class' => 'glyphicon glyphicon-trash','title'=>'删除']) ?>
+                                <?php endif;?>
                             </td>
                         </tr>
                         <tr class="warning">

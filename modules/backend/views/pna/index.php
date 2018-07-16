@@ -25,9 +25,11 @@ $this->params['breadcrumbs'][] = $this->title;
             <li role="presentation" class="active">
                 <?= Html::a('检测指标列表', ['index','type'=>$type],  ['class' => 'btn btn-dafault ','role'=>'button']) ?>
             </li>
+            <?php if(AdminUser::getUserRole(yii::$app->user->id)==1):?>
             <li role="presentation">
                 <?= Html::a('添加检测指标', ['create','type'=>$type],['class' => 'btn btn-primary  ','role'=>'button']) ?>
             </li>
+            <?php endif;?>
         </ul>
 
         <div class="tab-content cos">
@@ -87,6 +89,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             </td>
                             <td>
                                 <?= Html::a('<span class="glyphicon glyphicon-zoom-in"></span>', ['view', 'id' => $model['id'],'type'=>$type], ['title'=>'查看']) ?>
+                                        <?php if(AdminUser::getUserRole(yii::$app->user->id)==1):?>
                                 <?= Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['update', 'id' => $model['id'],'type'=>$type], ['title'=>'修改']) ?>
                                  <?= Html::a('<span class="glyphicon glyphicon-trash"></span>', ['del', 'id' => $model['id'],'type'=>$type], [
                                     'title'=>'删除',
@@ -95,6 +98,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         'method' => 'post',
                                     ],
                                 ]) ?>
+                                <?php endif;?>
                             </td>
                         </tr>
 
@@ -117,6 +121,7 @@ echo LinkPager::widget([
     'lastPageLabel'=>'Last',
 ]);
 ?>
+<?php if(AdminUser::getUserRole(yii::$app->user->id)==1):?>
 <div class="tab-content cos">
     <div class="row clearfix">
         <?php $form = ActiveForm::begin([
@@ -137,6 +142,7 @@ echo LinkPager::widget([
     </div>
 
 </div>
+<?php endif;?>
 <div
 
 <script><?php $this->beginBlock('js_end') ?>

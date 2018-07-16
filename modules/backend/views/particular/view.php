@@ -12,7 +12,7 @@ $this->params['breadcrumbs'][] = ['label' => '检测指标列表', 'url' => ['in
 ?>
 <div class="content-view">
 
-
+    <?php if(AdminUser::getUserRole(yii::$app->user->id)==1):?>
     <p>
 
         <?= Html::a('添加检测方法', ['testmethod/create', 'id' => $model->id], [
@@ -32,6 +32,27 @@ $this->params['breadcrumbs'][] = ['label' => '检测指标列表', 'url' => ['in
         ]) ?>
 
     </p>
+    <div class="tab-content cos">
+        <div class="row clearfix">
+            <?php $form = ActiveForm::begin([
+                'action' => ['testmethod/uploadfile','pid'=>$model->id],
+                'method' => 'post',
+                'options' => ['enctype' => 'multipart/form-data']
+            ]); ?>
+
+            <?= $form->field($file, 'file',
+                ['options'=>
+                    ['tag'=>false ],
+                    'template' => '<div class=" col-md-2 column ace-file-input"> 
+                             {input}</div>',
+
+                ])->fileInput() ?>
+            <?= Html::submitButton('上传检测方法', ['class' => 'btn btn-primary uploadfile']) ?>
+            <?php ActiveForm::end(); ?>
+        </div>
+
+    </div>
+    <?php endif;?>
     <div class="row clearfix" style="margin-top: 10px;">
         <div class="col-md-12 column">
             <table class="table table-hover table-bordered">
@@ -73,10 +94,10 @@ $this->params['breadcrumbs'][] = ['label' => '检测指标列表', 'url' => ['in
                             <td class="col-md-2">检测方法</td>
                             <td class="col-md-10">
                                 <?= Html::a("$child->name", ['testmethod/view', 'id' => $child->id]) ?>
-
+                        <?php if(AdminUser::getUserRole(yii::$app->user->id)==1):?>
                                 <?= Html::a('', ['testmethod/update', 'id' => $child->id], ['class' => 'glyphicon glyphicon-pencil','title'=>'修改']) ?>
                                 <?= Html::a('', ['testmethod/del', 'id' => $child->id], ['class' => 'glyphicon glyphicon-trash','title'=>'删除']) ?>
-
+                         <?php endif;?>
                             </td>
                         </tr>
                     <?php endforeach;?>
@@ -85,24 +106,5 @@ $this->params['breadcrumbs'][] = ['label' => '检测指标列表', 'url' => ['in
                 </tbody>
             </table>
 
-            <div class="tab-content cos">
-                <div class="row clearfix">
-                    <?php $form = ActiveForm::begin([
-                        'action' => ['testmethod/uploadfile','pid'=>$model->id],
-                        'method' => 'post',
-                        'options' => ['enctype' => 'multipart/form-data']
-                    ]); ?>
 
-                    <?= $form->field($file, 'file',
-                        ['options'=>
-                            ['tag'=>false ],
-                            'template' => '<div class=" col-md-2 column ace-file-input"> 
-                             {input}</div>',
-
-                        ])->fileInput() ?>
-                    <?= Html::submitButton('上传检测方法', ['class' => 'btn btn-primary uploadfile']) ?>
-                    <?php ActiveForm::end(); ?>
-                </div>
-
-            </div>
 </div>
