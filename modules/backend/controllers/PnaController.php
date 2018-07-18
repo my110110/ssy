@@ -130,7 +130,7 @@ class PnaController extends BackendController
     }
 
 
-    public  function actionExports($id,$type)
+    public  function actionExport($id,$type)
     {
         ini_set("memory_limit", "2048M");
         set_time_limit(0);
@@ -140,41 +140,27 @@ class PnaController extends BackendController
         //去用户表获取用户信息
 
         $data=Pna::find()->andFilterWhere(['id'=>$id,'type'=>$type])->all();
+        if($type==1){
+            $kit=Kit::find()->andFilterWhere(['rid'=>$id,'typeid'=>'1'])->all();
+        }
         $sdy=[];
-        foreach ($data as $k=>$v){
-            $sdy[$k]['A']=$v->section_name;
-            $sdy[$k]['B']=Stace::getParName($v->yid);
-            $sdy[$k]['C']=$v->retrieve;
-            $sdy[$k]['D']=$this->getShiji($v->ntype,$v->nid);
-            if($v->ntype==1){
-                $sdy[$k]['E']=Reagent::getNames($v->rgid);
-                $sdy[$k]['F']='';
-                $sdy[$k]['G']='';
-                $sdy[$k]['H']='';
-            }elseif ($v->ntype==2){
-                $sdy[$k]['E']=Reagent::getNames($v->rgid);
-                $sdy[$k]['F']=Kit::getNames($v->kit);
-                $sdy[$k]['G']='';
-                $sdy[$k]['H']='';
-            }elseif ($v->ntype==3){
-                $sdy[$k]['E']='';
-                $sdy[$k]['F']='';
-                $sdy[$k]['G']=Kit::getNames($v->kit);
-                $sdy[$k]['H']='';
-            }
-            elseif ($v->ntype==4){
-                $sdy[$k]['E']='';
-                $sdy[$k]['F']='';
-                $sdy[$k]['G']='';
-                $sdy[$k]['H']=Kit::getNames($v->kit);
-            }
-            $sdy[$k]['I']=$v->section_type;
-            $sdy[$k]['J']=$v->section_thickness;
-            $sdy[$k]['K']=$v->section_preprocessing;
-            $sdy[$k]['L']=$v->place;
-            $sdy[$k]['M']=$v->img;
-            $sdy[$k]['N']=strip_tags($v->testflow);
-            $sdy[$k]['O']=strip_tags($v->attention);
+        foreach ($kit as $k=>$v){
+            $sdy[$k]['A']=$data->name;
+            $sdy[$k]['B']=$data->retrieve;
+            $sdy[$k]['C']=$data->OfficialSymbol;
+            $sdy[$k]['D']=$data->OfficialFullName;
+            $sdy[$k]['E']=$data->GeneID;
+            $sdy[$k]['F']=$data->function;
+            $sdy[$k]['G']=$data->NCBIgd;
+            $sdy[$k]['H']=$data->GeneGards;
+
+            $sdy[$k]['I']=$data->standard;
+            $sdy[$k]['J']=$data->cells;
+            $sdy[$k]['K']=$v->name;
+            $sdy[$k]['L']=$v->retrieve;
+            $sdy[$k]['M']=$v->company;
+            $sdy[$k]['N']=$v->http;
+            $sdy[$k]['O']=$v->attention;
         }
         //获取传过来的信息（时间，公司ID之类的，根据需要查询资料生成表格）
         $objectPHPExcel = new \PHPExcel();
