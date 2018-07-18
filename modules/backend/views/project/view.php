@@ -187,7 +187,10 @@ $this->params['breadcrumbs'][] = ['label' => '项目管理', 'url' => ['index']]
                                     <td class="col-md-2">项目分组</td>
                                     <td class="col-md-10">
                                         <?= Html::a("$group->group_name", ['group/view', 'id' => $group->id]) ?>
+                                        <?= Html::a('<span class="	glyphicon glyphicon-download-alt"></span>', ['sample/exports', 'id' =>  $group->id], ['title'=>'导出所有样本']) ?>
+
                                         <?php if(AdminUser::getUserRole(yii::$app->user->id)==1):?>
+
                                         <?= Html::a('', ['group/update', 'id' => $group->id], ['class' => 'glyphicon glyphicon-pencil','title'=>'修改']) ?>
                                         <?= Html::a('', ['group/del', 'id' => $group->id], ['class' => 'glyphicon glyphicon-trash','title'=>'删除']) ?>
                                         <?php endif;?>

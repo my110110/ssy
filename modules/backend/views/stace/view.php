@@ -149,6 +149,11 @@ $this->params['breadcrumbs'][] = ['label' => '样品管理', ['sample/view', 'id
                            'class' => 'btn btn-primary',
 
                        ]) ?>
+                       <?= Html::a('导出实验结果', ['sdyeing/exports', 'id' => $model->id], [
+                           'title'=>'返回项目',
+                           'class' => 'btn btn-success',
+
+                       ]) ?>
                    </td>
                </tr>
                 </tbody>

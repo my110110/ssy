@@ -3,7 +3,7 @@
 namespace app\models;
 
 use Yii;
-
+use app\components\behaviors\UploadBehavior;
 /**
  * This is the model class for table "group".
  *
@@ -79,7 +79,9 @@ class Group extends \yii\db\ActiveRecord
             'group_change_user' => 'Group Change User',
             'group_del_time' => 'Group Del Time',
             'isdel' => 'Isdel',
+            'url'=>'URL',
             'group_del_user' => 'Group Del User',
+            'imageFile'=>'样本图片'
         ];
     }
     static function getParName($id)
@@ -88,5 +90,31 @@ class Group extends \yii\db\ActiveRecord
         return $user->group_name;
 
     }
+    public function beforeSave($insert)
+    {
 
+        $res = parent::beforeSave($insert);
+        if($res==false){
+            return $res;
+        }
+        if (!$this->validate()) {
+            Yii::info('Model not updated due to validation error.', __METHOD__);
+            return false;
+        }
+        $file = $this->uploadImgFile();
+        if($file){
+            $this->url = $file;
+        }
+        return true;
+    }
+
+    public function behaviors()
+    {
+        return [
+            [
+                'class'=>UploadBehavior::className(),
+                'saveDir'=>'products-img/'
+            ]
+        ];
+    }
 }

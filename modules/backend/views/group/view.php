@@ -89,9 +89,13 @@ $this->params['breadcrumbs'][] = ['label' => '项目管理', 'url' => ['project/
                     <td class="col-md-2">样品处理方式</td>
                     <td class="col-md-10"><?=$model->group_experiment_type?></td>
                 </tr>
-                <tr class="info">
+                <tr class="parmary">
                     <td class="col-md-2">分组描述</td>
                     <td class="col-md-10"><?=$model->group_description?></td>
+                </tr>
+                <tr class="waring">
+                    <td class="col-md-2">样本图片</td>
+                    <td class="col-md-10"><img src="<?=$model->url?>"></td>
                 </tr>
                 <tr class="default">
                     <td class="col-md-2">分组添加人</td>

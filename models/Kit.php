@@ -63,6 +63,13 @@ class Kit extends \yii\db\ActiveRecord
         ];
     }
 
-
+    static function getNames($arr){
+        $str='';
+        $data=self::find()->andFilterWhere(['id'=>json_decode($arr)?:0])->all();
+        foreach ($data as $v){
+            $str .=$v['name'].'  ';
+        }
+        return $str;
+    }
 
 }

@@ -55,6 +55,197 @@ class SampleController extends BackendController
 
 
     }
+
+
+    public  function actionExports($id)
+    {
+        ini_set("memory_limit", "2048M");
+        set_time_limit(0);
+
+        //获取用户ID
+
+        //去用户表获取用户信息
+
+        //获取传过来的信息（时间，公司ID之类的，根据需要查询资料生成表格）
+        $objectPHPExcel = new \PHPExcel();
+        $sample=Sample::find()->andFilterWhere(['gid'=>$id,'isdel'=>'0'])->all();
+        if(count($sample)>0)
+        {
+            $sm = [];
+            $m = 0;
+            foreach ($sample as $v1) {
+                $stace = Stace::find()->andFilterWhere(['sid' => $v1->id, 'isdel' => '0'])->all();
+                if (count($stace) > 0)
+                {
+
+                    foreach ($stace as $v2) {
+                        $sm[$m] = [
+                            'A' => $v1->name,
+                            'B' => $v1->retrieve,
+                            'C' => $v1->descript,
+                            'D' => $v2->name,
+                            'E' => $v2->retrieve,
+                            'F' => $v2->description,
+                            'G' => $v2->postion,
+                            'H' => $v2->handle,
+                            'I' => $v2->place,
+                            'J' => $v1->gid,
+                            'K' => $v2->id
+                        ];
+                        $m = $m + 1;
+                    }
+                }
+                else
+                {
+                    $sm[$m] = [
+                        'A' => $v1->name,
+                        'B' => $v1->retrieve,
+                        'C' => $v1->descript,
+                        'D' => '',
+                        'E' => '',
+                        'F' => '',
+                        'G' => '',
+                        'H' => '',
+                        'I' => '',
+                        'J' => $v1->gid,
+                        'K' => '0'
+                    ];
+                }
+
+                $m = $m + 1;
+            }
+        }
+        //设置表格头的输出
+        $objectPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(20);
+        $objectPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(20);
+        $objectPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(20);
+        $objectPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(40);
+        $objectPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(30);
+        $objectPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(20);
+        $objectPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(20);
+        $objectPHPExcel->getActiveSheet()->getColumnDimension('H')->setWidth(20);
+        $objectPHPExcel->getActiveSheet()->getColumnDimension('I')->setWidth(20);
+        $objectPHPExcel->getActiveSheet()->getColumnDimension('J')->setWidth(20);
+
+
+
+
+
+        //跳转到recharge这个model文件的statistics方法去处理数据
+
+        //指定开始输出数据的行数
+
+
+
+
+
+
+
+              $n=1;
+              //合并单元格
+              $objectPHPExcel->getActiveSheet()->setCellValue('A'.($n),'包含的样本信息');
+              $objectPHPExcel->setActiveSheetIndex()->getStyle('A'.($n))->getFont()->setName('宋体') //字体
+              ->setSize(15) //字体大小
+              ->setBold(true); //字体加粗
+              $objectPHPExcel->setActiveSheetIndex()->getStyle('A'.($n))->getAlignment()->setWrapText(true)->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+              $objectPHPExcel->getActiveSheet()->mergeCells('A'.($n).':'.'J'.($n));
+              $n=$n+1;
+              $objectPHPExcel->setActiveSheetIndex()->getStyle('A'.($n))->getFont()->setName('宋体') //字体
+              ->setSize(10) //字体大小
+              ->setBold(true); //字体加粗
+              $objectPHPExcel->setActiveSheetIndex()->getStyle('B'.($n))->getFont()->setName('宋体') //字体
+              ->setSize(10) //字体大小
+              ->setBold(true); //字体加
+              $objectPHPExcel->setActiveSheetIndex()->getStyle('C'.($n))->getFont()->setName('宋体') //字体
+              ->setSize(10) //字体大小
+              ->setBold(true); //字体加粗
+              $objectPHPExcel->setActiveSheetIndex()->getStyle('D'.($n))->getFont()->setName('宋体') //字体
+              ->setSize(10) //字体大小
+              ->setBold(true); //字体加粗
+              $objectPHPExcel->setActiveSheetIndex()->getStyle('E'.($n))->getFont()->setName('宋体') //字体
+              ->setSize(10) //字体大小
+              ->setBold(true); //字体加粗
+              $objectPHPExcel->setActiveSheetIndex()->getStyle('F'.($n))->getFont()->setName('宋体') //字体
+              ->setSize(10) //字体大小
+              ->setBold(true); //字体加粗
+              $objectPHPExcel->setActiveSheetIndex()->getStyle('G'.($n))->getFont()->setName('宋体') //字体
+              ->setSize(10) //字体大小
+              ->setBold(true); //字体加粗
+              $objectPHPExcel->setActiveSheetIndex()->getStyle('H'.($n))->getFont()->setName('宋体') //字体
+              ->setSize(10) //字体大小
+              ->setBold(true); //字体加粗
+              $objectPHPExcel->setActiveSheetIndex()->getStyle('I'.($n))->getFont()->setName('宋体') //字体
+              ->setSize(10) //字体大小
+              ->setBold(true); //字体加粗
+              $objectPHPExcel->setActiveSheetIndex()->getStyle('J'.($n))->getFont()->setName('宋体') //字体
+              ->setSize(10) //字体大小
+              ->setBold(true); //字体加粗
+              $objectPHPExcel->setActiveSheetIndex()->setCellValue('A'.($n), '样品名称');
+              $objectPHPExcel->setActiveSheetIndex()->setCellValue('B'.($n), '所属分组');
+              $objectPHPExcel->setActiveSheetIndex()->setCellValue('C'.($n), '样品检索号');
+              $objectPHPExcel->setActiveSheetIndex()->setCellValue('D'.($n), '样品描述');
+              $objectPHPExcel->setActiveSheetIndex()->setCellValue('E'.($n), '样本名称');
+              $objectPHPExcel->setActiveSheetIndex()->setCellValue('F'.($n), '样本检索号');
+              $objectPHPExcel->setActiveSheetIndex()->setCellValue('G'.($n), '组织/细胞位置');
+              $objectPHPExcel->setActiveSheetIndex()->setCellValue('H'.($n), '处理方式');
+              $objectPHPExcel->setActiveSheetIndex()->setCellValue('I'.($n), '存放位置');
+              $objectPHPExcel->setActiveSheetIndex()->setCellValue('J'.($n), '样本描述');
+              $n = $n +1;
+              foreach ($sm as $v)
+              {
+                  $objectPHPExcel->setActiveSheetIndex()->getStyle('A'.($n))->getAlignment()->setWrapText(true)->setVertical(\PHPExcel_Style_Alignment::VERTICAL_TOP);
+                  $objectPHPExcel->setActiveSheetIndex()->getStyle('B'.($n))->getAlignment()->setWrapText(true)->setVertical(\PHPExcel_Style_Alignment::VERTICAL_TOP);
+                  $objectPHPExcel->setActiveSheetIndex()->getStyle('C'.($n))->getAlignment()->setWrapText(true)->setVertical(\PHPExcel_Style_Alignment::VERTICAL_TOP);
+                  $objectPHPExcel->setActiveSheetIndex()->getStyle('D'.($n))->getAlignment()->setWrapText(true)->setVertical(\PHPExcel_Style_Alignment::VERTICAL_TOP);
+                  $objectPHPExcel->setActiveSheetIndex()->getStyle('E'.($n))->getAlignment()->setWrapText(true)->setVertical(\PHPExcel_Style_Alignment::VERTICAL_TOP);
+                  $objectPHPExcel->setActiveSheetIndex()->getStyle('F'.($n))->getAlignment()->setWrapText(true)->setVertical(\PHPExcel_Style_Alignment::VERTICAL_TOP);
+                  $objectPHPExcel->setActiveSheetIndex()->getStyle('G'.($n))->getAlignment()->setWrapText(true)->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+                  $objectPHPExcel->setActiveSheetIndex()->getStyle('H'.($n))->getAlignment()->setWrapText(true)->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+                  $objectPHPExcel->setActiveSheetIndex()->getStyle('I'.($n))->getAlignment()->setWrapText(true)->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+                  $objectPHPExcel->setActiveSheetIndex()->getStyle('J'.($n))->getAlignment()->setWrapText(true)->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+                  $objectPHPExcel->setActiveSheetIndex()->getStyle('G'.($n))->getAlignment()->setWrapText(true)->setVertical(\PHPExcel_Style_Alignment::VERTICAL_TOP);
+                  $objectPHPExcel->setActiveSheetIndex()->getStyle('H'.($n))->getAlignment()->setWrapText(true)->setVertical(\PHPExcel_Style_Alignment::VERTICAL_TOP);
+                  $objectPHPExcel->setActiveSheetIndex()->getStyle('I'.($n))->getAlignment()->setWrapText(true)->setVertical(\PHPExcel_Style_Alignment::VERTICAL_TOP);
+                  $objectPHPExcel->setActiveSheetIndex()->getStyle('J'.($n))->getAlignment()->setWrapText(true)->setVertical(\PHPExcel_Style_Alignment::VERTICAL_TOP);
+                  $objectPHPExcel->getActiveSheet()->setCellValue('A'.($n) ,$v['A']);
+                  $objectPHPExcel->getActiveSheet()->setCellValue('B'.($n) ,Group::getParName($v['J']));
+                  $objectPHPExcel->getActiveSheet()->setCellValue('C'.($n) ,$v['B']);
+                  $objectPHPExcel->getActiveSheet()->setCellValue('D'.($n) ,$v['C']);
+                  $objectPHPExcel->getActiveSheet()->setCellValue('E'.($n) ,$v['D']);
+                  $objectPHPExcel->getActiveSheet()->setCellValue('F'.($n) ,$v['E']);
+                  $objectPHPExcel->getActiveSheet()->setCellValue('G'.($n) ,$v['G']);
+                  $objectPHPExcel->getActiveSheet()->setCellValue('H'.($n) ,$v['H']);
+                  $objectPHPExcel->getActiveSheet()->setCellValue('I'.($n) ,$v['I']);
+                  $objectPHPExcel->getActiveSheet()->setCellValue('J'.($n) ,$v['F']);
+                  $n = $n +1;
+
+                  $syid[]=$v['K'];
+
+
+
+
+              }
+
+
+        ob_end_clean();
+        ob_start();
+        header('Content-Type : application/vnd.ms-excel');
+
+        //设置输出文件名及格式
+        header('Content-Disposition:attachment;filename="'.date("YmdHis").'.xls"');
+
+        //导出.xls格式的话使用Excel5,若是想导出.xlsx需要使用Excel2007
+        $objWriter= \PHPExcel_IOFactory::createWriter($objectPHPExcel,'Excel5');
+        $objWriter->save('php://output');
+        ob_end_flush();
+
+        //清空数据缓存
+        unset($data);
+    }
+
+
+
+
     /**
      * Lists all Content models.
      * @return mixed

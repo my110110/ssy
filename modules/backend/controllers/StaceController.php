@@ -43,7 +43,7 @@ class StaceController extends BackendController
 
     public function beforeAction($action)
     {
-        if((!in_array($this->action->id,['index','view','export']))&&(AdminUser::getUserRole(Yii::$app->user->id)!=1))
+        if((!in_array($this->action->id,['index','view','exports']))&&(AdminUser::getUserRole(Yii::$app->user->id)!=1))
         {
             return $this->showFlash('没有权限', 'error',Yii::$app->getUser()->getReturnUrl());
 

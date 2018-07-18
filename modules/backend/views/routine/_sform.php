@@ -56,7 +56,7 @@ use kartik\file\FileInput;
         [
             'pluginOptions' => [
                 'showUpload' => false,
-                'initialPreview' => empty($model->img)?'':[\yii\helpers\Url::to($model->img)],
+                'initialPreview' => empty($model->url)?'':[\yii\helpers\Url::to($model->url)],
                 'initialPreviewAsData' => true,
             ],
             'pluginEvents' => [
