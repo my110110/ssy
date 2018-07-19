@@ -139,11 +139,11 @@ class PnaController extends BackendController
 
         //去用户表获取用户信息
 
-        $data=Pna::find()->andFilterWhere(['id'=>$id,'type'=>$type])->all();
-        if($type==1){
-            $kit=Kit::find()->andFilterWhere(['rid'=>$id,'typeid'=>'1'])->all();
-        }
+        $data=Pna::find()->andFilterWhere(['id'=>$id,'type'=>$type])->One();
+        $kit=Kit::find()->andFilterWhere(['rid'=>$id,'typeid'=>$type])->all();
+
         $sdy=[];
+        if(count($kit)>0){
         foreach ($kit as $k=>$v){
             $sdy[$k]['A']=$data->name;
             $sdy[$k]['B']=$data->retrieve;
@@ -151,8 +151,8 @@ class PnaController extends BackendController
             $sdy[$k]['D']=$data->OfficialFullName;
             $sdy[$k]['E']=$data->GeneID;
             $sdy[$k]['F']=$data->function;
-            $sdy[$k]['G']=$data->NCBIgd;
-            $sdy[$k]['H']=$data->GeneGards;
+            $sdy[$k]['G']=strip_tags($data->NCBIgd);
+            $sdy[$k]['H']=strip_tags($data->GeneGards);
 
             $sdy[$k]['I']=$data->standard;
             $sdy[$k]['J']=$data->cells;
@@ -160,7 +160,25 @@ class PnaController extends BackendController
             $sdy[$k]['L']=$v->retrieve;
             $sdy[$k]['M']=$v->company;
             $sdy[$k]['N']=$v->http;
-            $sdy[$k]['O']=$v->attention;
+            $sdy[$k]['O']=$v->pdf;
+        }
+        }else{
+            $sdy[0]['A']=$data->name;
+            $sdy[0]['B']=$data->retrieve;
+            $sdy[0]['C']=$data->OfficialSymbol;
+            $sdy[0]['D']=$data->OfficialFullName;
+            $sdy[0]['E']=$data->GeneID;
+            $sdy[0]['F']=$data->function;
+            $sdy[0]['G']=strip_tags($data->NCBIgd);
+            $sdy[0]['H']=strip_tags($data->GeneGards);
+
+            $sdy[0]['I']=$data->standard;
+            $sdy[0]['J']=$data->cells;
+            $sdy[0]['K']='';
+            $sdy[0]['L']='';
+            $sdy[0]['M']='';
+            $sdy[0]['N']='';
+            $sdy[0]['O']='';
         }
         //获取传过来的信息（时间，公司ID之类的，根据需要查询资料生成表格）
         $objectPHPExcel = new \PHPExcel();
@@ -181,21 +199,21 @@ class PnaController extends BackendController
         $objectPHPExcel->getActiveSheet()->getColumnDimension('M')->setWidth(18);
         $objectPHPExcel->getActiveSheet()->getColumnDimension('N')->setWidth(30);
         $objectPHPExcel->getActiveSheet()->getColumnDimension('O')->setWidth(30);
-        $objectPHPExcel->setActiveSheetIndex()->setCellValue('A1', '切片名称');
-        $objectPHPExcel->setActiveSheetIndex()->setCellValue('B1', '所属样本');
-        $objectPHPExcel->setActiveSheetIndex()->setCellValue('C1', '检索号');
-        $objectPHPExcel->setActiveSheetIndex()->setCellValue('D1', '检测指标');
-        $objectPHPExcel->setActiveSheetIndex()->setCellValue('E1', '使用自配试剂');
-        $objectPHPExcel->setActiveSheetIndex()->setCellValue('F1', '使用商品试剂');
-        $objectPHPExcel->setActiveSheetIndex()->setCellValue('G1', '使用抗体');
-        $objectPHPExcel->setActiveSheetIndex()->setCellValue('H1', '使用核算试剂盒');
-        $objectPHPExcel->setActiveSheetIndex()->setCellValue('I1', '切片类型');
-        $objectPHPExcel->setActiveSheetIndex()->setCellValue('J1', '切片厚度');
-        $objectPHPExcel->setActiveSheetIndex()->setCellValue('K1', '切片预处理');
-        $objectPHPExcel->setActiveSheetIndex()->setCellValue('L1', '存放位置');
-        $objectPHPExcel->setActiveSheetIndex()->setCellValue('M1', '切片数字图像文件');
-        $objectPHPExcel->setActiveSheetIndex()->setCellValue('N1', '实验流程');
-        $objectPHPExcel->setActiveSheetIndex()->setCellValue('O1', '注意事项');
+        $objectPHPExcel->setActiveSheetIndex()->setCellValue('A1', '名称');
+        $objectPHPExcel->setActiveSheetIndex()->setCellValue('B1', '检索号');
+        $objectPHPExcel->setActiveSheetIndex()->setCellValue('C1', '官方符号');
+        $objectPHPExcel->setActiveSheetIndex()->setCellValue('D1', '官方名称');
+        $objectPHPExcel->setActiveSheetIndex()->setCellValue('E1', '基因ID');
+        $objectPHPExcel->setActiveSheetIndex()->setCellValue('F1', '功能');
+        $objectPHPExcel->setActiveSheetIndex()->setCellValue('G1', 'NCBI基因数据库网址');
+        $objectPHPExcel->setActiveSheetIndex()->setCellValue('H1', 'GeneGards网址');
+        $objectPHPExcel->setActiveSheetIndex()->setCellValue('I1', '阳性结果判定标准');
+        $objectPHPExcel->setActiveSheetIndex()->setCellValue('J1', '阳性对照组织/细胞');
+        $objectPHPExcel->setActiveSheetIndex()->setCellValue('K1', '抗体名称');
+        $objectPHPExcel->setActiveSheetIndex()->setCellValue('L1', '检索号');
+        $objectPHPExcel->setActiveSheetIndex()->setCellValue('M1', '公司名称');
+        $objectPHPExcel->setActiveSheetIndex()->setCellValue('N1', '官网地址');
+        $objectPHPExcel->setActiveSheetIndex()->setCellValue('O1', '说明');
         //跳转到recharge这个model文件的statistics方法去处理数据
 
         //指定开始输出数据的行数
@@ -221,7 +239,7 @@ class PnaController extends BackendController
 
             $objectPHPExcel->getActiveSheet()->setCellValue('A'.($n) ,$v['A']);
             $objectPHPExcel->getActiveSheet()->setCellValue('B'.($n) ,$v['B']);
-            $objectPHPExcel->getActiveSheet()->setCellValue('C'.($n) ,$v['B']);
+            $objectPHPExcel->getActiveSheet()->setCellValue('C'.($n) ,$v['C']);
             $objectPHPExcel->getActiveSheet()->setCellValue('D'.($n) ,$v['D']);
             $objectPHPExcel->getActiveSheet()->setCellValue('E'.($n) ,$v['E']);
             $objectPHPExcel->getActiveSheet()->setCellValue('F'.($n) ,$v['F']);
@@ -253,6 +271,8 @@ class PnaController extends BackendController
         ob_end_flush();
 
         //清空数据缓存
+        unset($kit);
+        unset($sdy);
         unset($data);
     }
 

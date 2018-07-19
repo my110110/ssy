@@ -26,9 +26,9 @@ use yii\web\UrlManager;
                 <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>
             <ul class="treeview-menu">
                 <li><a href="/backend/routine/index.html"><i class="	glyphicon glyphicon-th-large"></i>  <span>常规染色</span></a></li>
-                <li><a href="/backend/pna/index.html?type=2"><i class="glyphicon glyphicon-th-large"></i>  <span>核酸指标</span></a></li>
                 <li><a href="/backend/particular/index.html"><i class="glyphicon glyphicon-th-large"></i>  <span>特殊染色</span></a></li>
                 <li><a href="/backend/pna/index.html?type=1"><i class="glyphicon glyphicon-th-large"></i>  <span>蛋白指标</span></a></li>
+                <li><a href="/backend/pna/index.html?type=2"><i class="glyphicon glyphicon-th-large"></i>  <span>核酸指标</span></a></li>
             </ul>
         </li>
 <!---->

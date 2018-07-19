@@ -21,11 +21,20 @@ $this->title = $model->name;
         ]) ?>
 
         <?php else:?>
-        <?= Html::a('返回上级',["$model->type/view",'id'=>$model->rid], [
-            'title'=>'返回上级',
-            'class' => 'btn btn-primary',
+            <?php if($model->type=='testmethod'):?>
+                <?= Html::a('返回上级',["$model->type/view",'id'=>$model->tid], [
+                    'title'=>'返回上级',
+                    'class' => 'btn btn-primary',
 
-        ]) ?>
+                ]) ?>
+            <?php else:?>
+                <?= Html::a('返回上级',["$model->type/view",'id'=>$model->rid], [
+                    'title'=>'返回上级',
+                    'class' => 'btn btn-primary',
+
+                ]) ?>
+            <?php endif;?>
+
         <?php endif;?>
         <?php if(AdminUser::getUserRole(yii::$app->user->id)==1):?>
 

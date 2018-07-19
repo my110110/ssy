@@ -95,6 +95,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <?=$model['change_time']?>
                             </td>
                             <td>
+                                <?= Html::a('<span class="	glyphicon glyphicon-download-alt"></span>', ['export','id' => $model['id']], ['title'=>'下载']) ?>
+
                                 <?= Html::a('<span class="glyphicon glyphicon-zoom-in"></span>', ['view', 'id' => $model['id']], ['title'=>'查看']) ?>
         <?php if(AdminUser::getUserRole(yii::$app->user->id)==1):?>
                                 <?= Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['update', 'id' => $model['id']], ['title'=>'修改']) ?>

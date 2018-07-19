@@ -172,7 +172,104 @@ class RoutineController extends BackendController
 
         ]);
     }
-        /**
+
+
+    public  function actionExport($id)
+    {
+        ini_set("memory_limit", "2048M");
+        set_time_limit(0);
+
+        //获取用户ID
+
+        //去用户表获取用户信息
+
+        $data=Routine::find()->andFilterWhere(['id'=>$id])->One();
+        $kit=Reagent::find()->andFilterWhere(['sid'=>$id])->all();
+
+        $sdy=[];
+        if(count($kit)>0){
+            foreach ($kit as $k=>$v){
+                $sdy[$k]['A']=$data->name;
+                $sdy[$k]['B']=$data->retrieve;
+                $sdy[$k]['C']=$data->axiom;
+                $sdy[$k]['D']=$data->process;
+                $sdy[$k]['E']=$v->name;
+                $sdy[$k]['F']=$v->retrieve;
+            }
+        }else{
+            $sdy[0]['A']=$data->name;
+            $sdy[0]['B']=$data->retrieve;
+            $sdy[0]['C']=$data->axiom;
+            $sdy[0]['D']=$data->process;
+            $sdy[0]['E']='';
+            $sdy[0]['F']='';
+        }
+
+        //获取传过来的信息（时间，公司ID之类的，根据需要查询资料生成表格）
+        $objectPHPExcel = new \PHPExcel();
+
+        //设置表格头的输出
+        $objectPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(18);
+        $objectPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(18);
+        $objectPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(18);
+        $objectPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(18);
+        $objectPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(18);
+        $objectPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(18);
+
+        $objectPHPExcel->setActiveSheetIndex()->setCellValue('A1', '名称');
+        $objectPHPExcel->setActiveSheetIndex()->setCellValue('B1', '检索号');
+        $objectPHPExcel->setActiveSheetIndex()->setCellValue('C1', '检测原理');
+        $objectPHPExcel->setActiveSheetIndex()->setCellValue('D1', '检测流程');
+        $objectPHPExcel->setActiveSheetIndex()->setCellValue('E1', '试剂名称');
+        $objectPHPExcel->setActiveSheetIndex()->setCellValue('F1', '试剂检索号');
+
+        //跳转到recharge这个model文件的statistics方法去处理数据
+
+        //指定开始输出数据的行数
+        $n = 2;
+        foreach ($sdy as $v)
+        {
+            $objectPHPExcel->getActiveSheet()->getRowDimension($n)->setRowHeight(80);
+            $objectPHPExcel->setActiveSheetIndex()->getStyle('A'.($n))->getAlignment()->setWrapText(true)->setVertical(\PHPExcel_Style_Alignment::VERTICAL_TOP);
+            $objectPHPExcel->setActiveSheetIndex()->getStyle('B'.($n))->getAlignment()->setWrapText(true)->setVertical(\PHPExcel_Style_Alignment::VERTICAL_TOP);
+            $objectPHPExcel->setActiveSheetIndex()->getStyle('C'.($n))->getAlignment()->setWrapText(true)->setVertical(\PHPExcel_Style_Alignment::VERTICAL_TOP);
+            $objectPHPExcel->setActiveSheetIndex()->getStyle('D'.($n))->getAlignment()->setWrapText(true)->setVertical(\PHPExcel_Style_Alignment::VERTICAL_TOP)->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $objectPHPExcel->setActiveSheetIndex()->getStyle('E'.($n))->getAlignment()->setWrapText(true)->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER)->setVertical(\PHPExcel_Style_Alignment::VERTICAL_TOP);
+            $objectPHPExcel->setActiveSheetIndex()->getStyle('F'.($n))->getAlignment()->setWrapText(true)->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER)->setVertical(\PHPExcel_Style_Alignment::VERTICAL_TOP);
+
+            $objectPHPExcel->getActiveSheet()->setCellValue('A'.($n) ,$v['A']);
+            $objectPHPExcel->getActiveSheet()->setCellValue('B'.($n) ,$v['B']);
+            $objectPHPExcel->getActiveSheet()->setCellValue('C'.($n) ,$v['C']);
+            $objectPHPExcel->getActiveSheet()->setCellValue('D'.($n) ,$v['D']);
+            $objectPHPExcel->getActiveSheet()->setCellValue('E'.($n) ,$v['E']);
+            $objectPHPExcel->getActiveSheet()->setCellValue('F'.($n) ,$v['F']);
+
+
+
+
+            $n = $n +1;
+        }
+
+        ob_end_clean();
+        ob_start();
+        header('Content-Type : application/vnd.ms-excel');
+
+        //设置输出文件名及格式
+        header('Content-Disposition:attachment;filename="'.date("YmdHis").'.xls"');
+
+        //导出.xls格式的话使用Excel5,若是想导出.xlsx需要使用Excel2007
+        $objWriter= \PHPExcel_IOFactory::createWriter($objectPHPExcel,'Excel5');
+        $objWriter->save('php://output');
+        ob_end_flush();
+
+        //清空数据缓存
+        unset($kit);
+        unset($sdy);
+        unset($data);
+    }
+
+
+    /**
          * Creates a new Content model.
          * If creation is successful, the browser will be redirected to the 'view' page.
          * @return mixed

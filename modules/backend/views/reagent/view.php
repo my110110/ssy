@@ -23,11 +23,19 @@ $this->params['breadcrumbs'][] = ['label' => '返回上级', ["$model->type/view
             ]) ?>
 
         <?php else:?>
+            <?php if($model->type=='testmethod'):?>
+            <?= Html::a('返回上级',["$model->type/view",'id'=>$model->tid], [
+                'title'=>'返回上级',
+                'class' => 'btn btn-primary',
+
+            ]) ?>
+            <?php else:?>
             <?= Html::a('返回上级',["$model->type/view",'id'=>$model->sid], [
                 'title'=>'返回上级',
                 'class' => 'btn btn-primary',
 
             ]) ?>
+            <?php endif;?>
         <?php endif;?>
         <?php if(AdminUser::getUserRole(yii::$app->user->id)==1):?>
         <?= Html::a('新增公司信息', ['company/create', 'id' => $model->id], ['class' => 'btn btn-info ','title'=>'修改']) ?>
