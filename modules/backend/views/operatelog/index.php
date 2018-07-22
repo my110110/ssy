@@ -90,10 +90,10 @@ $this->params['breadcrumbs'][] = $this->title;
 <?php // 显示分页
 echo LinkPager::widget([
     'pagination' => $pagination,
-    'firstPageLabel'=>"First",
-    'prevPageLabel'=>'Prev',
-    'nextPageLabel'=>'Next',
-    'lastPageLabel'=>'Last',
+    'firstPageLabel'=>"第1页",
+    'prevPageLabel'=>'上一页',
+    'nextPageLabel'=>'下一页',
+    'lastPageLabel'=>'末页',
 ]);
 ?>
 </div>

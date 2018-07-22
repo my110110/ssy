@@ -26,10 +26,8 @@ $assets_url=$this->getAssetManager()->getBundle(BackendAsset::className())->base
         <?= Html::csrfMetaTags() ?>
         <title><?= Html::encode($this->title) ?></title>
         <link href="<?=$assets_url?>/css/backend.min.css"  rel="stylesheet"/>
-        <script src="<?=$assets_url?>/layui.js"></script>
-        <link rel="stylesheet" href="<?=$assets_url?>/css/layui.css">
-
-        <link href="<?=$assets_url?>/layui/backend.css"  rel="stylesheet"/>
+        <link href="<?=$assets_url?>/css/style.css"  rel="stylesheet"/>
+        
         <?php $this->head() ?>
     </head>
     <body class="hold-transition skin-blue sidebar-mini fixed">
@@ -58,6 +56,7 @@ $assets_url=$this->getAssetManager()->getBundle(BackendAsset::className())->base
 <?php endif ?>
 <style type="text/css">
     .ace-file-input{
+        display: inline-block;
         padding-right: 0;
         margin-right: 0;
     }

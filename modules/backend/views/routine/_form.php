@@ -20,7 +20,7 @@ use yii\helpers\ArrayHelper;
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
     <?= $form->field($model, 'process')->textInput(['maxlength' => true]) ?>
     <?=$form->field($model,'axiom')->textInput() ?>
-    <div class="form-group text-right">
+    <div class="form-group">
         <?= Html::submitButton('提交', ['class' => $model->isNewRecord ? 'btn btn-success ' : 'btn btn-primary ']) ?>
     </div>
 

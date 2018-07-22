@@ -81,9 +81,13 @@ $this->title = Yii::$app->name;
                         ?>
 
 
-                        <div class="form-group">
+                        <div class="form-group row">
+                          <div class="col-sm-6">
                             <button type="submit" class="btn btn-success  btn-lg"  name='submit'  value="default">常规登录</button>
+                          </div>
+                          <div class="col-sm-6">
                             <button type="submit" class="btn btn-default  btn-lg" name='submit' value="youke" style="float: right">游客访问</button>
+                          </div>  
                         </div>
                     <?php ActiveForm::end(); ?>
                 </div>

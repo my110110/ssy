@@ -15,90 +15,95 @@ $this->params['breadcrumbs'][] = ['label' => '项目管理', 'url' => ['index']]
 <div class="content-view">
 
 
-    <p>
-        <?php if($model->pro_pid>0):?>
-            <?= Html::a('返回主项目', ['view', 'id' => $model->pro_pid], [
-                'title'=>'返回主项目',
+    <div class="clearfix">
+        <div class="pull-left">
+            <?php if($model->pro_pid>0):?>
+                <?= Html::a('返回主项目', ['view', 'id' => $model->pro_pid], [
+                    'title'=>'返回主项目',
+                    'class' => 'btn btn-primary',
+
+                ]) ?>
+            <?php endif;?>
+            <?php if(AdminUser::getUserRole(yii::$app->user->id)==1):?>
+            <?php if(!$model->pro_pid>0):?>
+            <?= Html::a('添加子项目', ['create', 'pro_pid' => $model->pro_id], [
+                'title'=>'添加子项目',
                 'class' => 'btn btn-primary',
 
             ]) ?>
-        <?php endif;?>
-        <?php if(AdminUser::getUserRole(yii::$app->user->id)==1):?>
-        <?php if(!$model->pro_pid>0):?>
-        <?= Html::a('添加子项目', ['create', 'pro_pid' => $model->pro_id], [
-            'title'=>'添加子项目',
-            'class' => 'btn btn-primary',
+            <?php endif;?>
+            <?= Html::a('添加负责人', ['principal/create', 'id' => $model->pro_id], [
+                'title'=>'添加负责人',
+                'class' => 'btn btn-success',
 
-        ]) ?>
-        <?php endif;?>
-        <?= Html::a('添加负责人', ['principal/create', 'id' => $model->pro_id], [
-            'title'=>'添加负责人',
-            'class' => 'btn btn-success',
+            ]) ?>
+            <?php if(!count($child)>0):?>
+            <?= Html::a('添加实验分组', ['group/create', 'id' => $model->pro_id], [
+                'title'=>'添加实验分组',
+                'class' => 'btn btn-info',
 
-        ]) ?>
-        <?php if(!count($child)>0):?>
-        <?= Html::a('添加实验分组', ['group/create', 'id' => $model->pro_id], [
-            'title'=>'添加实验分组',
-            'class' => 'btn btn-info',
-
-        ]) ?>
-        <?php endif;?>
-        <?= Html::a('修改', ['update', 'id' => $model->pro_id], ['class' => 'btn btn-warning','title'=>'修改']) ?>
-        <?= Html::a('删除', ['delete', 'id' => $model->pro_id], [
-            'class' => 'btn btn-danger',
-            'title'=>'删除',
-            'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
-                'method' => 'post',
-            ],
-        ]) ?>
-        <?php endif;?>
-    </p>
-    <?php if(AdminUser::getUserRole(yii::$app->user->id)==1):?>
-
-    <?php if($model->pro_pid==0):?>
-
-        <div class="tab-content cos">
-            <div class="row clearfix">
-                <?php $form = ActiveForm::begin([
-                    'action' => ['uploadfile','pid'=>$model->pro_id],
+            ]) ?>
+            <?php endif;?>
+            <?= Html::a('修改', ['update', 'id' => $model->pro_id], ['class' => 'btn btn-warning','title'=>'修改']) ?>
+            <?= Html::a('删除', ['delete', 'id' => $model->pro_id], [
+                'class' => 'btn btn-danger',
+                'title'=>'删除',
+                'data' => [
+                    'confirm' => 'Are you sure you want to delete this item?',
                     'method' => 'post',
-                    'options' => ['enctype' => 'multipart/form-data']
-                ]); ?>
-
-                <?= $form->field($file, 'file',
-                    ['options'=>
-                        ['tag'=>false ],
-                        'template' => '<div class=" col-md-2 column ace-file-input"> 
-                             {input}</div>',
-
-                    ])->fileInput() ?>
-                <?= Html::submitButton('导入子项目', ['class' => 'btn btn-primary uploadfile']) ?>
-                <?php ActiveForm::end(); ?>
-            </div>
+                ],
+            ]) ?>
+            <?php endif;?>
         </div>
-    <?php else:?>
-        <div class="tab-content cos">
-            <div class="row clearfix">
-                <?php $form = ActiveForm::begin([
-                    'action' => ['group/uploadfile','pid'=>$model->pro_id],
-                    'method' => 'post',
-                    'options' => ['enctype' => 'multipart/form-data']
-                ]); ?>
+        <div class="pull-right">
+              <?php if(AdminUser::getUserRole(yii::$app->user->id)==1):?>
 
-                <?= $form->field($file, 'file',
-                    ['options'=>
-                        ['tag'=>false ],
-                        'template' => '<div class=" col-md-2 column ace-file-input"> 
-                             {input}</div>',
+                <?php if($model->pro_pid==0):?>
 
-                    ])->fileInput() ?>
-                <?= Html::submitButton('导入分组', ['class' => 'btn btn-primary uploadfile']) ?>
-                <?php ActiveForm::end(); ?>
-            </div>
+                    <div class="tab-content cos">
+                        <div class="row clearfix">
+                            <?php $form = ActiveForm::begin([
+                                'action' => ['uploadfile','pid'=>$model->pro_id],
+                                'method' => 'post',
+                                'options' => ['enctype' => 'multipart/form-data']
+                            ]); ?>
+
+                            <?= $form->field($file, 'file',
+                                ['options'=>
+                                    ['tag'=>false ],
+                                    'template' => '<div class=" col-md-2 column ace-file-input"> 
+                                         {input}</div>',
+
+                                ])->fileInput() ?>
+                            <?= Html::submitButton('导入子项目', ['class' => 'btn btn-primary uploadfile']) ?>
+                            <?php ActiveForm::end(); ?>
+                        </div>
+                    </div>
+                <?php else:?>
+                    <div class="tab-content cos">
+                        <div class="row clearfix">
+                            <?php $form = ActiveForm::begin([
+                                'action' => ['group/uploadfile','pid'=>$model->pro_id],
+                                'method' => 'post',
+                                'options' => ['enctype' => 'multipart/form-data']
+                            ]); ?>
+
+                            <?= $form->field($file, 'file',
+                                ['options'=>
+                                    ['tag'=>false ],
+                                    'template' => '<div class=" col-md-2 column ace-file-input"> 
+                                         {input}</div>',
+
+                                ])->fileInput() ?>
+                            <?= Html::submitButton('导入分组', ['class' => 'btn btn-primary uploadfile']) ?>
+                            <?php ActiveForm::end(); ?>
+                        </div>
+                    </div>
+                 <?php endif;?>
+                <?php endif;?>
         </div>
-     <?php endif;?>
-    <?php endif;?>
+    </div>
+  
     <div class="row clearfix" style="margin-top: 10px;">
         <div class="col-md-12 column">
             <table class="table table-hover table-bordered">
@@ -157,8 +162,8 @@ $this->params['breadcrumbs'][] = ['label' => '项目管理', 'url' => ['index']]
                                 邮箱</span>：<?=$Principal->email?><span style="margin-left: 3px;">-</span><span style="margin-left: 5px;">
                                 电话</span>：<?=$Principal->telphone?>
                    <?php if(AdminUser::getUserRole(yii::$app->user->id)==1):?>
-                            <?= Html::a('', ['principal/update', 'id' => $Principal->id], ['class' => 'glyphicon glyphicon-pencil','title'=>'修改']) ?>
-                            <?= Html::a('', ['principal/delete', 'id' => $Principal->id], ['class' => 'glyphicon glyphicon-trash','title'=>'删除', 'data' => [
+                            <?= Html::a('<button type="button" class="btn btn-warning btn-xs">修改</button>', ['principal/update', 'id' => $Principal->id]) ?>
+                            <?= Html::a('<button type="button" class="btn btn-danger btn-xs">删除</button>', ['principal/delete', 'id' => $Principal->id], ['title'=>'删除', 'data' => [
                                 'confirm' => '确定要删除这个项目负责人吗?',
                                 'method' => 'post',
                             ],]) ?>
@@ -174,8 +179,8 @@ $this->params['breadcrumbs'][] = ['label' => '项目管理', 'url' => ['index']]
                            <?= Html::a("$child->pro_name", ['view', 'id' => $child->pro_id]) ?>
                         <?php if(AdminUser::getUserRole(yii::$app->user->id)==1):?>
 
-                            <?= Html::a('', ['principal/update', 'id' => $child->pro_id], ['class' => 'glyphicon glyphicon-pencil','title'=>'修改']) ?>
-                            <?= Html::a('', ['project/del', 'id' => $child->pro_id], ['class' => 'glyphicon glyphicon-trash','title'=>'删除']) ?>
+                            <?= Html::a('<button type="button" class="btn btn-warning btn-xs">修改</button>', ['principal/update', 'id' => $child->pro_id]) ?>
+                            <?= Html::a('<button type="button" class="btn btn-danger btn-xs">删除</button>', ['project/del', 'id' => $child->pro_id], ['title'=>'删除']) ?>
                            <?php endif;?>
                         </td>
                     </tr>
@@ -187,12 +192,12 @@ $this->params['breadcrumbs'][] = ['label' => '项目管理', 'url' => ['index']]
                                     <td class="col-md-2">项目分组</td>
                                     <td class="col-md-10">
                                         <?= Html::a("$group->group_name", ['group/view', 'id' => $group->id]) ?>
-                                        <?= Html::a('<span class="	glyphicon glyphicon-download-alt"></span>', ['sample/exports', 'id' =>  $group->id], ['title'=>'导出所有样本']) ?>
+                                        <?= Html::a('<button type="button" class="btn btn-primary btn-xs">导出样本</button>', ['sample/exports', 'id' =>  $group->id], ['title'=>'导出所有样本']) ?>
 
                                         <?php if(AdminUser::getUserRole(yii::$app->user->id)==1):?>
 
-                                        <?= Html::a('', ['group/update', 'id' => $group->id], ['class' => 'glyphicon glyphicon-pencil','title'=>'修改']) ?>
-                                        <?= Html::a('', ['group/del', 'id' => $group->id], ['class' => 'glyphicon glyphicon-trash','title'=>'删除']) ?>
+                                        <?= Html::a('<button type="button" class="btn btn-warning btn-xs">修改</button>', ['group/update', 'id' => $group->id]) ?>
+                                        <?= Html::a('<button type="button" class="btn btn-danger btn-xs">删除</button>', ['group/del', 'id' => $group->id], ['title'=>'删除']) ?>
                                         <?php endif;?>
                                     </td>
                                 </tr>

@@ -22,8 +22,7 @@ class BackendAsset extends AssetBundle
 
     ];
     public $js = [
-        'backend.js',
-        'skin.js',
+        'backend.js'
     ];
     public $img = [
 

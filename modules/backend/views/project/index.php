@@ -68,7 +68,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'placeholder'=>'项目检索号'
                     ]
                 )?>
-                <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
+                <?= Html::submitButton('搜索', ['class' => 'btn btn-primary']) ?>
                 <?php ActiveForm::end(); ?>
             </div>
 
@@ -79,7 +79,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         <tr class="info head">
 
                             <th>
-                                <span class="glyphicon glyphicon-folder-open" style="padding-right: 5px;"></span>项目名称
+                                项目名称
                             </th>
                             <th>
                                 项目检索号
@@ -111,7 +111,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <tr class="shows success" attr="<?=$sarch['pro_id']?>">
 
                 <td>
-                    <span class="glyphicon glyphicon-folder-close" style="padding-right :5px"></span><?=$sarch['pro_name'];?>
+                    <?=$sarch['pro_name'];?>
                 </td>
                 <td>
                     <?=$sarch['pro_retrieve'];?>
@@ -129,11 +129,11 @@ $this->params['breadcrumbs'][] = $this->title;
                     <?=$sarch['pro_update_time']?>
                 </td>
                 <td>
-                    <?= Html::a('<span class="	glyphicon glyphicon-download-alt"></span>', ['export', 'id' => $sarch['pro_id']], ['title'=>'下载']) ?>
-                    <?= Html::a('<span class="glyphicon glyphicon-zoom-in"></span>', ['view', 'id' => $sarch['pro_id']], ['title'=>'查看']) ?>
+                    <?= Html::a('<button type="button" class="btn btn-default btn-xs">查看</button>', ['view', 'id' => $sarch['pro_id']], ['title'=>'查看']) ?>
+                    <?= Html::a('<button type="button" class="btn btn-primary btn-xs">下载</button>', ['export', 'id' => $sarch['pro_id']], ['title'=>'下载']) ?>
                      <?php if(AdminUser::getUserRole(yii::$app->user->id)==1):?>
-                    <?= Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['update', 'id' => $sarch['pro_id']], ['title'=>'修改']) ?>
-                    <?= Html::a('<span class="	glyphicon glyphicon-trash"></span>', ['delete', 'id' => $sarch['pro_id']], [
+                    <?= Html::a('<button type="button" class="btn btn-warning btn-xs">修改</button>', ['update', 'id' => $sarch['pro_id']], ['title'=>'修改']) ?>
+                    <?= Html::a('<button type="button" class="btn btn-danger btn-xs">删除</button>', ['delete', 'id' => $sarch['pro_id']], [
                         'title'=>'删除',
                         'data' => [
                             'confirm' => '确定要删除这个项目吗?',
@@ -151,7 +151,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         <tr class=" success" >
 
                             <td class="shows" attr="<?=$pid['pro_id']?>">
-                                <span class="glyphicon glyphicon-folder-open" style="padding-right :5px"></span><?=$pid['pro_name'];?>
+                                <i class="fa fa-angle-right" aria-hidden="true"></i>&nbsp;&nbsp;<?=$pid['pro_name'];?>
                             </td>
                             <td>
                                 <?=$pid['pro_retrieve'];?>
@@ -169,12 +169,12 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <?=$pid['pro_update_time']?>
                             </td>
                             <td>
-                                <?= Html::a('<span class="	glyphicon glyphicon-download-alt"></span>', ['export', 'id' => $pid['pro_id']], ['title'=>'下载']) ?>
-                                <?= Html::a('<span class="glyphicon glyphicon-zoom-in"></span>', ['view', 'id' => $pid['pro_id']], ['title'=>'查看']) ?>
+                                <?= Html::a('<button type="button" class="btn btn-default btn-xs">查看</button>', ['view', 'id' => $pid['pro_id']], ['title'=>'查看']) ?>
+                                <?= Html::a('<button type="button" class="btn btn-primary btn-xs">下载</button>', ['export', 'id' => $pid['pro_id']], ['title'=>'下载']) ?>
 
                                 <?php if(AdminUser::getUserRole(yii::$app->user->id)==1):?>
-                                <?= Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['update', 'id' => $pid['pro_id']], ['title'=>'修改']) ?>
-                                 <?= Html::a('<span class="	glyphicon glyphicon-trash"></span>', ['delete', 'id' => $pid['pro_id']], [
+                                <?= Html::a('<button type="button" class="btn btn-warning btn-xs">修改</button>', ['update', 'id' => $pid['pro_id']], ['title'=>'修改']) ?>
+                                 <?= Html::a('<button type="button" class="btn btn-danger btn-xs">删除</button>', ['delete', 'id' => $pid['pro_id']], [
                                     'title'=>'删除',
                                     'data' => [
                                         'confirm' => '确定要删除这个项目吗?',
@@ -185,10 +185,11 @@ $this->params['breadcrumbs'][] = $this->title;
                             </td>
                         </tr>
 
+
                                 <?php if(isset($pid['child'])){ foreach($pid['child'] as $child): ?>
                                         <tr class="hides warning pid_<?=$child['pro_pid']?>" >
                                             <td>
-                                                <span class="glyphicon glyphicon-folder-close" style="padding-right: 5px;"></span> <?=$child['pro_name'];?>
+                                                <i class="fa fa-angle-down" aria-hidden="true" style="margin-left:12px"></i>&nbsp;&nbsp;<?=$child['pro_name'];?>
                                             </td>
                                             <td>
                                                 <?=$child['pro_retrieve'];?>
@@ -206,12 +207,11 @@ $this->params['breadcrumbs'][] = $this->title;
                                                 <?=$child['pro_update_time']?>
                                             </td>
                                             <td>
-                                                <?= Html::a('<span class="	glyphicon glyphicon-download-alt"></span>', ['export', 'id' => $child['pro_id']], ['title'=>'下载']) ?>
-                                                <?= Html::a('<span class="glyphicon glyphicon-zoom-in"></span>', ['view', 'id' => $child['pro_id']], ['title'=>'查看']) ?>
+                                                <?= Html::a('<button type="button" class="btn btn-default btn-xs">查看</button>', ['view', 'id' => $child['pro_id']], ['title'=>'查看']) ?>
+                                                <?= Html::a('<button type="button" class="btn btn-primary btn-xs">下载</button>', ['export', 'id' => $child['pro_id']], ['title'=>'下载']) ?>
                                                 <?php if(AdminUser::getUserRole(yii::$app->user->id)==1):?>
-                                                <?= Html::a('<span class="glyphicon glyphicon-zoom-in"></span>', ['view', 'id' => $child['pro_id']], ['title'=>'查看']) ?>
-                                                <?= Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['update', 'id' => $child['pro_id']], ['title'=>'修改']) ?>
-                                                <?= Html::a('<span class="	glyphicon glyphicon-trash"></span>', ['delete', 'id' => $child['pro_id']], [
+                                                <?= Html::a('<button type="button" class="btn btn-warning btn-xs">修改</button>', ['update', 'id' => $child['pro_id']], ['title'=>'修改']) ?>
+                                                <?= Html::a('<button type="button" class="btn btn-danger btn-xs">删除</button>', ['delete', 'id' => $child['pro_id']], [
 
                                                     'title'=>'删除',
                                                     'data' => [

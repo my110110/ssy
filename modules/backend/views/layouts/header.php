@@ -12,9 +12,9 @@ use app\widgets\Nav;
 
     <nav class="navbar navbar-static-top" role="navigation">
 
-        <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+        <!-- <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
             <span class="sr-only">Toggle navigation</span>
-        </a>
+        </a> -->
 
         <div class="navbar-custom-menu">
 
@@ -61,9 +61,9 @@ use app\widgets\Nav;
                 </li>
 
                 <!-- User Account: style can be found in dropdown.less -->
-                <li>
+                <!-- <li>
                     <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
-                </li>
+                </li> -->
             </ul>
         </div>
     </nav>
