@@ -15,7 +15,9 @@ $this->params['breadcrumbs'][] = ['label' => '项目管理', 'url' => ['project/
 <div class="content-view">
 
 
-    <p>
+
+    <div class="clearfix">
+        <div class="pull-left">
         <?php if($ret==1):?>
             <?= Html::a('返回列表', ['sample/index'], [
                 'title'=>'返回列表',
@@ -43,28 +45,32 @@ $this->params['breadcrumbs'][] = ['label' => '项目管理', 'url' => ['project/
             ],
         ]) ?>
         <?php endif;?>
-    </p>
-    <?php if(AdminUser::getUserRole(yii::$app->user->id)==1):?>
-    <div class="tab-content cos">
-        <div class="row clearfix">
-            <?php $form = ActiveForm::begin([
-                'action' => ['stace/uploadfile','pid'=>$model->id],
-                'method' => 'post',
-                'options' => ['enctype' => 'multipart/form-data']
-            ]); ?>
-
-            <?= $form->field($file, 'file',
-                ['options'=>
-                    ['tag'=>false ],
-                    'template' => '<div class=" col-md-2 column ace-file-input"> 
-                             {input}</div>',
-
-                ])->fileInput() ?>
-            <?= Html::submitButton('导入标本', ['class' => 'btn btn-primary uploadfile']) ?>
-            <?php ActiveForm::end(); ?>
         </div>
-    </div>
+    <?php if(AdminUser::getUserRole(yii::$app->user->id)==1):?>
+        <div class="pull-right">
+            <div class="tab-content cos">
+                <div class="row clearfix">
+                    <?php $form = ActiveForm::begin([
+                        'action' => ['stace/uploadfile','pid'=>$model->id],
+                        'method' => 'post',
+                        'options' => ['enctype' => 'multipart/form-data']
+                    ]); ?>
+
+                    <?= $form->field($file, 'file',
+                        ['options'=>
+                            ['tag'=>false ],
+                            'template' => '<div class=" col-md-2 column ace-file-input"> 
+                                     {input}</div>',
+
+                        ])->fileInput() ?>
+                    <?= Html::submitButton('导入标本', ['class' => 'btn btn-primary uploadfile']) ?>
+                    <?php ActiveForm::end(); ?>
+                </div>
+             </div>
+        </div>
     <?php endif;?>
+    </div>
+</div>
     <div class="row clearfix" style="margin-top: 10px;">
         <div class="col-md-12 column">
             <table class="table table-hover table-bordered">
@@ -112,8 +118,8 @@ $this->params['breadcrumbs'][] = ['label' => '项目管理', 'url' => ['project/
                             <td class="col-md-10">
                                 <?= Html::a($stace->name, ['stace/view', 'id' => $stace->id]) ?>
                                 <?php if(AdminUser::getUserRole(yii::$app->user->id)==1):?>
-                                <?= Html::a('', ['stace/update', 'id' => $stace->id], ['class' => 'glyphicon glyphicon-pencil','title'=>'修改']) ?>
-                                <?= Html::a('', ['stace/del', 'id' => $stace->id], ['class' => 'glyphicon glyphicon-trash','title'=>'删除']) ?>
+                                <?= Html::a('<button type="button" class="btn btn-warning btn-xs">修改</button>', ['stace/update', 'id' => $stace->id]) ?>
+                                <?= Html::a('<button type="button" class="btn btn-danger btn-xs">删除</button>', ['stace/del', 'id' => $stace->id], ['title'=>'删除']) ?>
                                 <?php endif;?>
                             </td>
                         </tr>

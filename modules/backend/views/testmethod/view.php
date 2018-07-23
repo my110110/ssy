@@ -51,61 +51,72 @@ $this->params['breadcrumbs'][] = ['label' => '特殊染色', 'url' => ['particu 
         ]) ?>
 
     </p>
-    <div class="tab-content cos">
-        <div class="row clearfix" style="margin-bottom: 10px;">
-            <?php $form = ActiveForm::begin([
-                'action' => [
-                    'reagent/uploadfile',
-                    'type'=>'testmethod',
-                    'pid'=>$model->pid,
-                    'tid'=>$model->id
-                ],
-                'method' => 'post',
-                'options' => ['enctype' => 'multipart/form-data']
-            ]); ?>
+           <div>
+               <div style="width: 50%; float: left;height: auto">
+                   <div class="tab-content cos" style="margin-right: 500px;clear: both">
+                       <div class="row clearfix" style="margin-bottom: 10px;">
+                           <?php $form = ActiveForm::begin([
+                               'action' => [
+                                   'reagent/uploadfile',
+                                   'type'=>'testmethod',
+                                   'pid'=>$model->pid,
+                                   'tid'=>$model->id
+                               ],
+                               'method' => 'post',
+                               'options' => ['enctype' => 'multipart/form-data']
+                           ]); ?>
 
-            <?= $form->field($file, 'file',
-                ['options'=>
-                    ['tag'=>false ],
-                    'template' => '<div class=" col-md-2 column ace-file-input"> 
-                             {input}</div>',
+                           <?= $form->field($file, 'file',
+                               ['options'=>
+                                   ['tag'=>false ],
+                                   'template' => '<div class="  ace-file-input2"> 
+                                     {input}</div>',
 
-                ])->fileInput() ?>
-            <?= Html::submitButton('导入自配试剂', ['class' => 'btn btn-primary uploadfile']) ?>
-            <?php ActiveForm::end(); ?>
-        </div>
+                               ])->fileInput() ?>
+                           <?= Html::submitButton('导入自配试剂', ['class' => 'btn btn-primary uploadfile2']) ?>
+                           <?php ActiveForm::end(); ?>
+                       </div>
+
+                   </div>
+
+               </div>
+               <div style="float: left;width: 50%;height: auto">
+                   <div class="tab-content cos" style="clear: both">
+                       <div class="row clearfix">
+                           <?php $form = ActiveForm::begin([
+                               'action' => [
+                                   'kit/uploadfile',
+                                   'type'=>'testmethod',
+                                   'typeid'=>3,
+                                   'pid'=>$model->pid,
+                                   'tid'=>$model->id
+                               ],
+                               'method' => 'post',
+                               'options' => ['enctype' => 'multipart/form-data']
+                           ]); ?>
+
+                           <?= $form->field($file, 'file',
+                               ['options'=>
+                                   ['tag'=>false ],
+                                   'template' => '<div class="  ace-file-input1"> 
+                                     {input}</div>',
+
+                               ])->fileInput() ?>
+                           <?= Html::submitButton('导入商品试剂', ['class' => 'btn btn-primary uploadfile1']) ?>
+                           <?php ActiveForm::end(); ?>
+                       </div>
 
 
-    </div>
-    <div class="tab-content cos">
-        <div class="row clearfix">
-            <?php $form = ActiveForm::begin([
-                'action' => [
-                    'kit/uploadfile',
-                    'type'=>'testmethod',
-                    'typeid'=>3,
-                    'pid'=>$model->pid,
-                    'tid'=>$model->id
-                ],
-                'method' => 'post',
-                'options' => ['enctype' => 'multipart/form-data']
-            ]); ?>
-
-            <?= $form->field($file, 'file',
-                ['options'=>
-                    ['tag'=>false ],
-                    'template' => '<div class=" col-md-2 column ace-file-input"> 
-                             {input}</div>',
-
-                ])->fileInput() ?>
-            <?= Html::submitButton('导入商品试剂', ['class' => 'btn btn-primary uploadfile']) ?>
-            <?php ActiveForm::end(); ?>
-        </div>
+                   </div>
 
 
-    </div>
+               </div>
+           </div>
+
+
+
     <?php endif;?>
-    <div class="row clearfix" style="margin-top: 10px;">
+    <div class="row clearfix" style="margin-top: 40px;">
         <div class="col-md-12 column">
             <table class="table table-hover table-bordered">
                 <tbody>
@@ -164,8 +175,8 @@ $this->params['breadcrumbs'][] = ['label' => '特殊染色', 'url' => ['particu 
                             <td class="col-md-10">
                                 <?= Html::a("$child->name", ['reagent/view', 'id' => $child->id,'type'=>$child->type]) ?>
                                 <?php if(AdminUser::getUserRole(yii::$app->user->id)==1):?>
-                                <?= Html::a('', ['reagent/update', 'id' => $child->id,'type'=>$child->type], ['class' => 'glyphicon glyphicon-pencil','title'=>'修改']) ?>
-                                <?= Html::a('', ['reagent/del', 'id' => $child->id,'type'=>$child->type], ['class' => 'glyphicon glyphicon-trash','title'=>'删除']) ?>
+                                <?= Html::a('<button type="button" class="btn btn-warning btn-xs">修改</button>', ['reagent/update', 'id' => $child->id,'type'=>$child->type], ['title'=>'修改']) ?>
+                                <?= Html::a('<button type="button" class="btn btn-danger btn-xs">删除</button>', ['reagent/del', 'id' => $child->id,'type'=>$child->type], ['title'=>'删除']) ?>
                                 <?php endif;?>
                             </td>
                         </tr>
@@ -178,8 +189,8 @@ $this->params['breadcrumbs'][] = ['label' => '特殊染色', 'url' => ['particu 
                             <td class="col-md-10">
                                 <?= Html::a("$kit->name", ['kit/view', 'id' => $kit->id]) ?>
                                 <?php if(AdminUser::getUserRole(yii::$app->user->id)==1):?>
-                                <?= Html::a('', ['kit/update', 'id' => $kit->id], ['class' => 'glyphicon glyphicon-pencil','title'=>'修改']) ?>
-                                <?= Html::a('', ['kit/del', 'id' => $kit->id], ['class' => 'glyphicon glyphicon-trash','title'=>'删除']) ?>
+                                <?= Html::a('<button type="button" class="btn btn-warning btn-xs">修改</button>', ['kit/update', 'id' => $kit->id], ['title'=>'修改']) ?>
+                                <?= Html::a('<button type="button" class="btn btn-danger btn-xs">删除</button>', ['kit/del', 'id' => $kit->id], ['title'=>'删除']) ?>
                                 <?php endif;?>
                             </td>
                         </tr>

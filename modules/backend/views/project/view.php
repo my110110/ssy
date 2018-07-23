@@ -55,12 +55,12 @@ $this->params['breadcrumbs'][] = ['label' => '项目管理', 'url' => ['index']]
             ]) ?>
             <?php endif;?>
         </div>
-        <div class="pull-right">
-              <?php if(AdminUser::getUserRole(yii::$app->user->id)==1):?>
 
+              <?php if(AdminUser::getUserRole(yii::$app->user->id)==1):?>
+        <div class="pull-right">
                 <?php if($model->pro_pid==0):?>
 
-                    <div class="tab-content cos">
+                    <div class="tab-content cos" >
                         <div class="row clearfix">
                             <?php $form = ActiveForm::begin([
                                 'action' => ['uploadfile','pid'=>$model->pro_id],
@@ -71,7 +71,7 @@ $this->params['breadcrumbs'][] = ['label' => '项目管理', 'url' => ['index']]
                             <?= $form->field($file, 'file',
                                 ['options'=>
                                     ['tag'=>false ],
-                                    'template' => '<div class=" col-md-2 column ace-file-input"> 
+                                    'template' => '<div class="  ace-file-input"> 
                                          {input}</div>',
 
                                 ])->fileInput() ?>
@@ -100,8 +100,9 @@ $this->params['breadcrumbs'][] = ['label' => '项目管理', 'url' => ['index']]
                         </div>
                     </div>
                  <?php endif;?>
-                <?php endif;?>
         </div>
+                <?php endif;?>
+
     </div>
   
     <div class="row clearfix" style="margin-top: 10px;">

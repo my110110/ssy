@@ -27,7 +27,7 @@ $assets_url=$this->getAssetManager()->getBundle(BackendAsset::className())->base
         <title><?= Html::encode($this->title) ?></title>
         <link href="<?=$assets_url?>/css/backend.min.css"  rel="stylesheet"/>
         <link href="<?=$assets_url?>/css/style.css"  rel="stylesheet"/>
-        
+
         <?php $this->head() ?>
     </head>
     <body class="hold-transition skin-blue sidebar-mini fixed">
@@ -59,27 +59,74 @@ $assets_url=$this->getAssetManager()->getBundle(BackendAsset::className())->base
         display: inline-block;
         padding-right: 0;
         margin-right: 0;
+        position:absolute;
+        right: 100px;
+    }
+    .ace-file-input1{
+        display: inline-block;
+        padding-right: 0;
+        margin-right: 0;
+        position:absolute;
+        right: 100px;
+    }
+    .uploadfile1{
+        position: absolute;
+        right: 45px;
+        height: 27px;
+        line-height: 5px;
+        margin: 0;
+        padding: 0;
+    }
+    .ace-file-input2{
+        display: inline-block;
+        padding-right: 0;
+        margin-right: 0;
+        position:absolute;
+        left: 15px;
+    }
+    .uploadfile2{
+        position: absolute;
+        left: 245px;
+        height: 27px;
+        line-height: 5px;
+        margin: 0;
+        padding: 0;
+    }
+    .ace-file-inputs{
+        display: inline-block;
+        padding-right: 0;
+        margin-right: 0;
+        position:absolute;
+        right: 200px;
     }
     #uploadfile-file {
-        height: 23px;
+
+        height: 27px;
         width: 100%;
-        line-height: 23px;
+        line-height: 25px;
         border: 1px solid #ccc;
         background: #ffffff;
         margin-right: 0;
         padding-right: 0;
     }
     .uploadfile{
-        height: 23px;
-        line-height: 1px;
+        position: absolute;
+        right: 45px;
+        height: 27px;
+        line-height: 5px;
+        margin: 0;
+        padding: 0;
     }
     .ace-pid-input{
         width: auto;
         line-height: 1px;
     }
     .part{
-        height: 23px;
-        line-height: 23px;
+        position: absolute;
+        right: 130px;
+        width: 85px;
+        height: 27px;
+        line-height: 27px;
         font-size: 12px;
         padding: 0;
         margin: 0;
@@ -91,4 +138,5 @@ $assets_url=$this->getAssetManager()->getBundle(BackendAsset::className())->base
         font-size: 12px;
 
     }
+
 </style>

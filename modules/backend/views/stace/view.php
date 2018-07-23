@@ -16,7 +16,8 @@ $this->params['breadcrumbs'][] = ['label' => '样品管理', ['sample/view', 'id
 <div class="content-view">
 
 
-    <p>
+    <div class="clearfix">
+        <div class="pull-left">
 
 
         <?php if($ret==1):?>
@@ -50,48 +51,51 @@ $this->params['breadcrumbs'][] = ['label' => '样品管理', ['sample/view', 'id
             ],
         ]) ?>
         <?php endif;?>
-    </p>
-    <?php if(AdminUser::getUserRole(yii::$app->user->id)==1):?>
-    <p class="r_add" style="display: none">
-        <?= Html::a('常规H&E染色', ['routine/add', 'id' => $model->id], ['class' => 'btn btn-default','title'=>'修改']) ?>
-        <?= Html::a('特殊染色', ['particular/add', 'id' => $model->id], ['class' => 'btn btn-default','title'=>'修改']) ?>
-        <?= Html::a('蛋白', ['pna/add', 'id' => $model->id,'ntype'=>'3'], ['class' => 'btn btn-default','title'=>'修改']) ?>
-        <?= Html::a('核酸', ['pna/add', 'id' => $model->id,'ntype'=>'4'], ['class' => 'btn btn-default','title'=>'修改']) ?>
-
-    </p>
-    <div class="tab-content cos">
-        <div class="row clearfix">
-            <?php $form = ActiveForm::begin([
-                'action' => ['sdyeing/uploadfile','pid'=>$model->id],
-                'method' => 'post',
-                'options' => ['enctype' => 'multipart/form-data']
-            ]); ?>
-
-            <?= $form->field($file, 'file',
-                ['options'=>
-                    ['tag'=>false ],
-                    'template' => '<div class=" col-md-2 column ace-file-input"> 
-                             {input}</div>',
-
-                ])->fileInput() ?>
-            <div class=" col-md-2 column ace-pid-input">
-                <select id="sdyeing-nid" class="part form-control" name="ntype" aria-invalid="false">
-
-                    <option value="1">常规H&E染色</option>
-                    <option value="2">特殊染色</option>
-                    <option value="3">蛋白</option>
-                    <option value="3">核酸</option>
-
-                </select>
-
-                <div class="help-block"></div>
-            </div>
-            <?= Html::submitButton('导入实验结果', ['class' => 'btn btn-primary uploadfile']) ?>
-            <?php ActiveForm::end(); ?>
         </div>
-    </div>
+    <?php if(AdminUser::getUserRole(yii::$app->user->id)==1):?>
+
+         <p class="r_add" style="float: left;display: none" >
+            <?= Html::a('常规H&E染色', ['routine/add', 'id' => $model->id], ['class' => 'btn btn-default','title'=>'修改']) ?>
+            <?= Html::a('特殊染色', ['particular/add', 'id' => $model->id], ['class' => 'btn btn-default','title'=>'修改']) ?>
+            <?= Html::a('蛋白', ['pna/add', 'id' => $model->id,'ntype'=>'3'], ['class' => 'btn btn-default','title'=>'修改']) ?>
+            <?= Html::a('核酸', ['pna/add', 'id' => $model->id,'ntype'=>'4'], ['class' => 'btn btn-default','title'=>'修改']) ?>
+
+        </p>
+        <div class="pull-right">
+        <div class="tab-content cos">
+            <div class="row clearfix">
+                <?php $form = ActiveForm::begin([
+                    'action' => ['sdyeing/uploadfile','pid'=>$model->id],
+                    'method' => 'post',
+                    'options' => ['enctype' => 'multipart/form-data']
+                ]); ?>
+
+                <?= $form->field($file, 'file',
+                    ['options'=>
+                        ['tag'=>false ],
+                        'template' => '<div class="  ace-file-inputs"> 
+                                 {input}</div>',
+
+                    ])->fileInput() ?>
+                <div class="  ace-pid-input">
+                    <select id="sdyeing-nid" class="part form-control" name="ntype" aria-invalid="false">
+
+                        <option value="1">常规H&E染色</option>
+                        <option value="2">特殊染色</option>
+                        <option value="3">蛋白</option>
+                        <option value="3">核酸</option>
+
+                    </select>
+
+                    <div class="help-block"></div>
+                </div>
+                <?= Html::submitButton('导入实验结果', ['class' => 'btn btn-primary uploadfile']) ?>
+                <?php ActiveForm::end(); ?>
+            </div>
+        </div>
+        </div>
     <?php endif;?>
-    <div class="row clearfix" style="margin-top: 10px;">
+    <div class="row clearfix" style="margin-top: 40px;">
         <div class="col-md-12 column">
             <table class="table table-hover table-bordered">
                 <tbody>

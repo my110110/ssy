@@ -13,45 +13,48 @@ $this->params['breadcrumbs'][] = ['label' => '检测指标列表', 'url' => ['in
 <div class="content-view">
 
     <?php if(AdminUser::getUserRole(yii::$app->user->id)==1):?>
-    <p>
+        <div class="clearfix">
+                <div class="pull-left">
 
-        <?= Html::a('添加检测方法', ['testmethod/create', 'id' => $model->id], [
-            'title'=>'添加负责人',
-            'class' => 'btn btn-success',
+                <?= Html::a('添加检测方法', ['testmethod/create', 'id' => $model->id], [
+                    'title'=>'添加负责人',
+                    'class' => 'btn btn-success',
 
-        ]) ?>
+                ]) ?>
 
-        <?= Html::a('修改', ['update', 'id' => $model->id], ['class' => 'btn btn-warning','title'=>'修改']) ?>
-        <?= Html::a('删除', ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'title'=>'删除',
-            'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
-                'method' => 'post',
-            ],
-        ]) ?>
+                <?= Html::a('修改', ['update', 'id' => $model->id], ['class' => 'btn btn-warning','title'=>'修改']) ?>
+                <?= Html::a('删除', ['delete', 'id' => $model->id], [
+                    'class' => 'btn btn-danger',
+                    'title'=>'删除',
+                    'data' => [
+                        'confirm' => 'Are you sure you want to delete this item?',
+                        'method' => 'post',
+                    ],
+                ]) ?>
 
-    </p>
-    <div class="tab-content cos">
-        <div class="row clearfix">
-            <?php $form = ActiveForm::begin([
-                'action' => ['testmethod/uploadfile','pid'=>$model->id],
-                'method' => 'post',
-                'options' => ['enctype' => 'multipart/form-data']
-            ]); ?>
+                </div>
+                <div class="pull-right">
+                    <div class="tab-content cos">
+                        <div class="row clearfix">
+                            <?php $form = ActiveForm::begin([
+                                'action' => ['testmethod/uploadfile','pid'=>$model->id],
+                                'method' => 'post',
+                                'options' => ['enctype' => 'multipart/form-data']
+                            ]); ?>
 
-            <?= $form->field($file, 'file',
-                ['options'=>
-                    ['tag'=>false ],
-                    'template' => '<div class=" col-md-2 column ace-file-input"> 
-                             {input}</div>',
+                            <?= $form->field($file, 'file',
+                                ['options'=>
+                                    ['tag'=>false ],
+                                    'template' => '<div class=" col-md-2 column ace-file-input"> 
+                                             {input}</div>',
 
-                ])->fileInput() ?>
-            <?= Html::submitButton('上传检测方法', ['class' => 'btn btn-primary uploadfile']) ?>
-            <?php ActiveForm::end(); ?>
+                                ])->fileInput() ?>
+                            <?= Html::submitButton('上传检测方法', ['class' => 'btn btn-primary uploadfile']) ?>
+                            <?php ActiveForm::end(); ?>
+                        </div>
+
+                    </div>
         </div>
-
-    </div>
     <?php endif;?>
     <div class="row clearfix" style="margin-top: 10px;">
         <div class="col-md-12 column">
@@ -95,8 +98,8 @@ $this->params['breadcrumbs'][] = ['label' => '检测指标列表', 'url' => ['in
                             <td class="col-md-10">
                                 <?= Html::a("$child->name", ['testmethod/view', 'id' => $child->id]) ?>
                         <?php if(AdminUser::getUserRole(yii::$app->user->id)==1):?>
-                                <?= Html::a('', ['testmethod/update', 'id' => $child->id], ['class' => 'glyphicon glyphicon-pencil','title'=>'修改']) ?>
-                                <?= Html::a('', ['testmethod/del', 'id' => $child->id], ['class' => 'glyphicon glyphicon-trash','title'=>'删除']) ?>
+                                <?= Html::a('<button type="button" class="btn btn-warning btn-xs">修改</button>', ['testmethod/update', 'id' => $child->id], ['title'=>'修改']) ?>
+                                <?= Html::a('<button type="button" class="btn btn-danger btn-xs">删除</button>', ['testmethod/del', 'id' => $child->id], ['title'=>'删除']) ?>
                          <?php endif;?>
                             </td>
                         </tr>

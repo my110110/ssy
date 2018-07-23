@@ -12,7 +12,9 @@ $this->params['breadcrumbs'][] = ['label' => '常规染色', 'url' => ['index']]
 <div class="content-view">
 
 
-    <p>
+
+    <div class="clearfix">
+        <div class="pull-left">
         <?= Html::a('返回列表', ['index'], [
             'title'=>'返回列表',
             'class' => 'btn btn-primary',
@@ -35,34 +37,37 @@ $this->params['breadcrumbs'][] = ['label' => '常规染色', 'url' => ['index']]
             ],
         ]) ?>
         <?php endif;?>
-    </p>
-    <?php if(AdminUser::getUserRole(yii::$app->user->id)==1):?>
-    <div class="tab-content cos">
-        <div class="row clearfix">
-            <?php $form = ActiveForm::begin([
-                'action' => [
-                    'reagent/uploadfile',
-                    'type'=>'routine',
-                    'pid'=>$model->id,
-                    'tid'=>$model->id
-                ],
-                'method' => 'post',
-                'options' => ['enctype' => 'multipart/form-data']
-            ]); ?>
-
-            <?= $form->field($file, 'file',
-                ['options'=>
-                    ['tag'=>false ],
-                    'template' => '<div class=" col-md-2 column ace-file-input"> 
-                             {input}</div>',
-
-                ])->fileInput() ?>
-            <?= Html::submitButton('导入检测试剂', ['class' => 'btn btn-primary uploadfile']) ?>
-            <?php ActiveForm::end(); ?>
         </div>
+    <?php if(AdminUser::getUserRole(yii::$app->user->id)==1):?>
+        <div class="pull-right">
+            <div class="tab-content cos">
+                <div class="row clearfix">
+                    <?php $form = ActiveForm::begin([
+                        'action' => [
+                            'reagent/uploadfile',
+                            'type'=>'routine',
+                            'pid'=>$model->id,
+                            'tid'=>$model->id
+                        ],
+                        'method' => 'post',
+                        'options' => ['enctype' => 'multipart/form-data']
+                    ]); ?>
 
-    </div>
+                    <?= $form->field($file, 'file',
+                        ['options'=>
+                            ['tag'=>false ],
+                            'template' => '<div class=" col-md-2 column ace-file-input"> 
+                                     {input}</div>',
+
+                        ])->fileInput() ?>
+                    <?= Html::submitButton('导入检测试剂', ['class' => 'btn btn-primary uploadfile']) ?>
+                    <?php ActiveForm::end(); ?>
+                </div>
+
+            </div>
+        </div>
     <?php endif;?>
+    </div>
     <div class="row clearfix" style="margin-top: 10px;">
         <div class="col-md-12 column">
             <table class="table table-hover table-bordered">
@@ -112,8 +117,8 @@ $this->params['breadcrumbs'][] = ['label' => '常规染色', 'url' => ['index']]
                             <td class="col-md-10">
                                 <?= Html::a("$child->name", ['reagent/view', 'id' => $child->id]) ?>
                         <?php if(AdminUser::getUserRole(yii::$app->user->id)==1):?>
-                                <?= Html::a('', ['reagent/update', 'id' => $child->id,'type'=>$child->type], ['class' => 'glyphicon glyphicon-pencil','title'=>'修改']) ?>
-                                <?= Html::a('', ['reagent/del', 'id' => $child->id], ['class' => 'glyphicon glyphicon-trash','title'=>'删除']) ?>
+                                <?= Html::a('<button type="button" class="btn btn-warning btn-xs">修改</button>', ['reagent/update', 'id' => $child->id,'type'=>$child->type]) ?>
+                                <?= Html::a('<button type="button" class="btn btn-danger btn-xs">删除</button>', ['reagent/del', 'id' => $child->id], ['title'=>'删除']) ?>
                                 <?php endif;?>
                             </td>
                         </tr>

@@ -10,6 +10,7 @@
 @import url("../libs/nice-validator/dist/jquery.validator.css");
 @import url("../libs/selectpage/selectpage.css");
 @import url("login.css");
+
 *{
   font-family: 'Microsoft yahei'!important
 }

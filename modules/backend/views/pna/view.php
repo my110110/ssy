@@ -12,32 +12,33 @@ $this->params['breadcrumbs'][] = ['label' => '返回列表', 'url' => ['index', 
 ?>
 <div class="content-view">
     <?php if(AdminUser::getUserRole(yii::$app->user->id)==1):?>
-    <p>
+    <div class="clearfix">
+                <div class="pull-left">
 
-         <?php if($model->type==1):?>
-        <?= Html::a('添加抗体', ['kit/create', 'id' => $model->id,'type'=>'pna','typeid'=>1], [
-            'title'=>'添加抗体',
-            'class' => 'btn btn-success',
+                 <?php if($model->type==1):?>
+                <?= Html::a('添加抗体', ['kit/create', 'id' => $model->id,'type'=>'pna','typeid'=>1], [
+                    'title'=>'添加抗体',
+                    'class' => 'btn btn-success',
 
-        ]) ?>
-   <?php elseif ($model->type==2):?>
-         <?= Html::a('添加检测试剂盒', ['kit/create', 'id' => $model->id,'type'=>'pna','typeid'=>2], [
-             'title'=>'添加检测试剂盒',
-             'class' => 'btn btn-success',
+                ]) ?>
+           <?php elseif ($model->type==2):?>
+                 <?= Html::a('添加检测试剂盒', ['kit/create', 'id' => $model->id,'type'=>'pna','typeid'=>2], [
+                     'title'=>'添加检测试剂盒',
+                     'class' => 'btn btn-success',
 
-         ]) ?>
-         <?php endif;?>
-        <?= Html::a('修改', ['update', 'id' => $model->id], ['class' => 'btn btn-warning','title'=>'修改']) ?>
-        <?= Html::a('删除', ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'title'=>'删除',
-            'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
-                'method' => 'post',
-            ],
-        ]) ?>
+                 ]) ?>
+                 <?php endif;?>
+                <?= Html::a('修改', ['update', 'id' => $model->id], ['class' => 'btn btn-warning','title'=>'修改']) ?>
+                <?= Html::a('删除', ['delete', 'id' => $model->id], [
+                    'class' => 'btn btn-danger',
+                    'title'=>'删除',
+                    'data' => [
+                        'confirm' => 'Are you sure you want to delete this item?',
+                        'method' => 'post',
+                    ],
+                ]) ?>
 
-    </p>
+                </div>
     <?php
     if($model->type==1)
     {
@@ -48,7 +49,7 @@ $this->params['breadcrumbs'][] = ['label' => '返回列表', 'url' => ['index', 
         $str='导入核酸试剂盒';
     }
     ?>
-
+        <div class="pull-right">
     <div class="tab-content cos">
         <div class="row clearfix">
             <?php $form = ActiveForm::begin([
@@ -73,7 +74,8 @@ $this->params['breadcrumbs'][] = ['label' => '返回列表', 'url' => ['index', 
             <?= Html::submitButton($str, ['class' => 'btn btn-primary uploadfile']) ?>
             <?php ActiveForm::end(); ?>
         </div>
-
+    </div>
+    </div>
     </div>
     <?php endif;?>
     <div class="row clearfix" style="margin-top: 10px;">
@@ -158,8 +160,8 @@ $this->params['breadcrumbs'][] = ['label' => '返回列表', 'url' => ['index', 
                                 <?= Html::a("$child->name", ['kit/view', 'id' => $child->id]) ?>
                                 <?php if(AdminUser::getUserRole(yii::$app->user->id)==1):?>
 
-                                <?= Html::a('', ['kit/update', 'id' => $child->id], ['class' => 'glyphicon glyphicon-pencil','title'=>'修改']) ?>
-                                <?= Html::a('', ['kit/del', 'id' => $child->id], ['class' => 'glyphicon glyphicon-trash','title'=>'删除']) ?>
+                                <?= Html::a('<button type="button" class="btn btn-warning btn-xs">修改</button>', ['kit/update', 'id' => $child->id], ['title'=>'修改']) ?>
+                                <?= Html::a('<button type="button" class="btn btn-danger btn-xs">删除</button>', ['kit/del', 'id' => $child->id], ['title'=>'删除']) ?>
                                 <?php endif;?>
                             </td>
                         </tr>

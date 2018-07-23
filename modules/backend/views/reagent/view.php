@@ -13,7 +13,8 @@ $this->params['breadcrumbs'][] = ['label' => '返回上级', ["$model->type/view
 <div class="content-view">
 
 
-    <p>
+    <div class="clearfix">
+        <div class="pull-left">
 
         <?php if($ret==1):?>
             <?= Html::a('返回列表',["reagent/index"], [
@@ -50,8 +51,9 @@ $this->params['breadcrumbs'][] = ['label' => '返回上级', ["$model->type/view
             ],
         ]) ?>
         <?php endif;?>
-    </p>
+        </div>
     <?php if(AdminUser::getUserRole(yii::$app->user->id)==1):?>
+        <div class="pull-right">
     <div class="tab-content cos">
         <div class="row clearfix">
             <?php $form = ActiveForm::begin([
@@ -70,9 +72,10 @@ $this->params['breadcrumbs'][] = ['label' => '返回上级', ["$model->type/view
             <?= Html::submitButton('导入公司信息', ['class' => 'btn btn-primary uploadfile']) ?>
             <?php ActiveForm::end(); ?>
         </div>
-
+    </div>
     </div>
     <?php endif;?>
+    </div>
     <div class="row clearfix" style="margin-top: 10px;">
         <div class="col-md-12 column">
             <table class="table table-hover table-bordered">
@@ -116,8 +119,8 @@ $this->params['breadcrumbs'][] = ['label' => '返回上级', ["$model->type/view
                             <td class="col-md-10">
                                 <?= $child->company?>
                                 <?php if(AdminUser::getUserRole(yii::$app->user->id)==1):?>
-                                   <?= Html::a('', ['company/update', 'id' => $child->id], ['class' => 'glyphicon glyphicon-pencil','title'=>'修改']) ?>
-                                   <?= Html::a('', ['company/del', 'id' => $child->id], ['class' => 'glyphicon glyphicon-trash','title'=>'删除']) ?>
+                                   <?= Html::a('<button type="button" class="btn btn-warning btn-xs">修改</button>', ['company/update', 'id' => $child->id], ['title'=>'修改']) ?>
+                                   <?= Html::a('<button type="button" class="btn btn-danger btn-xs">删除</button>', ['company/del', 'id' => $child->id], ['title'=>'删除']) ?>
                                 <?php endif;?>
                             </td>
                         </tr>

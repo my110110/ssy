@@ -244,19 +244,19 @@ $this->params['breadcrumbs'][] = $this->title;
                                         <?=$pid['change_time']?>
                                     </td>
                                     <td>
-                                        <?= Html::a('<span class="glyphicon glyphicon-zoom-in"></span>', ['view', 'id' => $pid['id'],'ret'=>'1'], ['title'=>'查看']) ?>
+                                        <?= Html::a('<button type="button" class="btn btn-default btn-xs">查看</button>', ['view', 'id' => $pid['id'],'ret'=>'1'], ['title'=>'查看']) ?>
                                         <?php if(AdminUser::getUserRole(yii::$app->user->id)==1):?>
                                        <?php if($pid['ntype']==1):?>
-                                            <?= Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['routine/change', 'id' => $pid['id'],'ret'=>'1'], ['title'=>'修改']) ?>
+                                            <?= Html::a('<button type="button" class="btn btn-warning btn-xs">修改</button>', ['routine/change', 'id' => $pid['id'],'ret'=>'1'], ['title'=>'修改']) ?>
                                         <?php elseif ($pid['ntype']==2):?>
-                                            <?= Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['particular/change', 'id' => $pid['id'],'ret'=>'1'], ['title'=>'修改']) ?>
+                                            <?= Html::a('<button type="button" class="btn btn-warning btn-xs">修改</button>', ['particular/change', 'id' => $pid['id'],'ret'=>'1'], ['title'=>'修改']) ?>
 
                                         <?php elseif (in_array($pid['ntype'],[3,4])):?>
-                                            <?= Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['pna/change', 'id' => $pid['id'],'ret'=>'1','ntype'=>$pid['ntype']], ['title'=>'修改']) ?>
+                                            <?= Html::a('<button type="button" class="btn btn-warning btn-xs">修改</button>', ['pna/change', 'id' => $pid['id'],'ret'=>'1','ntype'=>$pid['ntype']], ['title'=>'修改']) ?>
 
                                         <?php endif;?>
 
-                                        <?= Html::a('<span class="	glyphicon glyphicon-trash"></span>', ['delete', 'id' => $pid['id']], [
+                                        <?= Html::a('<button type="button" class="btn btn-danger btn-xs">删除</button>', ['delete', 'id' => $pid['id']], [
                                             'title'=>'删除',
                                             'data' => [
                                                 'confirm' => '确定要删除这个数据吗?',

@@ -243,7 +243,8 @@ echo LinkPager::widget([
 ]);
 ?>
 <?php if(AdminUser::getUserRole(yii::$app->user->id)>0):?>
-<div class="tab-content cos">
+<div class="pull-right">
+<div class="tab-content cos" style="margin-right: 20px;">
     <div class="row clearfix">
         <?php $form = ActiveForm::begin([
             'action' => ['uploadfile'],
@@ -261,6 +262,7 @@ echo LinkPager::widget([
         <?= Html::submitButton('上传项目', ['class' => 'btn btn-primary uploadfile']) ?>
         <?php ActiveForm::end(); ?>
     </div>
+</div>
     <?php endif;?>
 </div>
 
