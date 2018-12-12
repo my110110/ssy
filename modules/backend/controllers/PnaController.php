@@ -260,7 +260,7 @@ class PnaController extends BackendController
 
         ob_end_clean();
         ob_start();
-        header('Content-Type : application/vnd.ms-excel');
+        #header('Content-Type : application/vnd.ms-excel');
 
         //设置输出文件名及格式
         header('Content-Disposition:attachment;filename="'.date("YmdHis").'.xls"');
