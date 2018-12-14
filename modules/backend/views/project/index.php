@@ -271,7 +271,7 @@ echo LinkPager::widget([
 
         $(function(){
 
-         $('.hides').hide();
+         //$('.hides').hide();
          $('.shows').click(function () {
              var attr=$(this).attr('attr');
              var ids='pid_'+attr;
