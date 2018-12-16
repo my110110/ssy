@@ -98,7 +98,8 @@ class Sdyeing extends \yii\db\ActiveRecord
             'kit' => 'Kit',
             'rgid' => 'Rgid',
             'attention' => '注意事项',
-            'imageFile'=>'切片数字图像文件'
+            'imageFile'=>'切片数字图像文件',
+            'yid'=>'样品id',
         ];
     }
 
