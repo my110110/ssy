@@ -319,10 +319,10 @@ class ProjectController extends BackendController
         if(!is_dir('uploads/excel/'.$dir_name)){
             mkdir(iconv('utf-8', 'gbk','uploads/excel/'.$dir_name),777);
         }
+        ini_set('memory_limit','3072M');
+        set_time_limit(0);
         $data = CommonHelper::export_project($id,$dir_name);
         CommonHelper::down($data['dir_name'],$data['files']);
-        var_dump(123);
-die;
 //        if(count($sid)>0)
 //        {
 //            $sample=Sample::find()->where(['in','gid',$sid])->andFilterWhere(['isdel'=>'0'])->all();

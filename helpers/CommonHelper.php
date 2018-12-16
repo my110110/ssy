@@ -168,7 +168,6 @@ class CommonHelper
         $files[]= 'uploads/excel/'.$dir_name."/$name.xls";
         $res['dir_name'] = $dir_name;
         $res['files'] = $files;
-        unset($data);
         return $res;
     }
 
@@ -246,7 +245,6 @@ class CommonHelper
         $files[] = 'uploads/excel/'.$dir_name."/$name.xls";
         $res['dir_name'] = $dir_name;
         $res['files'] = $files;
-        unset($data);
         return $res;
     }
 
@@ -340,14 +338,12 @@ class CommonHelper
         $files[] = 'uploads/excel/'.$dir_name."/$name.xls";
         $res['dir_name'] = $dir_name;
         $res['files'] = $files;
-        unset($group);
         return $res;
     }
 
     static public function export_sample($sid,$dir_name,$files){
 
         $objectPHPExcel = new \PHPExcel();
-
         $sample = Sample::find()->where(['in','gid',$sid])->andFilterWhere(['isdel'=>'0'])->all();
         if(count($sample)<1){
             return true;
@@ -495,12 +491,11 @@ class CommonHelper
         $name='样本列表';
         $phpWriter = \PHPExcel_IOFactory::createWriter($objectPHPExcel,'Excel5');
         $phpWriter->save('uploads/excel/'.$dir_name."/$name.xls");//生成表格( 活动 )
-        $re = self::export_sample($sid,$dir_name,$files);
-        $files = $re['files'];
+       // $re = self::export_sample($sid,$dir_name,$files);
+       // $files = $re['files'];
         $files[] = 'uploads/excel/'.$dir_name."/$name.xls";
         $res['dir_name'] = $dir_name;
         $res['files'] = $files;
-        unset($sample);
         return $res;
     }
     /**
