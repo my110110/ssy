@@ -154,24 +154,7 @@ $this->params['breadcrumbs'][] = ['label' => '项目管理', 'url' => ['index']]
                         <td class="col-md-10"><?=$model->pro_update_time?></td>
                     </tr>
                 <?php endif;?>
-                <?php foreach ($Principal as $Principal):?>
-                    <tr class="info">
-                        <td class="col-md-2">项目负责人</td>
-                        <td class="col-md-10">
-                                姓名：<?=$Principal->name?><span style="margin-left: 3px;">-</span><span style="margin-left: 5px;">
-                                科室</span>：<?=$Principal->department?><span style="margin-left: 3px;">-</span><span style="margin-left: 5px;">
-                                邮箱</span>：<?=$Principal->email?><span style="margin-left: 3px;">-</span><span style="margin-left: 5px;">
-                                电话</span>：<?=$Principal->telphone?>
-                   <?php if(AdminUser::getUserRole(yii::$app->user->id)==1):?>
-                            <?= Html::a('<button type="button" class="btn btn-warning btn-xs">修改</button>', ['principal/update', 'id' => $Principal->id]) ?>
-                            <?= Html::a('<button type="button" class="btn btn-danger btn-xs">删除</button>', ['principal/delete', 'id' => $Principal->id], ['title'=>'删除', 'data' => [
-                                'confirm' => '确定要删除这个项目负责人吗?',
-                                'method' => 'post',
-                            ],]) ?>
-                    <?php endif;?>
-                        </td>
-                    </tr>
-                <?php endforeach;?>
+
                 <?php if(count($child)>0) :?>
                 <?php foreach ($child as $child):?>
                     <tr class="info">
@@ -187,25 +170,70 @@ $this->params['breadcrumbs'][] = ['label' => '项目管理', 'url' => ['index']]
                     </tr>
                 <?php endforeach;?>
                 <?php endif;?>
-                <?php if(count($group)>0) :?>
-                            <?php foreach ($group as $group):?>
-                                <tr class="warning">
-                                    <td class="col-md-2">项目分组</td>
-                                    <td class="col-md-10">
-                                        <?= Html::a("$group->group_name", ['group/view', 'id' => $group->id]) ?>
-                                        <?= Html::a('<button type="button" class="btn btn-primary btn-xs">导出样本</button>', ['sample/exports', 'id' =>  $group->id], ['title'=>'导出所有样本']) ?>
 
-                                        <?php if(AdminUser::getUserRole(yii::$app->user->id)==1):?>
-
-                                        <?= Html::a('<button type="button" class="btn btn-warning btn-xs">修改</button>', ['group/update', 'id' => $group->id]) ?>
-                                        <?= Html::a('<button type="button" class="btn btn-danger btn-xs">删除</button>', ['group/del', 'id' => $group->id], ['title'=>'删除']) ?>
-                                        <?php endif;?>
-                                    </td>
-                                </tr>
-                    <?php endforeach;?>
-                <?php endif;?>
                 </tbody>
             </table>
 
+            <table class="table table-hover table-bordered">
+                <tr class="-address-book">
+                    <th>项目负责人</th>
+                    <th>科室</th>
+                    <th>邮箱</th>
+                    <th>电话</th>
+                    <th>操作</th>
+                </tr>
+                <?php if(count($group)>0) :?>
+                    <?php foreach ($Principal as $Principal):?>
+                        <tr class="info">
+                            <td class="col-md-2"><?=$Principal->name?></td>
+                            <td class="col-md-2"><?=$Principal->department?></td>
+                            <td class="col-md-2"><?=$Principal->email?></td>
+                            <td class="col-md-2"><?=$Principal->telphone?></td>
 
+                            <td class="col-md-4">
+
+                                <?php if(AdminUser::getUserRole(yii::$app->user->id)==1):?>
+                                    <?= Html::a('<button type="button" class="btn btn-warning btn-xs">修改</button>', ['principal/update', 'id' => $Principal->id]) ?>
+                                    <?= Html::a('<button type="button" class="btn btn-danger btn-xs">删除</button>', ['principal/delete', 'id' => $Principal->id], ['title'=>'删除', 'data' => [
+                                        'confirm' => '确定要删除这个项目负责人吗?',
+                                        'method' => 'post',
+                                    ],]) ?>
+                                <?php endif;?>
+                            </td>
+                        </tr>
+                    <?php endforeach;?>
+                <?php endif;?> <tr>
+
+                </tr>
+
+
+            </table>
+      <table class="table table-hover table-bordered">
+          <tr class="-address-book">
+          <th>分组名称</th>
+          <th>分组检索号</th>
+          <th>操作</th>
+          </tr>
+          <?php if(count($group)>0) :?>
+              <?php foreach ($group as $group):?>
+                  <tr class="default">
+                      <td class="col-md-3"><?= Html::a("$group->group_name", ['group/view', 'id' => $group->id]) ?></td>
+                      <td class="col-md-3"><?= Html::a("$group->group_retrieve", ['group/view', 'id' => $group->id]) ?></td>
+                      <td class="col-md-4">
+                          <?= Html::a('<button type="button" class="btn btn-primary btn-xs">导出样本</button>', ['sample/exports', 'id' =>  $group->id], ['title'=>'导出所有样本']) ?>
+
+                          <?php if(AdminUser::getUserRole(yii::$app->user->id)==1):?>
+
+                              <?= Html::a('<button type="button" class="btn btn-warning btn-xs">修改</button>', ['group/update', 'id' => $group->id]) ?>
+                              <?= Html::a('<button type="button" class="btn btn-danger btn-xs">删除</button>', ['group/del', 'id' => $group->id], ['title'=>'删除']) ?>
+                          <?php endif;?>
+                      </td>
+                  </tr>
+              <?php endforeach;?>
+          <?php endif;?> <tr>
+
+          </tr>
+
+
+      </table>
 </div>

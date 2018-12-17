@@ -317,7 +317,9 @@ class ProjectController extends BackendController
         $dir_name = time().'-'.$id;
 
         if(!is_dir('uploads/excel/'.$dir_name)){
-            mkdir(iconv('utf-8', 'gbk','uploads/excel/'.$dir_name),777);
+            mkdir(iconv('utf-8', 'gbk','uploads/excel/'.$dir_name));
+            $dir = 'uploads/excel/'.$dir_name;
+            chmod($dir,0777);
         }
         ini_set('memory_limit','3072M');
         set_time_limit(0);
