@@ -109,31 +109,43 @@ $this->params['breadcrumbs'][] = ['label' => '项目管理', 'url' => ['project/
                     <td class="col-md-10"><?=$model->group_add_time?></td>
                 </tr>
                 <?php if(!empty($model->group_change_user)):?>
-                <tr class="warning">
+                <tr class="default">
                     <td class="col-md-2">项目修改人</td>
                     <td class="col-md-10"><?=AdminUser::getUserName($model->group_change_user)?></td>
                 </tr>
-                    <tr class="default">
+                <tr class="default">
                         <td class="col-md-2">项目修改时间</td>
                         <td class="col-md-10"><?=$model->group_change_time?></td>
-                    </tr>
+                </tr>
                 <?php endif;?>
-                <?php if(count($sample)>0) :?>
-                    <?php foreach ($sample as $sample):?>
-                        <tr class="warning">
-                            <td class="col-md-2">样本</td>
-                            <td class="col-md-10">
-                                <?= Html::a("$sample->name", ['sample/view', 'id' => $sample->id]) ?>
-                        <?php if(AdminUser::getUserRole(yii::$app->user->id)==1):?>
-                                <?= Html::a('<button type="button" class="btn btn-warning btn-xs">修改</button>', ['sample/update', 'id' => $sample->id]) ?>
-                                <?= Html::a('<button type="button" class="btn btn-danger btn-xs">删除</button>', ['sample/del', 'id' => $sample->id], ['title'=>'删除']) ?>
-                        <?php endif;?>
-                            </td>
-                        </tr>
-                    <?php endforeach;?>
-                <?php endif;?>
+
                 </tbody>
             </table>
+
+            <?php if(count($sample)>0) :?>
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th>样品名称</th>
+                    <th>样品检索号</th>
+                    <th>操作</th>
+                </tr>
+                <?php foreach ($sample as $sample):?>
+                    <tr class="default">
+                        <td class="col-md-3"> <?= Html::a("$sample->name", ['sample/view', 'id' => $sample->id]) ?></td>
+                        <td class="col-md-3"> <?= Html::a("$sample->retrieve", ['sample/view', 'id' => $sample->id]) ?></td>
+                        <td class="col-md-4">
+
+                            <?php if(AdminUser::getUserRole(yii::$app->user->id)==1):?>
+                                <?= Html::a('<button type="button" class="btn btn-warning btn-xs">修改</button>', ['sample/update', 'id' => $sample->id]) ?>
+                                <?= Html::a('<button type="button" class="btn btn-danger btn-xs">删除</button>', ['sample/del', 'id' => $sample->id], ['title'=>'删除']) ?>
+                            <?php endif;?>
+                        </td>
+                    </tr>
+                <?php endforeach;?>
+            </table>
+
+            <?php endif;?>
+
 
 
 </div>

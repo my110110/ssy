@@ -371,10 +371,13 @@ class CommonHelper
                             'E' => $v2->retrieve,
                             'F' => $v2->description,
                             'G' => $v2->postion,
-                            'H' => $v2->handle,
-                            'I' => $v2->place,
-                            'J' => $v1->gid,
-                            'K' => $v2->id
+                            'H' => $v2->materials,
+                            'I' => $v2->saves,
+                            'J' => $v2->fixed,
+                            'K' => $v2->embedding,
+                            'L' => $v2->place,
+                            'M' => $v1->gid,
+                            'N' => $v2->id
                         ];
                         $m = $m + 1;
                     }
@@ -391,8 +394,11 @@ class CommonHelper
                         'G' => '',
                         'H' => '',
                         'I' => '',
-                        'J' => $v1->gid,
-                        'K' => '0'
+                        'J' => '',
+                        'K' => '',
+                        'L' => '',
+                        'M' =>$v1->gid,
+                        'N' => 0,
                     ];
                 }
 
@@ -410,6 +416,10 @@ class CommonHelper
         $objectPHPExcel->getActiveSheet()->getColumnDimension('H')->setWidth(20);
         $objectPHPExcel->getActiveSheet()->getColumnDimension('I')->setWidth(20);
         $objectPHPExcel->getActiveSheet()->getColumnDimension('J')->setWidth(20);
+        $objectPHPExcel->getActiveSheet()->getColumnDimension('K')->setWidth(20);
+        $objectPHPExcel->getActiveSheet()->getColumnDimension('L')->setWidth(20);
+        $objectPHPExcel->getActiveSheet()->getColumnDimension('N')->setWidth(20);
+
         $n=1;
         //合并单元格
         $objectPHPExcel->getActiveSheet()->setCellValue('A'.($n),'包含的样本信息');
@@ -417,7 +427,7 @@ class CommonHelper
         ->setSize(15) //字体大小
         ->setBold(true); //字体加粗
         $objectPHPExcel->setActiveSheetIndex()->getStyle('A'.($n))->getAlignment()->setWrapText(true)->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-        $objectPHPExcel->getActiveSheet()->mergeCells('A'.($n).':'.'J'.($n));
+        $objectPHPExcel->getActiveSheet()->mergeCells('A'.($n).':'.'N'.($n));
         $n=$n+1;
         $objectPHPExcel->setActiveSheetIndex()->getStyle('A'.($n))->getFont()->setName('宋体') //字体
         ->setSize(10) //字体大小
@@ -449,6 +459,15 @@ class CommonHelper
         $objectPHPExcel->setActiveSheetIndex()->getStyle('J'.($n))->getFont()->setName('宋体') //字体
         ->setSize(10) //字体大小
         ->setBold(true); //字体加粗
+        $objectPHPExcel->setActiveSheetIndex()->getStyle('K'.($n))->getFont()->setName('宋体') //字体
+        ->setSize(10) //字体大小
+        ->setBold(true); //字体加粗
+        $objectPHPExcel->setActiveSheetIndex()->getStyle('L'.($n))->getFont()->setName('宋体') //字体
+        ->setSize(10) //字体大小
+        ->setBold(true); //字体加粗
+        $objectPHPExcel->setActiveSheetIndex()->getStyle('M'.($n))->getFont()->setName('宋体') //字体
+        ->setSize(10) //字体大小
+        ->setBold(true); //字体加粗
         $objectPHPExcel->setActiveSheetIndex()->setCellValue('A'.($n), '样品名称');
         $objectPHPExcel->setActiveSheetIndex()->setCellValue('B'.($n), '所属分组');
         $objectPHPExcel->setActiveSheetIndex()->setCellValue('C'.($n), '样品检索号');
@@ -456,9 +475,12 @@ class CommonHelper
         $objectPHPExcel->setActiveSheetIndex()->setCellValue('E'.($n), '样本名称');
         $objectPHPExcel->setActiveSheetIndex()->setCellValue('F'.($n), '样本检索号');
         $objectPHPExcel->setActiveSheetIndex()->setCellValue('G'.($n), '组织/细胞位置');
-        $objectPHPExcel->setActiveSheetIndex()->setCellValue('H'.($n), '处理方式');
-        $objectPHPExcel->setActiveSheetIndex()->setCellValue('I'.($n), '存放位置');
-        $objectPHPExcel->setActiveSheetIndex()->setCellValue('J'.($n), '样本描述');
+        $objectPHPExcel->setActiveSheetIndex()->setCellValue('H'.($n), '取材');
+        $objectPHPExcel->setActiveSheetIndex()->setCellValue('I'.($n), '保存');
+        $objectPHPExcel->setActiveSheetIndex()->setCellValue('J'.($n), '固定');
+        $objectPHPExcel->setActiveSheetIndex()->setCellValue('K'.($n), '包埋');
+        $objectPHPExcel->setActiveSheetIndex()->setCellValue('L'.($n), '存放位置');
+        $objectPHPExcel->setActiveSheetIndex()->setCellValue('M'.($n), '样本描述');
         $n = $n +1;
         foreach ($sm as $v)
         {
@@ -476,8 +498,12 @@ class CommonHelper
             $objectPHPExcel->setActiveSheetIndex()->getStyle('H'.($n))->getAlignment()->setWrapText(true)->setVertical(\PHPExcel_Style_Alignment::VERTICAL_TOP);
             $objectPHPExcel->setActiveSheetIndex()->getStyle('I'.($n))->getAlignment()->setWrapText(true)->setVertical(\PHPExcel_Style_Alignment::VERTICAL_TOP);
             $objectPHPExcel->setActiveSheetIndex()->getStyle('J'.($n))->getAlignment()->setWrapText(true)->setVertical(\PHPExcel_Style_Alignment::VERTICAL_TOP);
+            $objectPHPExcel->setActiveSheetIndex()->getStyle('K'.($n))->getAlignment()->setWrapText(true)->setVertical(\PHPExcel_Style_Alignment::VERTICAL_TOP);
+            $objectPHPExcel->setActiveSheetIndex()->getStyle('L'.($n))->getAlignment()->setWrapText(true)->setVertical(\PHPExcel_Style_Alignment::VERTICAL_TOP);
+            $objectPHPExcel->setActiveSheetIndex()->getStyle('M'.($n))->getAlignment()->setWrapText(true)->setVertical(\PHPExcel_Style_Alignment::VERTICAL_TOP);
+
             $objectPHPExcel->getActiveSheet()->setCellValue('A'.($n) ,$v['A']);
-            $objectPHPExcel->getActiveSheet()->setCellValue('B'.($n) ,Group::getParName($v['J']));
+            $objectPHPExcel->getActiveSheet()->setCellValue('B'.($n) ,Group::getParName($v['M']));
             $objectPHPExcel->getActiveSheet()->setCellValue('C'.($n) ,$v['B']);
             $objectPHPExcel->getActiveSheet()->setCellValue('D'.($n) ,$v['C']);
             $objectPHPExcel->getActiveSheet()->setCellValue('E'.($n) ,$v['D']);
@@ -485,7 +511,11 @@ class CommonHelper
             $objectPHPExcel->getActiveSheet()->setCellValue('G'.($n) ,$v['G']);
             $objectPHPExcel->getActiveSheet()->setCellValue('H'.($n) ,$v['H']);
             $objectPHPExcel->getActiveSheet()->setCellValue('I'.($n) ,$v['I']);
-            $objectPHPExcel->getActiveSheet()->setCellValue('J'.($n) ,$v['F']);
+            $objectPHPExcel->getActiveSheet()->setCellValue('J'.($n) ,$v['J']);
+            $objectPHPExcel->getActiveSheet()->setCellValue('k'.($n) ,$v['K']);
+            $objectPHPExcel->getActiveSheet()->setCellValue('L'.($n) ,$v['L']);
+            $objectPHPExcel->getActiveSheet()->setCellValue('M'.($n) ,$v['F']);
+
             $n = $n +1;
 
             $syid[]=$v['K'];

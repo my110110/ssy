@@ -134,6 +134,7 @@ class StaceController extends BackendController
         $Pmodel=new Stace();
         $tr=Yii::$app->db->beginTransaction();
         try{
+            $sample = Sample::findOne($pid);
             foreach ($tableData as $k=>$v)
             {
                 $_model=clone $Pmodel;
@@ -141,8 +142,11 @@ class StaceController extends BackendController
                 $_model->sid=$pid;
                 $_model->description=trim($v['1']);
                 $_model->postion=trim($v['2']);
-                $_model->handle=trim($v['3']);
-                $_model->place=trim($v['4']);
+                $_model->materials = trim($v['3']);
+                $_model->saves=trim($v['4']);
+                $_model->fxed = trim($v['5']);
+                $_model->embedding = trim($v['6']);
+                $_model->place=trim($v['7']);
                 $_model->retrieve='ERHE'.time().'D'.$k;
                 $_model->add_time=date('Y-m-d H:i:s');
                 $_model->add_user=Yii::$app->user->id;
@@ -196,7 +200,7 @@ class StaceController extends BackendController
 
         $model=new Stace();
         $model->sid=$id;
-
+        $model->pid = $parent->pid;
         $post = Yii::$app->request->post();
         if ($post)
         {

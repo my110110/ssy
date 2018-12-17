@@ -12,7 +12,10 @@ use Yii;
  * @property string $description
  * @property string $retrieve
  * @property string $postion
- * @property string $handle
+ * @property string $materials
+ * @property string $saves
+ * @property string $embedding
+ * @property string $fxed
  * @property string $place
  * @property integer $sid
  * @property integer $isdel
@@ -21,7 +24,8 @@ use Yii;
  * @property string $change_time
  * @property integer $change_user
  * @property string $del_time
- * @property integer $del_user
+ * @property integer $del_useri
+ * @property integer $pid
  */
 class Stace extends \yii\db\ActiveRecord
 {
@@ -44,7 +48,7 @@ class Stace extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'retrieve', 'postion', 'handle', 'place'], 'required'],
+            [['name', 'retrieve', 'postion', 'materials', 'fixed','embedding', 'place','saves','pid'], 'required'],
             [['description'], 'string'],
             [['sid', 'isdel', 'add_user', 'change_user', 'del_user'], 'integer'],
             [['add_time', 'change_time', 'del_time'], 'safe'],
@@ -60,7 +64,7 @@ class Stace extends \yii\db\ActiveRecord
     {
         return [
             'search'=>[['name', 'retrieve'],'safe'],
-            'default'=>['name','description','handle','retrieve','postion','place']
+            'default'=>['name','description','materials','saves', 'fixed','embedding','retrieve','postion','place','pid']
         ];
     }
 
@@ -75,7 +79,10 @@ class Stace extends \yii\db\ActiveRecord
             'description' => '描述',
             'retrieve' => 'Retrieve',
             'postion' => '组织/细胞部位',
-            'handle' => '处理方式',
+            'materials' => '取材',
+            'saves'=>'保存',
+            'fixed'=>'固定',
+            'embedding'=>'包埋',
             'place' => '存放位置',
             'sid' => 'Sid',
             'isdel' => 'Isdel',
@@ -85,6 +92,7 @@ class Stace extends \yii\db\ActiveRecord
             'change_user' => 'Change User',
             'del_time' => 'Del Time',
             'del_user' => 'Del User',
+            'pid' => '项目id'
         ];
     }
 

@@ -18,9 +18,12 @@ use yii\helpers\ArrayHelper;
             ]);
     ?>
     <?=$form->field($model,'name')->textInput() ?>
-    <?=$form->field($model,'description')->textInput() ?>
+    <?=$form->field($model,'description')->textarea() ?>
     <?=$form->field($model,'postion')->textInput() ?>
-    <?= $form->field($model, 'handle')->dropDownList($model::$handle) ?>
+    <?= $form->field($model, 'materials')->textarea() ?>
+    <?= $form->field($model, 'saves')->textarea() ?>
+    <?= $form->field($model, 'fixed')->textarea() ?>
+    <?= $form->field($model, 'embedding')->textarea() ?>
     <?=$form->field($model,'place')->textInput() ?>
     <?= $form->field($model, 'sid',['options'=>['tag'=>false]])->hiddenInput()->label(false)?>
     <div class="form-group text-right">
