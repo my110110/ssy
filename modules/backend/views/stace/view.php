@@ -79,7 +79,6 @@ $this->params['breadcrumbs'][] = ['label' => '样品管理', ['sample/view', 'id
                     ])->fileInput() ?>
                 <div class="  ace-pid-input">
                     <select id="sdyeing-nid" class="part form-control" name="ntype" aria-invalid="false">
-
                         <option value="1">常规H&E染色</option>
                         <option value="2">特殊染色</option>
                         <option value="3">蛋白</option>
@@ -121,8 +120,20 @@ $this->params['breadcrumbs'][] = ['label' => '样品管理', ['sample/view', 'id
                     <td class="col-md-10"><?=$model->postion?></td>
                 </tr>
                 <tr class="info">
-                    <td class="col-md-2">处理方式</td>
-                    <td class="col-md-10"><?=Stace::$handle[$model->handle]?></td>
+                    <td class="col-md-2">取材</td>
+                    <td class="col-md-10"><?=$model->materials?></td>
+                </tr>
+                <tr class="info">
+                    <td class="col-md-2">保存</td>
+                    <td class="col-md-10"><?=$model->saves?></td>
+                </tr>
+                <tr class="info">
+                    <td class="col-md-2">固定</td>
+                    <td class="col-md-10"><?=$model->fixed?></td>
+                </tr>
+                <tr class="info">
+                    <td class="col-md-2">包埋</td>
+                    <td class="col-md-10"><?=$model->embedding?></td>
                 </tr>
                 <tr class="info">
                     <td class="col-md-2">存放位置</td>

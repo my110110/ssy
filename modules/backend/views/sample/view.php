@@ -110,23 +110,31 @@ $this->params['breadcrumbs'][] = ['label' => '项目管理', 'url' => ['project/
                         <td class="col-md-10"><?=$model->change_time;?></td>
                     </tr>
                 <?php endif;?>
-                <?php if(count($stace)>0) :?>
-                    <?php foreach ($stace as $stace):?>
 
-                        <tr class="warning">
-                            <td class="col-md-2">特定组织与细胞标本</td>
-                            <td class="col-md-10">
-                                <?= Html::a($stace->name, ['stace/view', 'id' => $stace->id]) ?>
-                                <?php if(AdminUser::getUserRole(yii::$app->user->id)==1):?>
-                                <?= Html::a('<button type="button" class="btn btn-warning btn-xs">修改</button>', ['stace/update', 'id' => $stace->id]) ?>
-                                <?= Html::a('<button type="button" class="btn btn-danger btn-xs">删除</button>', ['stace/del', 'id' => $stace->id], ['title'=>'删除']) ?>
-                                <?php endif;?>
-                            </td>
-                        </tr>
-                    <?php endforeach;?>
-                <?php endif;?>
                 </tbody>
             </table>
 
+            <?php if(count($stace)>0) :?>
+            <table class="table table-bordered">
+                <tr>
+                     <th>特定组织与细胞标本名称</th>
+                     <th>检索号</th>
+                     <th>操作</th>
+                 </tr>
+                <?php foreach ($stace as $stace):?>
+
+                    <tr class="default">
+                        <td class="col-md-3"><?= Html::a($stace->name, ['stace/view', 'id' => $stace->id]) ?></td>
+                        <td class="col-md-3"><?= Html::a($stace->retrieve, ['stace/view', 'id' => $stace->id]) ?></td>
+                        <td class="col-md-4">
+                            <?php if(AdminUser::getUserRole(yii::$app->user->id)==1):?>
+                                <?= Html::a('<button type="button" class="btn btn-warning btn-xs">修改</button>', ['stace/update', 'id' => $stace->id]) ?>
+                                <?= Html::a('<button type="button" class="btn btn-danger btn-xs">删除</button>', ['stace/del', 'id' => $stace->id], ['title'=>'删除']) ?>
+                            <?php endif;?>
+                        </td>
+                    </tr>
+                <?php endforeach;?>
+            <?php endif;?>
+            </table>
 
 </div>
