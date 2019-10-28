@@ -53,11 +53,11 @@ use yii\web\UrlManager;
         <section class="sidebar" style="height: 893px; overflow: hidden; width: auto;">
             
             <ul class="sidebar-menu tree" data-widget="tree">
-                <li class="treeview" icon="fa fa-th">
-                    <a href="/backend/project/index.html"><i class="fa fa-th"></i>
-                        <span>实验项目</span>
-                        <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
-                    </a>
+                <li class="active" icon="fa fa-th">
+                    <a href="/backend/project/index.html">
+                        <i class="fa fa-commenting"></i>
+                        <span>实验项目</span
+                        ></a>
                 </li>
                 <li class="treeview" icon="fa fa-medkit">
                     <a href="检测指标">
