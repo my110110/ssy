@@ -73,7 +73,6 @@ use yii\web\UrlManager;
                     <a href="/backend/rbac/route/index.html"><i class="fa fa-bars"></i>
                         <span>后台配置</span> <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>
                     <ul class="treeview-menu">
-                        <li><a href="/backend/config/base-config.html"><i class="fa fa-circle-o" aria-hidden="true"></i><span>基础配置</span></a></li>
                         <li><a href="/backend/admin-user/index.html"><i class="fa fa-circle-o" aria-hidden="true"></i><span>管理员列表</span></a></li>
                         <li><a href="/backend/operatelog/index.html"><i class="fa fa-circle-o" aria-hidden="true"></i><span>操作日志</span></a></li>
                     </ul>
