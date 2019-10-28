@@ -56,8 +56,7 @@ use yii\web\UrlManager;
                 <li class="active" icon="fa fa-th">
                     <a href="/backend/project/index.html">
                         <i class="fa fa-commenting"></i>
-                        <span>实验项目</span
-                        ></a>
+                        <span>实验项目</span></a>
                 </li>
                 <li class="treeview" icon="fa fa-medkit">
                     <a href="检测指标">
