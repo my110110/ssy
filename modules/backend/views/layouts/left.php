@@ -69,15 +69,13 @@ use yii\web\UrlManager;
                         <li><a href="/backend/pna/index.html?type=2"><i class="fa fa-circle-o" aria-hidden="true"></i><span>核酸指标</span></a></li>
                     </ul>
                 </li>
-                <li class="treeview" icon="fa fa-bars"><a href="/backend/rbac/route/index.html"><i class="fa fa-bars"></i>  <span>后台配置</span> <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>
+                <li class="treeview" icon="fa fa-bars">
+                    <a href="/backend/rbac/route/index.html"><i class="fa fa-bars"></i>
+                        <span>后台配置</span> <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>
                     <ul class="treeview-menu">
-                            <li><a href="/backend/admin-user/index.html"><i class="fa fa-circle-o"></i>  <span>管理员列表</span></a></li>
-                            <li><a href="/backend/rbac/assignment/index.html"><i class="fa fa-circle-o"></i>  <span>权限配置</span></a></li>
-                            <li><a href="/backend/rbac/role/index.html"><i class="fa fa-circle-o"></i>  <span>角色列表</span></a></li>
-                            <li><a href="/backend/rbac/permission/index.html"><i class="fa fa-circle-o"></i>  <span>权限列表</span></a></li>
-                            <li><a href="/backend/rbac/rule/index.html"><i class="fa fa-circle-o"></i>  <span>规则列表</span></a></li>
-                            <li><a href="/backend/rbac/route/index.html"><i class="fa fa-circle-o"></i>  <span>路由列表</span></a></li>
-                            <li><a href="/backend/rbac/menu/index.html"><i class="fa fa-circle-o"></i>  <span>后台菜单</span></a></li>
+                        <li><a href="/backend/config/base-config.html"><i class="fa fa-circle-o" aria-hidden="true"></i><span>基础配置</span></a></li>
+                        <li><a href="/backend/admin-user/index.html"><i class="fa fa-circle-o" aria-hidden="true"></i><span>管理员列表</span></a></li>
+                        <li><a href="/backend/operatelog/index.html"><i class="fa fa-circle-o" aria-hidden="true"></i><span>操作日志</span></a></li>
                     </ul>
                 </li>
                 <li class="treeview" icon="fa fa-share"><a href="/gii.html"><i class="fa fa-share"></i>  <span>开发工具</span> <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>
