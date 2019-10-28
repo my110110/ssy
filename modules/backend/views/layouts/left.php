@@ -12,7 +12,7 @@ use yii\web\UrlManager;
             <li><a href="/backend/project/index.html"><i class="fa fa-file-excel-o" aria-hidden="true"></i>&nbsp;<span>实验项目</span></a>
             </li>
             <li class="treeview">
-                <a href="/backend/detection/index.html"><i class="fa fa-medkit" aria-hidden="true"></i>&nbsp;<span>检测指标</span>
+                <a href="#"><i class="fa fa-medkit" aria-hidden="true"></i>&nbsp;<span>检测指标</span>
                     <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>
                 <ul class="treeview-menu">
                     <li><a href="/backend/routine/index.html"><i class="fa fa-circle-o" aria-hidden="true"></i>  <span>常规染色</span></a></li>
@@ -30,7 +30,7 @@ use yii\web\UrlManager;
                 </ul>
             </li> -->
             <li class="treeview">
-                <a href="/backend/rbac/route/index.html"><i class="fa fa-cog" aria-hidden="true"></i>&nbsp;<span>系统配置</span> <span class="pull-right-container">
+                <a href="#"><i class="fa fa-cog" aria-hidden="true"></i>&nbsp;<span>系统配置</span> <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i></span></a>
                 <ul class="treeview-menu">
                     <li><a href="/backend/config/base-config.html"><i class="fa fa-circle-o" aria-hidden="true"></i><span>基础配置</span></a></li>
@@ -38,13 +38,13 @@ use yii\web\UrlManager;
                     <li><a href="/backend/operatelog/index.html"><i class="fa fa-circle-o" aria-hidden="true"></i><span>操作日志</span></a></li>
                 </ul>
             </li>   
-            <li class="treeview">
-                <a href="/gii.html"><i class="fa fa-gavel" aria-hidden="true"></i>&nbsp;<span>开发工具</span> <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>
-                <ul class="treeview-menu">
-                    <li><a href="/debug/default/index.html"><i class="fa fa-circle-o" aria-hidden="true"></i><span>debug</span></a></li>
-                    <li><a href="/gii.html"><i class="fa fa-circle-o" aria-hidden="true"></i><span>gii</span></a></li>
-                </ul>
-            </li>
+<!--            <li class="treeview">-->
+<!--                <a href="/gii.html"><i class="fa fa-gavel" aria-hidden="true"></i>&nbsp;<span>开发工具</span> <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>-->
+<!--                <ul class="treeview-menu">-->
+<!--                    <li><a href="/debug/default/index.html"><i class="fa fa-circle-o" aria-hidden="true"></i><span>debug</span></a></li>-->
+<!--                    <li><a href="/gii.html"><i class="fa fa-circle-o" aria-hidden="true"></i><span>gii</span></a></li>-->
+<!--                </ul>-->
+<!--            </li>-->
         </ul>
     </section>
 </aside>
