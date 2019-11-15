@@ -266,7 +266,10 @@ class ProjectController extends BackendController
     {
         $model = new Project();
         $principal=new Principal();
-        $model->pro_pid=Yii::$app->request->get('pro_pid') ? Yii::$app->request->get('pro_pid') : 0;
+        $model->pro_pid=Yii::$app->request->get('pro_pid');
+        if (!$model->pro_pid) {
+            $model->pro_pid = 0;
+        }
         $model->scenario='create';
         $post = Yii::$app->request->post();
         if ($post) {
