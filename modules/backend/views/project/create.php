@@ -15,9 +15,9 @@ $this->params['breadcrumbs'][] = $this->title;
         <ul class="nav nav-tabs" role="tablist">
             <li role="presentation"><?= Html::a('实验项目', ['index']) ?></li>
             <?php if($_GET['pro_pid']):?>
-                <li role="presentation" class="active"><?= Html::a('添加实验子项目', ['#']) ?></li>
+                <li role="presentation" class="active"><?= Html::a('添加实验子项目', '#') ?></li>
             <?php else:?>
-                <li role="presentation" class="active"><?= Html::a('添加项目', ['#']) ?></li>
+                <li role="presentation" class="active"><?= Html::a('添加项目', '#') ?></li>
             <?php endif;?>
            
         </ul>
