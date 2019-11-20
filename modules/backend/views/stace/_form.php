@@ -20,7 +20,6 @@ use yii\helpers\ArrayHelper;
     <?=$form->field($model,'name')->textInput() ?>
     <?=$form->field($model,'description')->textarea() ?>
     <?=$form->field($model,'postion')->textInput() ?>
-    <?=$form->field($model,'handle')->textInput() ?>
     <?= $form->field($model, 'materials')->textarea() ?>
     <?= $form->field($model, 'saves')->textarea() ?>
     <?= $form->field($model, 'fixed')->textarea() ?>
