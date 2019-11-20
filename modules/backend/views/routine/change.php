@@ -12,7 +12,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="nav-tabs-custom">
         <ul class="nav nav-tabs" role="tablist">
             <li role="presentation"><?= Html::a('返回上级', ['stace/view','id'=>$model->yid]) ?></li>
-            <li role="presentation" class="active"><?= Html::a('添加实验结果', ['']) ?></li>
+            <li role="presentation" class="active"><?= Html::a('添加实验结果', '#') ?></li>
         </ul>
         <div class="tab-content">
             <?= $this->render('_sform', [
