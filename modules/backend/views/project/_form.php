@@ -20,7 +20,7 @@ use yii\helpers\ArrayHelper;
     ?>
     <?= $form->field($model, 'pro_name')->textInput(['maxlength' => true]) ?>
     <?= $form->field($model, 'pro_keywords')->textInput(['maxlength' => true]) ?>
-    <?php if($_GET['pro_pid']):?>
+    <?php if(isset($_GET['pro_pid'])):?>
         <?= $form->field($model, 'pro_kind_id')->textInput($model::$kind_type) ?>
     <?php endif;?>
     <?=$form->field($model,'pro_sample_count')->textInput() ?>
