@@ -7,6 +7,7 @@ use yii\helpers\ArrayHelper;
 /* @var $principal app\models\Principal */
 /* @var $model app\models\Project */
 /* @var $form yii\widgets\ActiveForm */
+
 ?>
 
 <div class="content-form">
@@ -19,7 +20,9 @@ use yii\helpers\ArrayHelper;
     ?>
     <?= $form->field($model, 'pro_name')->textInput(['maxlength' => true]) ?>
     <?= $form->field($model, 'pro_keywords')->textInput(['maxlength' => true]) ?>
-    <?= $form->field($model, 'pro_kind_id')->dropDownList($model::$kind_type) ?>
+    <?php if($_GET['pro_pid']):?>
+        <?= $form->field($model, 'pro_kind_id')->textInput($model::$kind_type) ?>
+    <?php endif;?>
     <?=$form->field($model,'pro_sample_count')->textInput() ?>
     <?=$form->field($principal,'name')->textInput() ?>
     <?=$form->field($principal,'department')->textInput() ?>

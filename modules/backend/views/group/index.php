@@ -76,7 +76,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 所属项目
                             </th>
                             <th>
-                                样品个数
+                                样本个数
                             </th>
                             <th>
                                 处理方式

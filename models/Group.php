@@ -66,11 +66,11 @@ class Group extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'group_retrieve' => '项目分组检索号',
+            'group_retrieve' => '实验分组检索号',
             'pro_id' => 'Pro ID',
-            'group_description' => '项目分组描述',
-            'group_name' => '项目分组名称',
-            'group_sample_count' => '样品数量',
+            'group_description' => '实验分组描述',
+            'group_name' => '实验分组名称',
+            'group_sample_count' => '样本数量',
             'group_sample_handle_type' => 'Group Sample Handle Type',
             'group_experiment_type' => '样本处理方式',
             'group_add_time' => 'Group Add Time',

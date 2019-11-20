@@ -50,7 +50,7 @@ class Principal extends \yii\db\ActiveRecord
             'name' => '项目负责人姓名',
             'department' => '科室',
             'email' => 'Email',
-            'telphone' => '联系电话',
+            'telphone' => '项目实施人联系电话',
             'status' => 'Status',
         ];
     }

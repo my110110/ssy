@@ -31,7 +31,7 @@ $this->params['breadcrumbs'][] = ['label' => '项目管理', 'url' => ['project/
                 ]) ?>
             <?php endif;?>
             <?php if(AdminUser::getUserRole(yii::$app->user->id)==1):?>
-            <?= Html::a('添加样品', ['sample/create', 'id' => $model->id], ['class' => 'btn btn-info','title'=>'新增样品']) ?>
+            <?= Html::a('添加样本', ['sample/create', 'id' => $model->id], ['class' => 'btn btn-info','title'=>'新增样品']) ?>
 
             <?= Html::a('修改', ['update', 'id' => $model->id], ['class' => 'btn btn-warning','title'=>'修改']) ?>
             <?= Html::a('删除', ['delete', 'id' => $model->id], [
@@ -61,7 +61,7 @@ $this->params['breadcrumbs'][] = ['label' => '项目管理', 'url' => ['project/
                                          {input}</div>',
 
                             ])->fileInput() ?>
-                        <?= Html::submitButton('导入样品', ['class' => 'btn btn-primary uploadfile']) ?>
+                        <?= Html::submitButton('导入样本', ['class' => 'btn btn-primary uploadfile']) ?>
                         <?php ActiveForm::end(); ?>
                     </div>
                 </div>
