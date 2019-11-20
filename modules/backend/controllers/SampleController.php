@@ -393,7 +393,7 @@ class SampleController extends BackendController
         $sample=new Sample();
         $sample->gid=$id;
         $sample->pid=$model->pro_id;
-
+        $sample->pro_id=$model->pro_id;
         $post = Yii::$app->request->post();
         if ($post)
         {
